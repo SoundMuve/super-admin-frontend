@@ -1,0 +1,72 @@
+/* roboto-cyrillic-ext-300-normal */
+@font-face {
+  font-family: 'Geist';
+  /* font-style: normal; */
+  /* font-display: swap; */
+  font-weight: black;
+  src: url(./statics-ttf/Geist-Black.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Geist';
+  /* font-style: normal; */
+  /* font-display: swap; */
+  font-weight: bold;
+  src: url(./statics-ttf/Geist-Bold.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Geist';
+  /* font-style: normal; */
+  /* font-display: swap; */
+  font-weight: light;
+  src: url(./statics-ttf/Geist-Light.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Geist';
+  /* font-style: normal; */
+  /* font-display: swap; */
+  font-weight: medium;
+  src: url(./statics-ttf/Geist-Medium.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Geist';
+  /* font-style: normal; */
+  /* font-display: swap; */
+  /* font-weight: regular; */
+  src: url(./statics-ttf/Geist-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Geist';
+  /* font-style: normal; */
+  /* font-display: swap; */
+  /* font-weight: regular; */
+  src: url(./statics-ttf/Geist-SemiBold.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Geist';
+  /* font-style: normal; */
+  /* font-display: swap; */
+  font-weight: thin;
+  src: url(./statics-ttf/Geist-Thin.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Geist';
+  /* font-style: normal; */
+  /* font-display: swap; */
+  font-weight: bolder;
+  src: url(./statics-ttf/Geist-UltraBlack.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Geist';
+  /* font-style: normal; */
+  /* font-display: swap; */
+  font-weight: lighter;
+  src: url(./statics-ttf/Geist-UltraLight.ttf) format('truetype');
+}

@@ -1,0 +1,162 @@
+.topGradient {
+    width: 555px;
+    height: 555px;
+    background: linear-gradient(180deg, #644986 0%, rgba(100, 73, 134, 0) 100%);
+    filter: blur(379.951px);
+    position: absolute;
+    top: -260px;
+    left: -242px;
+}
+
+.leftGradient {
+    position: absolute;
+    width: 154px;
+    height: 154px;
+    left: -50px;
+    top: 564px;
+
+    background: linear-gradient(180deg, #644986 0%, rgba(100, 73, 134, 0) 100%);
+    filter: blur(77.5px);
+}
+
+.leftBottomGradient {
+    position: absolute;
+    width: 497px;
+    height: 497px;
+    left: -30px;
+    top: 100;
+
+    background: linear-gradient(180deg, rgba(100, 73, 134, 0.67) 0%, rgba(100, 73, 134, 0) 100%);
+    filter: blur(250.114px);
+
+    
+}
+
+.leftBottom2Gradient {
+    position: absolute;
+    width: 497px;
+    height: 497px;
+    left: -50px;
+    top: 1332px;
+    
+    background: linear-gradient(180deg, rgba(100, 73, 134, 0.67) 0%, rgba(100, 73, 134, 0) 100%);
+    filter: blur(250.114px);
+}
+
+
+
+.rightTopGradient {
+    position: absolute;
+    width: 555px;
+    height: 555px;
+    right: -117px;
+    top: 200px;
+    background: linear-gradient(180deg, #CE2937 0%, rgba(157, 7, 38, 0) 100%);
+    filter: blur(379.951px);
+}
+
+.rightBottomGradient {
+    position: absolute;
+    width: 555px;
+    height: 592px;
+    right: -117px;
+    top: 1025px;
+    background: linear-gradient(180deg, #CE2937 0%, rgba(157, 7, 38, 0) 100%);
+    filter: blur(379.951px);
+}
+
+.rightBottom2Gradient {
+    position: absolute;
+    width: 516px;
+    height: 449px;
+    /* right: -50px;
+    top: 2199px; */
+
+    top: 970px;
+    right: -80px;
+
+    background: linear-gradient(180deg, rgba(101, 5, 8, 0.33) 0%, rgba(101, 5, 8, 0.130706) 100%);
+    filter: blur(126.315px);
+}
+
+.centeredLastGradient {
+    position: absolute;
+    width: 728px;
+    height: 375px;
+    top: 200px;
+    right: 80px;
+    /* left: 202px;
+    top: 2800px; */
+    
+
+    /* background: #CE2937; */
+    background: linear-gradient(180deg, rgba(101, 5, 8, 0.2) 0%, rgba(101, 5, 8, 0.0792157) 100%);
+    filter: blur(126.315px);
+}
+
+.mobileLeftGradient {
+    position: absolute;
+    width: 317.98px;
+    height: 317.98px;
+    left: -205px;
+    top: 284px;
+
+    background: linear-gradient(180deg, #644986 0%, rgba(100, 73, 134, 0) 100%);
+    filter: blur(160.024px);
+}
+
+.mobileRightGradientLoading {
+    position: absolute;
+    width: 217.98px;
+    height: 217.98px;
+    right: 10.02px;
+    top: 46.39px;
+
+    background: linear-gradient(180deg, #CE2937 0%, rgba(157, 7, 38, 0) 100%);
+    filter: blur(160.024px);
+}
+
+.mobileRightGradient {
+    position: absolute;
+    width: 317.98px;
+    height: 317.98px;
+    left: 241.02px;
+    top: 546.39px;
+
+    background: linear-gradient(180deg, #CE2937 0%, rgba(157, 7, 38, 0) 100%);
+    filter: blur(160.024px);
+}
+
+.mobileCenteredGradient {
+    position: absolute;
+    width: 64.86px;
+    height: 64.86px;
+    left: 204.38px;
+    top: 603.91px;
+
+    background: linear-gradient(180deg, #644986 0%, rgba(100, 73, 134, 0) 100%);
+    filter: blur(32.6406px);
+}
+
+
+
+
+
+.defaultDisplay {
+    display: none;
+}
+
+/* Media Queries */
+@media screen and (min-width: 768px) { /* Medium Screens */
+    .mdzz {
+        /* Styles for large content on medium screens */
+        display: block;
+    }
+}
+  
+@media screen and (max-width: 767px) { /* Mobile Screens */
+    .xszz {
+        /* Styles for small content on mobile screens */
+        display: block;
+    }
+} 

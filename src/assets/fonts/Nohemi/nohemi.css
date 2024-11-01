@@ -1,0 +1,72 @@
+/* roboto-cyrillic-ext-300-normal */
+@font-face {
+  font-family: 'Nohemi';
+  /* font-style: normal; */
+  /* font-display: swap; */
+  font-weight: black;
+  src: url(./statics-ttf/Nohemi-Black.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Nohemi';
+  /* font-style: normal; */
+  /* font-display: swap; */
+  font-weight: bold;
+  src: url(./statics-ttf/Nohemi-Bold.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Nohemi';
+  /* font-style: normal; */
+  /* font-display: swap; */
+  font-weight: bolder;
+  src: url(./statics-ttf/Nohemi-ExtraBold.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Nohemi';
+  /* font-style: normal; */
+  /* font-display: swap; */
+  font-weight: light;
+  src: url(./statics-ttf/Nohemi-Light.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Nohemi';
+  /* font-style: normal; */
+  /* font-display: swap; */
+  font-weight: lighter;
+  src: url(./statics-ttf/Nohemi-ExtraLight.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Nohemi';
+  /* font-style: normal; */
+  /* font-display: swap; */
+  font-weight: medium;
+  src: url(./statics-ttf/Nohemi-Medium.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Nohemi';
+  /* font-style: normal; */
+  /* font-display: swap; */
+  /* font-weight: regular; */
+  src: url(./statics-ttf/Nohemi-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Nohemi';
+  /* font-style: normal; */
+  /* font-display: swap; */
+  /* font-weight: regular; */
+  src: url(./statics-ttf/Nohemi-SemiBold.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Nohemi';
+  /* font-style: normal; */
+  /* font-display: swap; */
+  font-weight: thin;
+  src: url(./statics-ttf/Nohemi-Thin.ttf) format('truetype');
+}
