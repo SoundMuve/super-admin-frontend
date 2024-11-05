@@ -8,6 +8,8 @@ import sampleArtWork from '@/assets/images/sampleArtWork.png';
 // import faqVideoThumbnail from "@/assets/images/faqVideoThumbnail.png";
 import { releaseInterface } from '@/typeInterfaces/release.interface';
 import ReleaseStatusComponent from './ReleaseStatus';
+import { useReleaseStore } from '@/state/releaseStore';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 
 
 interface _Props {
@@ -17,8 +19,27 @@ interface _Props {
 const ReleaseViewCard: React.FC<_Props> = ({
     release
 }) => {
+    const navigate = useNavigate();
+
+    const _setReleaseDetails = useReleaseStore((state) => state._setReleaseDetails);
+    const _setSongDetails = useReleaseStore((state) => state._setSongDetails);
+
     const handleClick = () => {
-        // navigate to the details page with the release data
+        _setReleaseDetails(release);
+        if (release.singleSong) {
+            _setSongDetails(release.singleSong);
+        } else if (release.albumSongs?.length) {
+            _setSongDetails(release.albumSongs[0]);
+        } else {}
+
+        const params = {
+            release_id: release._id || '',
+        };
+        navigate({
+            pathname: "/admin/uploads/details",
+            search: `?${createSearchParams(params)}`,
+        });
+        
     }
 
 

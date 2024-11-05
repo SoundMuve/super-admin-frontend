@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import ScrollToTop from "@/components/ScrollToTop.tsx";
 import NotFoundPage from '@/pages/NotFound.tsx';
@@ -11,6 +11,7 @@ import CreateNewPassword from "@/pages/auth/CreateNewPassword.tsx";
 import AccountLayout from "./pages/account/AccountLayout";
 import Dashboard from "./pages/account/Dashboard";
 import Releases from "./pages/account/uploads/Releases";
+import ReleasesDetails from "./pages/account/uploads/ReleasesDetails";
 
 
 export const router = createBrowserRouter([
@@ -20,9 +21,8 @@ export const router = createBrowserRouter([
       children: [
         {
           path: "",
-          element: <Login />,
+          element: <Navigate replace to={"/auth/login"} />,
         },
-
         {
           path: "auth",
           element: <AuthLayout />,
@@ -65,6 +65,10 @@ export const router = createBrowserRouter([
                 {
                   path: "",
                   element: <Releases />
+                },
+                {
+                  path: "details",
+                  element: <ReleasesDetails />
                 },
               ]
 

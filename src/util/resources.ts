@@ -1,3 +1,5 @@
+import kolors from "@/constants/kolors";
+
 export const emekaBackendUrl = "https://soundmuve-backend-zrap.onrender.com"; // Emeka
 export const emekaApiEndpoint = `${emekaBackendUrl}/api`;
 
@@ -13,48 +15,48 @@ export function validateEmail(email: string) {
 }
 
 
-export const songArtistsCreativesRoles = [
-  "Main artist", 'Featured', 'Producer',' 12 string guitar', 'acoustic guitar', 'actor', 'alto saxophone', 'alto solo', 'arranger', 
-  'background vocals', 'banjo', 'baritone saxophone', 'baritone solo', 'bass clarinet', 'bass guitar', 'bass trombone', 
-  'bassoon', 'bongos', 'cajon', 'cello', 'chair', 'choir master', 'chorus', 'clarinet', 'classical guitar', 'clavier', 
-  'composer', 'conductor', 'congas', 'cornet', 'piano', 'vocal engineer', 'vocal solo', 'mixing engineer',  'music director', 
-  'lead guitar'
-];
+export const getStatusColor = (
+  status: "Incomplete" | "Unpaid" | "Processing" |  "Complete" | "Live" | "Failed", 
+  colorType: "bg" | "text"
+) => {
+  if (colorType == "bg") {
+      if (status == "Live") {
+          return "#435925"
+      } else if (status == "Unpaid") {
+          return "#825600";
+      } else if (status == "Processing") {
+          return kolors.primary;
+      } else if (status == "Complete") {
+          return "#33500B";
+      } else if (status == "Incomplete") {
+          return "#825600";
+      } else if (status == "Failed") {
+          return "#701920";
+      } else {
+          return kolors.primary;
+      }
+  }
 
-export const primaryGenre = [
-  'African', 'Alternative', 'Ambient', 'Americana', 'Big Band', 'Blues', 'Brazilian', "Children's Music",
-  'Christian/Gospel', 'Classical Crossover', 'Comedy', 'Country', 'Dance', 'Electronic', 'Fitness & Workout',
-  'Folk', 'French Pop', 'German Folk', 'German Pop', 'Heavy Metal', 'Indian', 'Instrumental',
-  'J Pop', 'Jazz', 'K Pop', 'Karaoke', 'Latin', 'New Age', 'Pop', "R&B/Soul", 'Reggae',
-  'Hip Hop/Rap', 'Holiday', 'Rock', 'Singer/Songwriter', 'Soundtrack', 'Spoken Word', 'Vocal', 'World'
-];
+  if (colorType == "text") {
+      if (status == "Live") {
+          return "#B6D787"
+      } else if (status == "Unpaid") {
+          return "#D3AA5A";
+      } else if (status == "Processing") {
+          return kolors.milk;
+      } else if (status == "Complete") {
+          return "#B4D28A";
+      } else if (status == "Incomplete") {
+          return "#D2A95A";
+      } else if (status == "Failed") {
+          return "#D2A5A9";
+      } else {
+          return kolors.milk;
+      }
+      
+  }
 
-export const secondaryGenre = [
-  'African', 'Afro house', 'Afro-fusion', 'Afro-soul', 'Afrobeats', 'Afropop', 'Amapiano', 'Bongo Flava',
-  'Highlife', 'Maskandi', 'Alternative', 'Ambient', 'Americana', 'Big Band', 'Blues', 'Brazilian', "Children's Music",
-  'Christian/Gospel', 'Classical Crossover', 'Comedy', 'Country', 'Dance', 'Electronic', 'Fitness & Workout', 'Folk',
-  'French Pop', 'German Folk', 'German Pop', 'Heavy Metal', 'Hip Hop/Rap', 'Holiday', 'Indian', 'Instrumental', 'J Pop',
-  'Jazz', 'K Pop', 'Karaoke', 'Latin', 'New Age', 'Pop', 'R&B/Soul', 'Reggae', 'Rock', "Singer/Songwriter", 'Soundtrack',
-  'Spoken Word', 'Vocal', 'World', 'Axé', 'Baile Funk', 'Bossa Nova', 'Chorinho', 'Forró', 'v Frevo', 'MPB', 'Pagode',
-  'Samba', 'Sertanejo'
-];
-
-export const socialPlatformStores = [
-  "All", "Youtube", "TikTok/TikTok Music/Resso", "Facebook/Instagram/Reels", "Capcut"
-  //  "Snapchat",
-];
-
-export const musicStores = [
-  "All",
-  "ITunes", "Apple Music", "Spotify", "Amazon Music", "Pandora", "Deezer",
-  "iHeartRadio", "Wynk/Hungama", "Qobuz", "Peloton", "Douyin Streaming/Qishi Yinyue",
-  "MediaNet", "Tidal", "Gracenote", "YouSee Musik/Telmore Musik", "Napster", "Tencent",
-  "Snapchat/ 7digital", "BOOM", "NetEase", "Gaana", "Joox", "TIM", "Boomplay Music"
-];
-
-export const hours = [...Array(13).keys()].map((num) => num.toString().padStart(2, '0'));
-export const minutes = [...Array(60).keys()].map((num) => num.toString().padStart(2, '0'));
-export const seconds = [...Array(60).keys()].map((num) => num.toString().padStart(2, '0'));
+}
 
 export const minReleaseDate = () => {
   const dateObj = new Date();

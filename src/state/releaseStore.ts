@@ -1,8 +1,7 @@
 import { create } from "zustand";
-import temptCoverPhotoImg from '@/assets/images/album.png';
+import temptCoverPhotoImg from '@/assets/images/sampleArtWork.png';
 import { releaseInterface, songInterface } from "@/typeInterfaces/release.interface";
-// import { releaseInterface } from "@/constants/typesInterface";
-
+import { getLocalStorage, setLocalStorage } from "@/util/storage";
 
 
 const defaultReleaseData: releaseInterface = {
@@ -39,7 +38,8 @@ const defaultReleaseData: releaseInterface = {
     stores: [],
     socialPlatforms: [],
     coverArt: temptCoverPhotoImg,
-    status: "Incomplete"
+    status: "Incomplete",
+    _id: ""
 };
 
 
@@ -54,7 +54,8 @@ const defaultSongData: songInterface = {
     },
     explicitLyrics: "Yes",
     isrcNumber: "",
-    lyricsLanguage: ""
+    lyricsLanguage: "",
+    _id: ""
 }
 
 
@@ -66,6 +67,7 @@ type _typeInterface_ = {
 
     _setSongDetails : (details: songInterface) => void;
     _setReleaseDetails : (details: releaseInterface) => void;
+    _restoreReleaseDetails : () => void;
 
     // updatePlayerAsync: () => Promise<void>;
 };
@@ -76,7 +78,7 @@ export const useReleaseStore = create<_typeInterface_>((set) => ({
     songDetails: defaultSongData,
   
     _setSongDetails: (details) => {
-        // setLocalStorage("user", user);
+        setLocalStorage("releaseSongData", details);
 
         set((_state) => {
             return {
@@ -86,11 +88,23 @@ export const useReleaseStore = create<_typeInterface_>((set) => ({
     },
   
     _setReleaseDetails: (details) => {
-        // setLocalStorage("user", user);
+        setLocalStorage("releaseData", details);
 
         set((_state) => {
             return {
                 releaseDetails: details,
+            };
+        });
+    },
+  
+    _restoreReleaseDetails: () => {
+        const releaseData = getLocalStorage("releaseData");
+        const releaseSongData = getLocalStorage("releaseSongData");
+
+        set((_state) => {
+            return {
+                releaseDetails: releaseData ? releaseData : defaultReleaseData,
+                songDetails: releaseSongData ? releaseSongData : defaultSongData
             };
         });
     },

@@ -16,7 +16,7 @@ export type songArtists_CreativesInterface = {
 }
 
 export type songInterface = {
-    _id?: string,
+    _id: string,
     songAudio: any,
     songTitle: string, // not needed for singles or better still same as title for singles
 
@@ -42,7 +42,7 @@ export type songInterface = {
 
 
 export type releaseInterface = {
-    _id?: string,
+    _id: string,
     user_id: string,
     email: string,
     recordLabelArtist_id?: string,

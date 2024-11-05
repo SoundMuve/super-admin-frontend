@@ -12,6 +12,7 @@ const Dashboard = () => {
     return (
         <Box>
             <Typography>hello dashboard</Typography>
+
         </Box>
     );
 };
