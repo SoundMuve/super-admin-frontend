@@ -6,7 +6,10 @@ export const emekaApiEndpoint = `${emekaBackendUrl}/api`;
 export const Etom_Sunday_backendUrl = "https://soundmuve-backend-t4v0.onrender.com"; // Etom_Sunday
 export const apiEndpoint = `${Etom_Sunday_backendUrl}/api/v1`;
 export const localApiEndpoint = "http://localhost:3000/api/v1";
+export const localApiEndpoint2 = "http://localhost:3050/api/v1";
 
+
+export const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[~!@#$^&*()_\-+={}[\]\\|"'`;<>,.?/]).{6,}$/;
 
 
 export function validateEmail(email: string) {
@@ -362,4 +365,41 @@ export function isNumeric(str: string) {
 
 export function convertToSubCurrency(amount: number, factor = 100) {
   return Math.round(amount*factor);
+}
+
+
+export function generatePassword(length = 8) {
+  const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const lowercase = "abcdefghijklmnopqrstuvwxyz";
+  const digits = "0123456789";
+  // const specialChars = "!@#$%^&*()_+{}[]<>?";
+  // const specialChars = `~!@#$^&*()_-+={}[]\|"';:<>,.?/`;
+  const specialChars = "~!@#$^&*()_-+={}[]\\|\"';:<>,.?/";
+
+
+  
+
+  if (length < 6) {
+      throw new Error("Password length must be at least 6 characters.");
+  }
+
+  // Ensure each required character type is included
+  let password = [
+      uppercase[Math.floor(Math.random() * uppercase.length)],
+      lowercase[Math.floor(Math.random() * lowercase.length)],
+      digits[Math.floor(Math.random() * digits.length)],
+      specialChars[Math.floor(Math.random() * specialChars.length)],
+  ];
+
+  // Fill the rest of the password with random characters from all categories
+  const allChars = uppercase + lowercase + digits + specialChars;
+  for (let i = password.length; i < length; i++) {
+      password.push(allChars[Math.floor(Math.random() * allChars.length)]);
+  }
+
+  // Shuffle the password to avoid predictable patterns
+  password = password.sort(() => Math.random() - 0.5);
+
+  // Join the array into a single string and return the result
+  return password.join('');
 }

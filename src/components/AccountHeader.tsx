@@ -311,7 +311,7 @@ export default function AccountHeaderComponent({
                             aria-label="open drawer"
                             edge="start"
                             onClick={handleDrawerToggle}
-                            sx={{color: "#555555"}}
+                            sx={{color: "#555555", display: {md: "none"} }}
                         >
                             <MenuIcon />
                         </IconButton>
@@ -368,7 +368,7 @@ export default function AccountHeaderComponent({
                                                     <IconButton sx={{color: "#000"}}>
                                                         <Avatar 
                                                             alt={ `${ userData.firstName } ${ userData.lastName}` } 
-                                                            src="/static/images/avatar/2.jpg" 
+                                                            // src="/static/images/avatar/2.jpg" 
                                                         />
                                                     </IconButton>
                                                 </Box>

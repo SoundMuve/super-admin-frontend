@@ -274,7 +274,7 @@ export const paymentTextFieldStyle: SxProps<Theme> = {
     },
     '& .MuiOutlinedInput-root': {
         // bgcolor: darkTheme ? '#1C1B1F' : '#EFEFEF',
-        borderRadius: '13.79px',
+        borderRadius: '10px',
         // height: '42px',
 
         '& fieldset': {
