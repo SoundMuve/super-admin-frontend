@@ -12,6 +12,8 @@ import AccountLayout from "./pages/account/AccountLayout";
 import Dashboard from "./pages/account/Dashboard";
 import Releases from "./pages/account/uploads/Releases";
 import ReleasesDetails from "./pages/account/uploads/ReleasesDetails";
+import Coupons from "./pages/account/coupon/Coupons";
+import CouponDetails from "./pages/account/coupon/CouponDetails";
 
 
 export const router = createBrowserRouter([
@@ -71,7 +73,19 @@ export const router = createBrowserRouter([
                   element: <ReleasesDetails />
                 },
               ]
-
+            },
+            {
+              path: "coupons",
+              children: [
+                {
+                  path: "",
+                  element: <Coupons />
+                },
+                {
+                  path: "details",
+                  element: <CouponDetails />
+                },
+              ]
             },
             
           ]

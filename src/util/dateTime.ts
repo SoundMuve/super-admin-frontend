@@ -27,6 +27,33 @@ export function getShortDateFormate(dateString: string) {
     return `${month} ${day}`;
 }
 
+export function displayCreatedAtDate(dateString: string) {
+    // Create a Date object from the input string
+    const date = new Date(dateString);
+
+    // Get the date components
+    const year = date.getFullYear();
+    // const month = String(date.getMonth() + 1).padStart(2, "0");
+    const month = date.toLocaleString('en-US', { month: 'short' });
+    const day = String(date.getDate()).padStart(2, "0");
+
+    // Get the time components
+    // const hours = String(date.getHours()).padStart(2, "0");
+    const hourz = date.getHours();
+
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+
+    const meridian = hourz >= 12 ? "PM" : "AM";
+    // Adjust hours for 12-hour format and handle special cases
+    const adjustedHours = hourz % 12 || 12; // 0 becomes 12 for consistency
+
+
+    // Combine the month and day into the desired format
+    // return `${day} ${month} ${year} ${hours}:${minutes}${seconds}`;
+    return `${day} ${month} ${year} ${adjustedHours}:${minutes}:${seconds} ${meridian}`;
+}
+
 export function getFormattedDateRange(days: number) {
     const today = new Date();
     const endDate = new Date(today);

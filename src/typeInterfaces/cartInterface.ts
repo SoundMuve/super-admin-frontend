@@ -1,5 +1,5 @@
 export interface cartItemInterface {
-    _id?: string,
+    _id: string,
     release_id: string,
     user_email: string,
     user_id: string,
@@ -7,33 +7,33 @@ export interface cartItemInterface {
     coverArt: string,
     price: number,
     releaseType: string,
-    title: string
+    title: string,
+
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 
 
-// interface responseCartItemInterface {
-//     type: string,
-//     name: string,
-//     price: number,
-//     _id: string
-// }
+export interface couponInterface {
+    _id: string,
+    cartItems: cartItemInterface[],
+    user_id: string,
+    user_name: string,
+    user_email: string,
 
-// export interface add2cartResponseInterface {
-//     email: string,
-//     items: responseCartItemInterface[],
-//     total: number,
-//     _id: string,
-//     createdAt: string,
-// }
+    youtubeLink: string,
+    instagramFacebookLink: string,
+    xLink: string,
+    code?: string,
+    discount?: number,
+    discountedAmount?: number,
+    payableAmount?: number,
 
-// export interface applyPromoResponseInterface {
-//     cart: {
-//         _id: string,
-//         email: string,
-//         items: responseCartItemInterface[],
-//         total: number,
-//         createdAt: string,
-//     },
-//     originalPrice: number
-// }
+    status: "Pending" | "Rejected" | "Approved" | "Used",
+
+    usedDate?: string;
+
+    createdAt: string;
+    updatedAt?: string;
+}

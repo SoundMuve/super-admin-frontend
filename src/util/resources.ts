@@ -1,4 +1,5 @@
 import kolors from "@/constants/kolors";
+import { cartItemInterface } from "@/typeInterfaces/cartInterface";
 
 export const emekaBackendUrl = "https://soundmuve-backend-zrap.onrender.com"; // Emeka
 export const emekaApiEndpoint = `${emekaBackendUrl}/api`;
@@ -55,6 +56,49 @@ export const getStatusColor = (
           return "#D2A5A9";
       } else {
           return kolors.milk;
+      }
+      
+  }
+
+}
+
+export const getCouponStatusColor = (
+  status: "Pending" | "Rejected" | "Approved" | "Used",
+  colorType: "bg" | "text"
+) => {
+  if (colorType == "bg") {
+      if (status == "Used") {
+          return "#435925"
+      // } else if (status == "Unpaid") {
+      //     return "#825600";
+      // } else if (status == "Processing") {
+      //     return kolors.primary;
+      } else if (status == "Approved") {
+          return "#33500B";
+      } else if (status == "Pending") {
+          return "#825600";
+      } else if (status == "Rejected") {
+          return "#701920";
+      } else {
+          return kolors.primary;
+      }
+  }
+
+  if (colorType == "text") {
+      if (status == "Used") {
+          return "#2DCCFF"
+      // } else if (status == "Unpaid") {
+      //     return "#D3AA5A";
+      // } else if (status == "Processing") {
+      //     return kolors.milk;
+      } else if (status == "Approved") {
+          return "#56F000";
+      } else if (status == "Pending") {
+          return "#FFB302"; // kolors.primary
+      } else if (status == "Rejected") {
+          return "#FF3838";
+      } else {
+          return kolors.primary;
       }
       
   }
@@ -240,6 +284,23 @@ export const getQueryParams = (query: string) => {
   return result || '';
 }
 
+
+
+export const getTotalCartAmount = (cartItems: cartItemInterface[]) => {
+  const totalPrice = cartItems.reduce((accumulator, currentObject) => {
+      return accumulator + currentObject.price;
+  }, 0);
+
+  return totalPrice;
+}
+
+export const handleGetTotalAmount = (cartItems: cartItemInterface[]) => {
+  // const totalPrice = cartItems.reduce((accumulator, currentObject) => {
+  //     return accumulator + currentObject.price;
+  // }, 0);
+  
+  return currencyDisplay(getTotalCartAmount(cartItems));
+}
 
 
 

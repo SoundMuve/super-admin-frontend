@@ -11,6 +11,7 @@ import { useUserStore } from '@/state/userStore';
 
 const AccountLayout = () => {
     const isLoggedIn = useUserStore((state) => state.isLoggedIn);
+    
     if (!isLoggedIn) return <Navigate replace to={"/auth/login"} />;
 
     const [value, setValue] = useState(1);
@@ -18,9 +19,8 @@ const AccountLayout = () => {
     const { pathname } = useLocation();
 
     useEffect(() => {
-        if (pathname.includes("uploads")) {
-            setValue(6);
-        }
+        if (pathname.includes("admin/uploads")) setValue(6);
+        if (pathname.includes("admin/coupon")) setValue(7);
     }, [pathname]);
 
 
@@ -54,6 +54,11 @@ const AccountLayout = () => {
             title: 'Uploads',
             status: value == 6 ? true : false,
             baseLink: "/admin/uploads"
+        },
+        {
+            title: 'Coupons',
+            status: value == 7 ? true : false,
+            baseLink: "/admin/coupons"
         },
     ];
 
