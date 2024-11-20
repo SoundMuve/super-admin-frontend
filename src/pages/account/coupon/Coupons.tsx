@@ -21,6 +21,7 @@ import EmptyListComponent from '@/components/EmptyList';
 import { useCouponStore } from '@/state/couponStore';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 import { displayCreatedAtDate } from '@/util/dateTime';
+import kolors from '@/constants/kolors';
 
 
 export default function Coupons() {
@@ -173,7 +174,7 @@ const CouponsTableRow = ({couponData}: {couponData: couponInterface}) => {
                 >{ couponData.status }</TableCell>
             </TableRow>
 
-            <TableRow>
+            <TableRow sx={{ bgcolor: kolors.milk }}>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box sx={{ margin: 1 }}>
