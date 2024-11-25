@@ -7,21 +7,19 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { useSettingStore } from "@/state/settingStore";
-import { getQueryParams, apiEndpoint } from "@/util/resources";
+import { getQueryParams, apiEndpoint, passwordRegex } from "@/util/resources";
 
 
 const formSchema = yup.object({
     password: yup.string().required()
     .min(6, 'Password must be at least 6 characters')
-    .matches(
-      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]+$/,
+    .matches( passwordRegex,
       'Password must include uppercase, lowercase, digit, and special character'
     ).trim().label("Password"),
 
     confirmPassword: yup.string().required()
     .min(6, 'Password must be at least 6 characters')
-    .matches(
-      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]+$/,
+    .matches( passwordRegex,
       'Password must include uppercase, lowercase, digit, and special character'
     ).trim().label("Confirm Password"),
     

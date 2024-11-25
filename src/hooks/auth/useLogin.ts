@@ -7,7 +7,7 @@ import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { useUserStore } from "@/state/userStore";
-import { apiEndpoint } from "@/util/resources";
+import { apiEndpoint, passwordRegex } from "@/util/resources";
 import { getDecryptedLocalStorage, setEncryptedLocalStorage } from "@/util/storage";
 import { useSettingStore } from "@/state/settingStore";
 import { defaultUserLocation, getUserLocation } from "@/util/location";
@@ -23,8 +23,8 @@ const formSchema = yup.object({
 
     password: yup.string().required()
     .min(6, 'Password must be at least 6 characters')
-    .matches(
-      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]+$/,
+    .matches( passwordRegex,
+    //   /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]+$/,
       'Password must include uppercase, lowercase, digit, and special character'
     ).trim().label("Password"),
 });
