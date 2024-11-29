@@ -424,7 +424,8 @@ export const contactMuiTextFieldStyle: SxProps<Theme> = {
         fontSize: '1rem',
         fontWeight: '400',
         lineHeight: 1.5,
-        bgcolor: {xs: "#2E2E2E", md: "#F1F1D6"},
+        // bgcolor: {xs: "#2E2E2E", md: "#F1F1D6"},
+        bgcolor: "#F1F1D6",
         borderRadius: '12px',
         // padding: "15px",
     },
@@ -462,6 +463,50 @@ export const contactMuiTextFieldStyle: SxProps<Theme> = {
             border: 0,
         },
     },
+
+    "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+        display: "none",
+    },
+    
+    "& input[type=number]": {
+        MozAppearance: "textfield",
+    },
+}
+
+
+export const newsletterMuiTextFieldStyle: SxProps<Theme> = {
+    '& label.Mui-focused': {
+        color: 'var(--TextField-brandBorderFocusedColor)',
+    },
+    '& .MuiInputBase-input': { // Target input text
+        color: colors.dark,
+        fontSize: '1rem',
+        fontWeight: '400',
+        lineHeight: 1.5
+    },
+    '& .MuiInputBase-placeholder': { // Target placeholder text
+        color: 'gray',
+        fontSize: '1rem',
+        fontWeight: '400',
+        lineHeight: 1.5
+    },
+    '& .MuiOutlinedInput-root': {
+        // bgcolor: darkTheme ? '#1C1B1F' : '#EFEFEF',
+        // borderRadius: '13.79px',
+        // height: '42px',
+
+        '& fieldset': {
+            // border: `1px solid ${colors.primary}`,
+        },
+        '&:hover fieldset': {
+            border: `2px solid ${colors.primary}`,
+        },
+        '&.Mui-focused fieldset': {
+            border: `1px solid ${colors.primary}`,
+        },
+    },
+
+
 
     "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
         display: "none",

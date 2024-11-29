@@ -21,6 +21,8 @@ const AccountLayout = () => {
     useEffect(() => {
         if (pathname.includes("admin/uploads")) setValue(6);
         if (pathname.includes("admin/coupon")) setValue(7);
+        if (pathname.includes("admin/contacts")) setValue(8);
+        if (pathname.includes("admin/newsletter")) setValue(9);
     }, [pathname]);
 
 
@@ -59,6 +61,16 @@ const AccountLayout = () => {
             title: 'Coupons',
             status: value == 7 ? true : false,
             baseLink: "/admin/coupons"
+        },
+        {
+            title: 'Contact Messages',
+            status: value == 8 ? true : false,
+            baseLink: "/admin/contacts"
+        },
+        {
+            title: 'Newsletter',
+            status: value == 9 ? true : false,
+            baseLink: "/admin/newsletter"
         },
     ];
 

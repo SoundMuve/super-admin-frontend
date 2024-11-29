@@ -14,6 +14,12 @@ import Releases from "./pages/account/uploads/Releases";
 import ReleasesDetails from "./pages/account/uploads/ReleasesDetails";
 import Coupons from "./pages/account/coupon/Coupons";
 import CouponDetails from "./pages/account/coupon/CouponDetails";
+import Contacts from "./pages/account/contact/Contacts";
+import ContactDetails from "./pages/account/contact/ContactDetails";
+import Subscribers from "./pages/account/newsletters/Subscribers";
+import SendNewsletter from "./pages/account/newsletters/SendNewsletter";
+import NewsletterHistory from "./pages/account/newsletters/NewsletterHistory";
+import NewsletterDetails from "./pages/account/newsletters/NewsletterDetails";
 
 
 export const router = createBrowserRouter([
@@ -84,6 +90,41 @@ export const router = createBrowserRouter([
                 {
                   path: "details",
                   element: <CouponDetails />
+                },
+              ]
+            },
+            {
+              path: "contacts",
+              children: [
+                {
+                  path: "",
+                  element: <Contacts />
+                },
+                {
+                  // path: "details",
+                  path: ":_id",
+                  element: <ContactDetails />
+                },
+              ]
+            },
+            {
+              path: "newsletter",
+              children: [
+                {
+                  path: "",
+                  element: <SendNewsletter />
+                },
+                {
+                  path: "subscribers",
+                  element: <Subscribers />
+                },
+                {
+                  path: "history",
+                  element: <NewsletterHistory />
+                },
+                {
+                  path: ":_id",
+                  element: <NewsletterDetails />
                 },
               ]
             },

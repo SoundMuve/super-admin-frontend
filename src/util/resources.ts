@@ -1,14 +1,8 @@
 import kolors from "@/constants/kolors";
 import { cartItemInterface } from "@/typeInterfaces/cartInterface";
 
-export const emekaBackendUrl = "https://soundmuve-backend-zrap.onrender.com"; // Emeka
-export const emekaApiEndpoint = `${emekaBackendUrl}/api`;
 
-export const Etom_Sunday_backendUrl = "https://soundmuve-backend-t4v0.onrender.com"; // Etom_Sunday
-export const apiEndpoint = `${Etom_Sunday_backendUrl}/api/v1`;
-export const localApiEndpoint = "http://localhost:3000/api/v1";
-export const localApiEndpoint2 = "http://localhost:3050/api/v1";
-
+export const apiEndpoint = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
 
 export const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[~!@#$^&*()_\-+={}[\]\\|"'`;<>,.?/]).{6,}$/;
 
