@@ -4,10 +4,6 @@ import { cartItemInterface } from "@/typeInterfaces/cartInterface";
 
 export const apiEndpoint = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
 
-console.log(apiEndpoint);
-console.log(process.env.VITE_API_BASE_URL);
-
-
 export const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[~!@#$^&*()_\-+={}[\]\\|"'`;<>,.?/]).{6,}$/;
 
 
