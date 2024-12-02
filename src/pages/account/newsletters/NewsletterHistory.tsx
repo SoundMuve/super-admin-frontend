@@ -100,16 +100,19 @@ export default function NewsletterHistory() {
                                                 </TableCell>
 
                                                 <TableCell>
-                                                    <Box
+                                                    <Typography
                                                         sx={{
                                                             color: "#667085",
                                                             fontSize: "14px",
                                                             fontWeight: "500",
                                                             // lineHeight: "20px",
+                                                            maxWidth: {xs: "150px", sm: "250px", md: "350px" },
+                                                            overflow: "hidden",
                                                             ...numberOfLinesTypographyStyle(2)
                                                         }}
                                                         dangerouslySetInnerHTML={{ __html: newsletterData.message }}
                                                     />
+                                                    {/* {newsletterData.message}</Typography> */}
                                                 </TableCell>
 
                                                 <TableCell>

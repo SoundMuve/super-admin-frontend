@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -15,6 +15,7 @@ import kolors from '@/constants/kolors';
 import { userInterface } from '@/typeInterfaces/users.interface';
 import { stringAvatar, stringToColor } from '@/util/resources';
 import { useAddNewAdmin } from '@/hooks/admins/useAddNewAdmin';
+import { displayCreatedAtDate } from '@/util/dateTime';
 
 
 interface _Props {
@@ -28,26 +29,25 @@ interface _Props {
 export const ViewAdminUserDataModal: React.FC<_Props> = ({
     openAdminUserModal, closeAdminUserModal, adminUser
 }) => {
-      
-    const activities = [
-        {
-            DateAndTime: "2/14/2024, 06:17PM",
-            browser: "Chrome",
-            location: "Abuja, Nigeria",
-            activity: "Login",
-        },
-        {
-            DateAndTime: "2/14/2024, 06:17PM",
-            browser: "Chrome",
-            location: "Abuja, Nigeria",
-            activity: "signup",
-        },
-    ];
-
+    
     const {
         // apiResponse, setApiResponse,
-        blockOrRemoveAdmin
+        blockOrRemoveAdmin,
+
+        limitNo, 
+        // setLimitNo,
+        // currentPageNo, totalRecords,
+        // totalPages, 
+        activityLogs, getActivityLog,
+
     } = useAddNewAdmin();
+
+    useEffect(() => {
+        if (openAdminUserModal) {
+            getActivityLog(adminUser._id, 1, limitNo);
+        }
+    }, [openAdminUserModal]);
+    
     
 
     return (
@@ -207,7 +207,7 @@ export const ViewAdminUserDataModal: React.FC<_Props> = ({
                                 }}
                             >Activity</Typography>
 
-                            <Box>
+                            <Box maxHeight="250px" overflow="scroll" mt={1}>
                                 <TableContainer>
                                     <Table aria-label="activities table">
                                         <TableHead>
@@ -227,7 +227,7 @@ export const ViewAdminUserDataModal: React.FC<_Props> = ({
                                         </TableHead>
 
                                         <TableBody>
-                                            {activities.map((row, index) => (
+                                            {activityLogs.map((row, index) => (
                                                 <TableRow
                                                     key={index}
                                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -235,10 +235,17 @@ export const ViewAdminUserDataModal: React.FC<_Props> = ({
                                                     {/* <TableCell component="th" scope="row">
                                                         {row.no}
                                                     </TableCell> */}
-                                                    <TableCell sx={{ color: "#7B7979", fontSize: "12px" }}>{row.DateAndTime}</TableCell>
-                                                    <TableCell sx={{ color: "#7B7979", fontSize: "12px" }}>{row.browser}</TableCell>
-                                                    <TableCell sx={{ color: "#7B7979", fontSize: "12px" }}>{row.location}</TableCell>
-                                                    <TableCell sx={{ color: "#7B7979", fontSize: "12px" }}>{row.activity}</TableCell>
+                                                    <TableCell sx={{ color: "#7B7979", fontSize: "12px" }}
+                                                    >{ displayCreatedAtDate(row.createdAt) }</TableCell>
+
+                                                    <TableCell sx={{ color: "#7B7979", fontSize: "12px" }}
+                                                    >{row.browserDetails.browserName}</TableCell>
+
+                                                    <TableCell sx={{ color: "#7B7979", fontSize: "12px" }
+                                                    }>{row.location.city + ", " + row.location.region}</TableCell>
+
+                                                    <TableCell sx={{ color: "#7B7979", fontSize: "12px" }}
+                                                    >{row.action}</TableCell>
                                                 </TableRow>
                                             ))}
                                         </TableBody>

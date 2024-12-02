@@ -11,6 +11,7 @@ import { apiEndpoint, passwordRegex } from "@/util/resources";
 import { userInterface } from "@/typeInterfaces/users.interface";
 import { defaultUserLocation } from "@/util/location";
 import { useSettingStore } from "@/state/settingStore";
+import { activityLogInterface } from "@/typeInterfaces/activityLogInterface";
 
 
 const emailFormSchema = yup.object({
@@ -53,6 +54,14 @@ export function useAddNewAdmin() {
         status: true,
         message: ""
     });
+
+
+    const [limitNo, setLimitNo] = useState(25);
+    const [currentPageNo, setCurrentPageNo] = useState(1);
+    const [totalRecords, setTotalRecords] = useState(0);
+    const [totalPages, setTotalPages] = useState(1);
+    const [activityLogs, setActivityLogs] = useState<activityLogInterface[]>([]);
+
 
     const [allAdmins, setAllAdmins] = useState<userInterface[]>();
 
@@ -275,9 +284,60 @@ export function useAddNewAdmin() {
 
     }, []);
 
+    
+    const getActivityLog = useCallback(async (user_id: string, pageNo: number, limitNo: number) => {
+        try {
+            const response = (await axios.get(`${apiEndpoint}/admin/activity-log`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                params: {
+                    user_id,
+                    page: pageNo,
+                    limit: limitNo,
+                }
+            })).data;
+
+            console.log(response);
+            
+
+            if (response.status) {
+                // _setCouponData(response.result.data);
+
+                setCurrentPageNo(response.result.currentPage);
+                setTotalPages(response.result.totalPages);
+                setTotalRecords(response.result.totalRecords);
+
+                setActivityLogs(response.result.data);
+            }
+    
+            _setToastNotification({
+                display: true,
+                status: "info",
+                message: response.message || "successful!"
+            });
+    
+        } catch (error: any) {
+            const err = error.response && error.response.data ? error.response.data : error;
+            const fixedErrorMsg = "Ooops and error occurred!";
+            // console.log(err);
+
+            _setToastNotification({
+                display: true,
+                status: "error",
+                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+            });
+        }
+    }, []);
+
 
     return {
         apiResponse, setApiResponse,
+
+        limitNo, setLimitNo,
+        currentPageNo, totalRecords,
+        totalPages, 
+        activityLogs, getActivityLog,
 
         allAdmins, getAllAdmins,
         blockOrRemoveAdmin,

@@ -47,3 +47,14 @@ export type userInterface = {
     createdAt?: string;
     updatedAt?: string;
 };
+
+
+export type userLocationInterface = {
+    ip: string,
+    city: string,
+    region: string,
+    country: string,
+    isp: string,
+    lat: number,
+    lon: number,
+};

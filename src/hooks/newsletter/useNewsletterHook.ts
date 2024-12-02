@@ -179,7 +179,7 @@ export function useNewsletterHook() {
             message: ""
         });
 
-        console.log(formData);
+        // console.log(formData);
         
 
         try {

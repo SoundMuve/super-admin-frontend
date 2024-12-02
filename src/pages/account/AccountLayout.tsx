@@ -67,11 +67,11 @@ const AccountLayout = () => {
             status: value == 8 ? true : false,
             baseLink: "/admin/contacts"
         },
-        {
-            title: 'Newsletter',
-            status: value == 9 ? true : false,
-            baseLink: "/admin/newsletter"
-        },
+        // {
+        //     title: 'Newsletter',
+        //     status: value == 9 ? true : false,
+        //     baseLink: "/admin/newsletter"
+        // },
     ];
 
 
