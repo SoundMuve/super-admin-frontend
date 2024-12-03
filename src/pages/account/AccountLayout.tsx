@@ -19,6 +19,7 @@ const AccountLayout = () => {
     const { pathname } = useLocation();
 
     useEffect(() => {
+        if (pathname.includes("admin/promotions")) setValue(5);
         if (pathname.includes("admin/uploads")) setValue(6);
         if (pathname.includes("admin/coupon")) setValue(7);
         if (pathname.includes("admin/contacts")) setValue(8);
@@ -50,7 +51,7 @@ const AccountLayout = () => {
         {
             title: 'Promotions',
             status: value == 5 ? true : false,
-            baseLink: ""
+            baseLink: "/admin/promotions"
         },
         {
             title: 'Uploads',
@@ -67,11 +68,11 @@ const AccountLayout = () => {
             status: value == 8 ? true : false,
             baseLink: "/admin/contacts"
         },
-        // {
-        //     title: 'Newsletter',
-        //     status: value == 9 ? true : false,
-        //     baseLink: "/admin/newsletter"
-        // },
+        {
+            title: 'Newsletter',
+            status: value == 9 ? true : false,
+            baseLink: "/admin/newsletter"
+        },
     ];
 
 

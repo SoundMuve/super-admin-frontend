@@ -20,6 +20,8 @@ import Subscribers from "./pages/account/newsletters/Subscribers";
 import SendNewsletter from "./pages/account/newsletters/SendNewsletter";
 import NewsletterHistory from "./pages/account/newsletters/NewsletterHistory";
 import NewsletterDetails from "./pages/account/newsletters/NewsletterDetails";
+import Promotions from "./pages/account/promotions/Promotions";
+import PromotionHistory from "./pages/account/promotions/PromotionHistory";
 
 
 export const router = createBrowserRouter([
@@ -90,6 +92,20 @@ export const router = createBrowserRouter([
                 {
                   path: "details",
                   element: <CouponDetails />
+                },
+              ]
+            },
+            {
+              path: "promotions",
+              children: [
+                {
+                  path: "",
+                  element: <Promotions />
+                },
+                {
+                  // path: "details",
+                  path: "history",
+                  element: <PromotionHistory />
                 },
               ]
             },

@@ -143,6 +143,81 @@ type respondsInterface = {
 
 export const artWorkAllowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
+export const validatePromotionalBannerImage = async (file: File): Promise<respondsInterface> => {
+  const img = new Image();
+  const objectUrl = URL.createObjectURL(file);
+  img.src = objectUrl;
+
+  return new Promise((resolve) => {
+    img.onload = async () => {
+      const { width, height } = img;
+      URL.revokeObjectURL(objectUrl);
+
+      // console.log("width => ", width);
+      // console.log("height => ", height);
+
+      // const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+      const maxSize = 1 * 1024 * 1024; // 10MB
+
+        // Validate dimensions and size
+        if (file.size > maxSize) {
+          resolve({
+            display: true,
+            status: false,
+            message: "File size must be smaller than 1MB."
+          });
+        } else if (!artWorkAllowedTypes.includes(file.type)) {
+          resolve({
+            display: true,
+            status: false,
+            message: "Invalid file type. Only JPG, PNG, and GIF are allowed."
+          });
+        } else if (width != 4264 || height != 1320) { // 4264 × 1320
+          // setError('Image dimensions must be at least 1600 x 1600 pixels.');
+          resolve({
+            display: true,
+            status: false,
+            message: "Image dimensions must be 4264 x 1320 pixels."
+          });
+        } else {
+            // Use sharp to check for blurriness, pixelation, and whitespace
+            // try {
+            //     const imgBuffer = await file.arrayBuffer();
+            //     const image = sharp(Buffer.from(imgBuffer));
+            //     const metadata = await image.metadata();
+    
+            //     // Add custom validation for blurriness, pixelation, and whitespace here
+            //     // Placeholder example (need more complex logic for actual validation)
+            //     if (metadata.width !== metadata.height) {
+            //         setError('Image must be a perfect square.');
+            //         resolve(false);
+            //     }
+    
+            //     setError('');
+            //     resolve(true);
+            // } catch (e) {
+            //     setError('Image validation failed.');
+            //     resolve(false);
+            // }
+
+          resolve({
+            display: false,
+            status: true,
+            message: ""
+          });
+        }
+    };
+
+    img.onerror = () => {
+      resolve({
+        display: true,
+        status: false,
+        message: "Error loading image."
+      });
+    };
+  });
+};
+
 export const validateImageArtWork = async (file: File): Promise<respondsInterface> => {
   const img = new Image();
   const objectUrl = URL.createObjectURL(file);
