@@ -1,8 +1,8 @@
 export type recordLabelArtistInterface = {
     _id: string;
     
-    user_id?: string,
-    user_email?: string,
+    user_id: string,
+    user_email: string,
 
     artistName: string,
     artistEmail: string,
@@ -12,6 +12,6 @@ export type recordLabelArtistInterface = {
     artistAvatar: string,
     totalReleases: number
 
-    createdAt?: string;
-    updatedAt?: string;
+    createdAt: string;
+    updatedAt: string;
 };

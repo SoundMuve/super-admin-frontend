@@ -22,6 +22,8 @@ import NewsletterHistory from "./pages/account/newsletters/NewsletterHistory";
 import NewsletterDetails from "./pages/account/newsletters/NewsletterDetails";
 import Promotions from "./pages/account/promotions/Promotions";
 import PromotionHistory from "./pages/account/promotions/PromotionHistory";
+import Users from "./pages/account/users/Users";
+import UserDetails from "./pages/account/users/UserDetails";
 
 
 export const router = createBrowserRouter([
@@ -67,6 +69,21 @@ export const router = createBrowserRouter([
             {
               path: "",
               element: <Dashboard />
+            },
+            {
+              path: "users",
+              // element: <Dashboard />
+              children: [
+                {
+                  path: "",
+                  element: <Users />
+                },
+                {
+                  // path: "details",
+                  path: ":_id",
+                  element: <UserDetails />
+                },
+              ]
             },
             {
               path: "uploads",

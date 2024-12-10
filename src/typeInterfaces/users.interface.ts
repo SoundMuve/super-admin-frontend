@@ -44,8 +44,8 @@ export type userInterface = {
 
     location: locationInterface,
 
-    createdAt?: string;
-    updatedAt?: string;
+    createdAt: string;
+    updatedAt: string;
 };
 
 

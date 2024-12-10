@@ -19,6 +19,7 @@ const AccountLayout = () => {
     const { pathname } = useLocation();
 
     useEffect(() => {
+        if (pathname.includes("admin/users")) setValue(4);
         if (pathname.includes("admin/promotions")) setValue(5);
         if (pathname.includes("admin/uploads")) setValue(6);
         if (pathname.includes("admin/coupon")) setValue(7);
@@ -46,7 +47,7 @@ const AccountLayout = () => {
         {
             title: 'Users',
             status: value == 4 ? true : false,
-            baseLink: ""
+            baseLink: "/admin/users"
         },
         {
             title: 'Promotions',
@@ -78,7 +79,7 @@ const AccountLayout = () => {
 
     return (
         <Stack direction="row" justifyContent="space-between">
-            <Box sx={{ display: {xs: "none", md: "initial"} }}>
+            <Box sx={{ display: {xs: "none", md: "initial"} }} >
                 <SideNav 
                     menuItems={menuItems} 
                     value={value}
@@ -86,7 +87,7 @@ const AccountLayout = () => {
                 />
             </Box>
 
-            <Box component="main" sx={{ flexGrow: 1, px: 3,  }}>
+            <Box component="main" sx={{ flexGrow: 1, px: 3  }}>
                 <AccountHeaderComponent 
                     menuItems={menuItems} 
                     value={value}
