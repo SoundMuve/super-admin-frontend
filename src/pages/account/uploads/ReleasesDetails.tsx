@@ -1122,11 +1122,17 @@ const LyricsComponent: React.FC<_Props> = ({ title, value }) => {
                             </IconButton>
                         </Box>
                         
-                        <Typography variant='body2'
+                        {/* <Typography variant='body2'
                             sx={{
                                 textAlign: "justify",
                             }}
-                        >{ value }</Typography>
+                        >{ value }</Typography> */}
+
+                        <pre
+                            style={{
+                                textAlign: "justify",
+                            }}
+                        >{ value }</pre>
                     </Box>
                 </Box>
             </Grid>

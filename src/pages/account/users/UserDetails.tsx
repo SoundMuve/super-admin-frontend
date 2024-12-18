@@ -221,7 +221,7 @@ export default function UserDetails() {
                                                     // lineHeight: "11.101px",
                                                     letterSpacing: "-0.463px",
                                                 }}
-                                            >Edit Analytics</Typography>
+                                            >View Analytics</Typography>
                                         </Box>
 
                                         <Box onClick={() => setUserStatusDialog(true)}

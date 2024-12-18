@@ -18,6 +18,7 @@ export function useGetReleases() {
     const [allReleases, setAllReleases] = useState<releaseInterface[]>([]);
     const [releases, setReleases] = useState<releaseInterface[]>([]);
     const _setReleaseDetails = useReleaseStore((state) => state._setReleaseDetails);
+    const _setSongDetails = useReleaseStore((state) => state._setSongDetails);
     const _setToastNotification = useSettingStore((state) => state._setToastNotification);
 
     const [apiResponse, setApiResponse] = useState({
@@ -94,7 +95,7 @@ export function useGetReleases() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/release-by-id`, {
+            const response = (await axios.get(`${apiEndpoint}/admin/releases/release-by-id`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 },
@@ -104,6 +105,13 @@ export function useGetReleases() {
 
             if (response.status) {
                 _setReleaseDetails(response.result);
+
+                if (response.result.singleSong) {
+                    _setSongDetails(response.result.singleSong);
+                } else if (response.result.albumSongs?.length) {
+                    _setSongDetails(response.result.albumSongs[0]);
+                } else {}
+        
             }
     
             _setToastNotification({

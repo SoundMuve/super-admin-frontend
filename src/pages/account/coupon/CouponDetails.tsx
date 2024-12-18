@@ -51,7 +51,9 @@ export default function CouponDetails() {
 
     useEffect(() => {
         const totalAmount = getTotalCartAmount(couponDiscountDetails.cartItems);
-        setPayableAmount(totalAmount);
+        const amount2payable = totalAmount - discountedAmount;
+        setPayableAmount(amount2payable);
+
         setDiscountPercentage(`${couponDiscountDetails.discount || ''}`);
     }, [couponDiscountDetails]);
 

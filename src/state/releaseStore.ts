@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import temptCoverPhotoImg from '@/assets/images/sampleArtWork.png';
 import { releaseInterface, songInterface } from "@/typeInterfaces/release.interface";
-import { getLocalStorage, setLocalStorage } from "@/util/storage";
+import { getLocalStorage } from "@/util/storage";
 
 
 const defaultReleaseData: releaseInterface = {
@@ -78,7 +78,7 @@ export const useReleaseStore = create<_typeInterface_>((set) => ({
     songDetails: defaultSongData,
   
     _setSongDetails: (details) => {
-        setLocalStorage("releaseSongData", details);
+        // setLocalStorage("releaseSongData", details);
 
         set((_state) => {
             return {
@@ -88,7 +88,7 @@ export const useReleaseStore = create<_typeInterface_>((set) => ({
     },
   
     _setReleaseDetails: (details) => {
-        setLocalStorage("releaseData", details);
+        // setLocalStorage("releaseData", details);
 
         set((_state) => {
             return {
