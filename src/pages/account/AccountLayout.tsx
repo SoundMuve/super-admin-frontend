@@ -19,6 +19,7 @@ const AccountLayout = () => {
     const { pathname } = useLocation();
 
     useEffect(() => {
+        if (pathname.includes("admin/analytics")) setValue(3);
         if (pathname.includes("admin/users")) setValue(4);
         if (pathname.includes("admin/promotions")) setValue(5);
         if (pathname.includes("admin/uploads")) setValue(6);
@@ -42,7 +43,7 @@ const AccountLayout = () => {
         {
             title: 'Music analytics',
             status: value == 3 ? true : false,
-            baseLink: ""
+            baseLink: "/admin/analytics"
         },
         {
             title: 'Users',

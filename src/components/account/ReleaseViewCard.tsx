@@ -26,11 +26,8 @@ const ReleaseViewCard: React.FC<_Props> = ({
 
     const handleClick = () => {
         _setReleaseDetails(release);
-        if (release.singleSong) {
-            _setSongDetails(release.singleSong);
-        } else if (release.albumSongs?.length) {
-            _setSongDetails(release.albumSongs[0]);
-        } else {}
+
+        if (release.songs.length) _setSongDetails(release.songs[0]);
 
         const params = {
             release_id: release._id || '',

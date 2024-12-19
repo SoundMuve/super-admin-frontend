@@ -403,19 +403,14 @@ export default function ReleasesDetails() {
                     <Box p={2} borderRadius="8px" bgcolor={colors.bodyBg}>
                         <Stack direction="row" gap={3} flexWrap="wrap">
                             <Box>
-                                { releaseDetails.releaseType == "single" ? (
-                                    <SongViewComponent 
-                                        artWork={releaseDetails.coverArt}
-                                        artist={ releaseDetails.mainArtist.spotifyProfile.name }
-                                        songAudio={ releaseDetails.singleSong?.songAudio }
-                                        title={ releaseDetails.title }
-                                        active_id={ songDetails._id || '' }
-                                        song_id={ releaseDetails.singleSong?._id || '' }
-                                    />
-                                ) : (
-                                    releaseDetails.albumSongs?.map((item, index) => (
+                                {
+                                    releaseDetails.songs.map((item, index) => (
                                         <Box key={index} mb={2}
-                                            onClick={() => _setSongDetails(item) }
+                                            onClick={() => {
+                                                console.log(item);
+                                                
+                                                _setSongDetails(item) 
+                                            }}
                                         >
                                             <SongViewComponent 
                                                 artWork={releaseDetails.coverArt}
@@ -427,7 +422,7 @@ export default function ReleasesDetails() {
                                             />
                                         </Box>
                                     ))
-                                ) }
+                                }
                             </Box>
 
                             <Box

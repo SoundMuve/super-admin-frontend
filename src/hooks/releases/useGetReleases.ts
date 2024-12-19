@@ -106,11 +106,7 @@ export function useGetReleases() {
             if (response.status) {
                 _setReleaseDetails(response.result);
 
-                if (response.result.singleSong) {
-                    _setSongDetails(response.result.singleSong);
-                } else if (response.result.albumSongs?.length) {
-                    _setSongDetails(response.result.albumSongs[0]);
-                } else {}
+                if (response.result.songs.length) _setSongDetails(response.result.songs[0]);
         
             }
     

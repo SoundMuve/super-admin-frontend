@@ -63,7 +63,7 @@ export default function Contacts() {
                     : contactMessages.length ?
                         <Box>
                             <TableContainer>
-                                <Table aria-label="coupon table">
+                                <Table aria-label="contact table">
                                     <TableHead>
                                         <TableRow>
                                             <TableCell />

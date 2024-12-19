@@ -384,7 +384,7 @@ export default function Users() {
                     : users.length ?
                         <Box>
                             <TableContainer>
-                                <Table aria-label="coupon table">
+                                <Table aria-label="user table">
                                     <TableHead>
                                         <TableRow>
                                             <TableCell />

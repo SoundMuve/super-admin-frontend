@@ -62,7 +62,7 @@ export default function NewsletterHistory() {
                     : newsletters.length ?
                         <Box>
                             <TableContainer>
-                                <Table aria-label="coupon table">
+                                <Table aria-label="newsletter table">
                                     <TableHead>
                                         <TableRow>
                                             <TableCell />

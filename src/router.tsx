@@ -24,6 +24,8 @@ import Promotions from "./pages/account/promotions/Promotions";
 import PromotionHistory from "./pages/account/promotions/PromotionHistory";
 import Users from "./pages/account/users/Users";
 import UserDetails from "./pages/account/users/UserDetails";
+import Analytics from "./pages/account/analytics/Analytics";
+import AnalyticsDetails from "./pages/account/analytics/AnalyticsDetails";
 
 
 export const router = createBrowserRouter([
@@ -69,6 +71,21 @@ export const router = createBrowserRouter([
             {
               path: "",
               element: <Dashboard />
+            },
+            {
+              path: "analytics",
+              // element: <Dashboard />
+              children: [
+                {
+                  path: "",
+                  element: <Analytics />
+                },
+                {
+                  path: "details",
+                  // path: ":_id",
+                  element: <AnalyticsDetails />
+                },
+              ]
             },
             {
               path: "users",

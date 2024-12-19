@@ -3,6 +3,8 @@ import { create } from "zustand";
 import { getLocalStorage } from "@/util/storage";
 import { contactUsInterface, newsLetterInterface } from "@/typeInterfaces/contactInterface";
 import { userInterface } from "@/typeInterfaces/users.interface";
+import { liveReleasesInterface } from "@/hooks/analytics/useAnalyticsHook";
+import { defaultReleaseData } from "./releaseStore";
 
 
 const defaultContactData: contactUsInterface = {
@@ -63,6 +65,12 @@ const defaultUserData: userInterface = {
     }
 };
 
+const defaultAnalyticsData: liveReleasesInterface = {
+    user: defaultUserData,
+    lastUpdated: "",
+    release: defaultReleaseData,
+}
+
 type _typeInterface_ = {
     contactDetails: contactUsInterface;
     _setContactDetails : (details: contactUsInterface) => void;
@@ -72,6 +80,9 @@ type _typeInterface_ = {
 
     selectedUserDetails: userInterface;
     _setSelectedUserDetails : (details: userInterface) => void;
+
+    selectedAnalyticsDetails: liveReleasesInterface;
+    _setSelectedAnalyticsDetails : (details: liveReleasesInterface) => void;
 
     _restoreContactDetails : () => void;
     // updatePlayerAsync: () => Promise<void>;
@@ -109,6 +120,17 @@ export const useGeneralStore = create<_typeInterface_>((set) => ({
         set((_state) => {
             return {
                 selectedUserDetails: details,
+            };
+        });
+    },
+
+    selectedAnalyticsDetails: defaultAnalyticsData,
+    _setSelectedAnalyticsDetails: (details) => {
+        // setLocalStorage("contactDetails", details);
+
+        set((_state) => {
+            return {
+                selectedAnalyticsDetails: details,
             };
         });
     },

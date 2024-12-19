@@ -4,7 +4,7 @@ import { releaseInterface, songInterface } from "@/typeInterfaces/release.interf
 import { getLocalStorage } from "@/util/storage";
 
 
-const defaultReleaseData: releaseInterface = {
+export const defaultReleaseData: releaseInterface = {
     user_id: "",
     email: "",
     releaseType: "single",
@@ -39,7 +39,10 @@ const defaultReleaseData: releaseInterface = {
     socialPlatforms: [],
     coverArt: temptCoverPhotoImg,
     status: "Incomplete",
-    _id: ""
+    _id: "",
+    songs: [],
+    createdAt: "",
+    updatedAt: ""
 };
 
 

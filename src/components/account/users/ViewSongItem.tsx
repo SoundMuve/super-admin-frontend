@@ -26,11 +26,8 @@ const ViewSongItemComponent: React.FC<_Props> = ({ releaseDetails }) => {
 
     const handleClick = () => {
         _setReleaseDetails(releaseDetails);
-        if (releaseDetails.singleSong) {
-            _setSongDetails(releaseDetails.singleSong);
-        } else if (releaseDetails.albumSongs?.length) {
-            _setSongDetails(releaseDetails.albumSongs[0]);
-        } else {}
+
+        if (releaseDetails.songs.length) _setSongDetails(releaseDetails.songs[0]);
 
         // TODO::::
         // if the status of the song is live, navigate to the analytics page

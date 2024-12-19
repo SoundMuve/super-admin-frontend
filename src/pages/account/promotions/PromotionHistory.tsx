@@ -96,7 +96,7 @@ export default function PromotionHistory() {
                     : allPromotions.length ?
                         <Box>
                             <TableContainer>
-                                <Table aria-label="coupon table">
+                                <Table aria-label="promotional table">
                                     <TableHead>
                                         <TableRow>
                                             <TableCell />
