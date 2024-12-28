@@ -69,6 +69,30 @@ const defaultAnalyticsData: liveReleasesInterface = {
     user: defaultUserData,
     lastUpdated: "",
     release: defaultReleaseData,
+    totalAnalytics: {
+        revenue: 0,
+        streamRevenue: 0,
+        streamPlay: 0,
+        noSold: 0,
+        albumSold: 0
+    },
+    lastAnalytics: {
+        _id: "",
+        user_id: "",
+        user_email: "",
+        release_id: "",
+        song_id: "",
+        date: "",
+        albumSold: 0,
+        noSold: 0,
+        revenue: 0,
+        streamRevenue: 0,
+        streamPlay: 0,
+        location: [],
+        status: "Pending",
+        createdAt: "",
+        updatedAt: ""
+    }
 }
 
 type _typeInterface_ = {

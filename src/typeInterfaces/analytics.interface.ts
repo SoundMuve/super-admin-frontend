@@ -1,36 +1,29 @@
 export type locationAnalyticsInterface = {
     country: string,
-    album_sold: string,
-    singles_sold: string,
-    stream_revenue: string,
-    stream_play: string,
-    revenue: string,
+    albumSold: number,
+    noSold: number,
+    streamRevenue: number,
+    streamPlay: number,
+    revenue: number,
 }
-
-export type songAnalyticsInterface = {
-    // _id: string,
-    song_id: string,
-    no_sold: string,
-    revenue: string,
-    stream_revenue: string,
-    stream_play: string,
-
-    location: locationAnalyticsInterface[],
-}
-
 
 export type analyticsInterface = {
     _id: string,
     
     user_id: string,
-    email: string,
+    user_email: string,
 
     release_id: string,
-    
-    albumSold: string,
+    song_id: string,
     date: string, // month and year
+    
+    albumSold: number,
+    noSold: number,
+    revenue: number,
+    streamRevenue: number,
+    streamPlay: number,
 
-    songAnalytics: songAnalyticsInterface,
+    location: locationAnalyticsInterface[],
 
     status: "Pending" | "Processing" | "Success" | "Complete" | "Failed",
 
@@ -39,28 +32,10 @@ export type analyticsInterface = {
 }
 
 
-
-
-// date: string, // month and year
-// revenue: string,
-// no_sold: string,
-
-// release: {
-//     release_id: string,
-//     title: string,
-//     releaseType: "single" | "album",
-//     mainArtist: {
-//         name: string,
-//         profilePicture: string,
-//     },
-//     coverArt: string,
-// },
-
-// user: {
-//     user_id: string,
-//     email: string,
-//     firstName: string;
-//     lastName: string;
-//     userType: 'artist' | 'record label',
-//     stageName: string,
-// },
+export type totalAnalyticsInterface = {
+    revenue: number;
+    streamRevenue: number;
+    streamPlay: number;
+    noSold: number;
+    albumSold: number;
+}

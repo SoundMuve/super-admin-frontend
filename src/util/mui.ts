@@ -517,6 +517,17 @@ export const newsletterMuiTextFieldStyle: SxProps<Theme> = {
     },
 }
 
+
+export const disableNumbericIconStyle: SxProps<Theme> = { 
+    "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+        display: "none",
+    },
+    
+    "& input[type=number]": {
+        MozAppearance: "textfield",
+    },
+}
+
 export const submitBtnStyle: SxProps<Theme> = { 
     bgcolor: colors.primary,
     borderRadius: "17px",

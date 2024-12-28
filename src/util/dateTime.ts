@@ -251,3 +251,15 @@ export function getSalesPeriod(month = getCurrentMonthValue()) {
 
     return `${getShortDateFormate(dateRange.startDate)} - ${getShortDateFormate(dateRange.endDate)}`;
 }
+
+
+
+export const minReleaseDate = (dateString: any = Date.now()) => {
+    const dateObj = new Date(dateString);
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+    const day = String(dateObj.getDate()).padStart(2, "0");
+    
+    const formattedDate = `${year}-${month}-${day}`;
+    return formattedDate;
+}

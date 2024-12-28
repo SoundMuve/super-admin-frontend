@@ -1,6 +1,6 @@
 {
   "name": "soundmuve",
-  "homepage": "https://etomeni.github.io/soundmuve",
+  "homepage": "https://superadmin.soundmuve.com/",
   "private": true,
   "version": "0.0.0",
   "description": "",
@@ -18,10 +18,10 @@
   "author": "https://github.com/etomeni",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/etomeni/soundmuve.git"
+    "url": "git+https://github.com/SoundMuve/super-admin-frontend.git"
   },
   "bugs": {
-    "url": "https://github.com/etomeni/soundmuve/issues"
+    "url": "https://github.com/SoundMuve/super-admin-frontend/issues"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",

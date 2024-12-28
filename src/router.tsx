@@ -81,8 +81,8 @@ export const router = createBrowserRouter([
                   element: <Analytics />
                 },
                 {
-                  path: "details",
-                  // path: ":_id",
+                  // path: "details",
+                  path: ":release_id",
                   element: <AnalyticsDetails />
                 },
               ]

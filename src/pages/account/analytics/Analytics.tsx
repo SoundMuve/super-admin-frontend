@@ -32,11 +32,10 @@ import { liveReleasesInterface, useAnalyticsHook } from '@/hooks/analytics/useAn
 import { displayCreatedAtDate } from '@/util/dateTime';
 import { useGeneralStore } from '@/state/generalStore';
 import { songInterface } from '@/typeInterfaces/release.interface';
+import { useReleaseStore } from '@/state/releaseStore';
 
 
 export default function Analytics() {
-    // const navigate = useNavigate();
-    // const _setSelectedAnalyticsDetails = useGeneralStore((state) => state._setSelectedAnalyticsDetails);
 
     const {
         // apiResponse, // setApiResponse,
@@ -44,31 +43,22 @@ export default function Analytics() {
 
         currentPageNo, totalRecords,
         // totalPages,
-        _releases,
+        releases,
         getLiveReleases,
-
-
-
+        searchLiveReleases,
 
         // isSubmitting,
-
-        searchUsers,
-
-
     } = useAnalyticsHook();
 
     const [searchword, setSearchword] = useState('');
-    // const [userType, setUserType] = useState<"All" | "artist" | "record label">('All');
 
-    useEffect(() => {
-        // getUsers(1, limitNo, userType);
-        // getUsersTopStats();
-        getLiveReleases(1, limitNo);
-    }, []);
+    // useEffect(() => {
+    //     getLiveReleases(1, limitNo);
+    // }, []);
 
     useEffect(() => {
         if (searchword == "") {
-            // getUsers(1, limitNo, userType);
+            getLiveReleases(1, limitNo);
         }
     }, [searchword]);
 
@@ -85,7 +75,7 @@ export default function Analytics() {
                         inputMode='text'
                         // defaultValue=""
                         size='small'
-                        placeholder='Search for a user'
+                        placeholder='Search for a release or song'
                         value={searchword}
                         onChange={(e) => {
                             const value = e.target.value;
@@ -118,7 +108,7 @@ export default function Analytics() {
                             <IconButton edge="end"
                                 onClick={() => {
                                     if (searchword.length > 2) {
-                                        searchUsers(searchword, 1, 100);
+                                        searchLiveReleases(searchword, 1, 100);
                                     }
                                 }}
                                 sx={{ 
@@ -139,8 +129,8 @@ export default function Analytics() {
             <Box borderRadius="8px" bgcolor="#fff" p={2}>
 
                 {
-                    !_releases ? <LoadingDataComponent />
-                    : _releases.length ?
+                    !releases ? <LoadingDataComponent />
+                    : releases.length ?
                         <Box>
                             <Typography variant='subtitle2'
                                 sx={{
@@ -172,7 +162,7 @@ export default function Analytics() {
                                     </TableHead>
 
                                     <TableBody>
-                                        {_releases.map((data) => (
+                                        {releases.map((data) => (
                                             <ReleaseTableRow liveReleaseData={data} key={data.release._id} />
                                         ))}
 
@@ -214,11 +204,13 @@ export default function Analytics() {
 const ReleaseTableRow = ({liveReleaseData}: {liveReleaseData: liveReleasesInterface}) => {
     const navigate = useNavigate();
     const _setSelectedAnalyticsDetails = useGeneralStore((state) => state._setSelectedAnalyticsDetails);
+        const _setSongDetails = useReleaseStore((state) => state._setSongDetails);
     
     const [open, setOpen] = useState(false);
 
     const handleClick = (songData: songInterface) => {
         _setSelectedAnalyticsDetails(liveReleaseData);
+        _setSongDetails(songData);
 
         const params = {
             song_id: songData._id,

@@ -407,8 +407,7 @@ export default function ReleasesDetails() {
                                     releaseDetails.songs.map((item, index) => (
                                         <Box key={index} mb={2}
                                             onClick={() => {
-                                                console.log(item);
-                                                
+                                                // console.log(item);
                                                 _setSongDetails(item) 
                                             }}
                                         >
