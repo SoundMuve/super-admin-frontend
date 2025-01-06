@@ -26,6 +26,8 @@ import Users from "./pages/account/users/Users";
 import UserDetails from "./pages/account/users/UserDetails";
 import Analytics from "./pages/account/analytics/Analytics";
 import AnalyticsDetails from "./pages/account/analytics/AnalyticsDetails";
+import RevenueArea from "./pages/account/revenue/RevenueArea";
+import TransactionDetails from "./pages/account/revenue/TransactionDetails";
 
 
 export const router = createBrowserRouter([
@@ -71,6 +73,21 @@ export const router = createBrowserRouter([
             {
               path: "",
               element: <Dashboard />
+            },
+            {
+              path: "revenue",
+              // element: <Dashboard />
+              children: [
+                {
+                  path: "",
+                  element: <RevenueArea />
+                },
+                {
+                  // path: "details",
+                  path: ":_id",
+                  element: <TransactionDetails />
+                },
+              ]
             },
             {
               path: "analytics",

@@ -7,6 +7,7 @@ import Stack from '@mui/material/Stack';
 
 import AccountHeaderComponent from '@/components/AccountHeader';
 import { useUserStore } from '@/state/userStore';
+import Container from '@mui/material/Container';
 
 
 const AccountLayout = () => {
@@ -19,6 +20,7 @@ const AccountLayout = () => {
     const { pathname } = useLocation();
 
     useEffect(() => {
+        if (pathname.includes("admin/revenue")) setValue(2);
         if (pathname.includes("admin/analytics")) setValue(3);
         if (pathname.includes("admin/users")) setValue(4);
         if (pathname.includes("admin/promotions")) setValue(5);
@@ -38,7 +40,7 @@ const AccountLayout = () => {
         {
             title: 'Revenue area',
             status: value == 2 ? true : false,
-            baseLink: ""
+            baseLink: "/admin/revenue"
         },
         {
             title: 'Music analytics',
@@ -88,7 +90,13 @@ const AccountLayout = () => {
                 />
             </Box>
 
-            <Box component="main" sx={{ flexGrow: 1, px: 3  }}>
+            <Container component="main" maxWidth="lg"
+                sx={{ 
+                    // flexGrow: 1, 
+                    // px: 3, 
+                    maxWidth: { xs: "100vw", md: "calc(100vw - 233px)" }
+                }}
+            >
                 <AccountHeaderComponent 
                     menuItems={menuItems} 
                     value={value}
@@ -98,7 +106,7 @@ const AccountLayout = () => {
                 <Box>
                     <Outlet />
                 </Box>
-            </Box>
+            </Container>
         </Stack>
     );
 };

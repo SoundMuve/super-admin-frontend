@@ -28,67 +28,70 @@ import { ViewAdminUserDataModal } from '@/components/account/ViewAdminUserDataMo
 import { AddNewAdminModal } from '@/components/account/AddNewAdminModal';
 import { useAddNewAdmin } from '@/hooks/admins/useAddNewAdmin';
 import { userInterface } from '@/typeInterfaces/users.interface';
+import { useDashboardHook } from '@/hooks/admins/useDashboardHook';
 
   
-const bestPerformingProjects = [
-    {
-        no: 1,
-        projectName: "Good God",
-        releaseDate: "01/01/2024",
-        releaseType: "Single",
-        artistName: "Joseph Solomon",
-        revenue: "1000",
-    },
-    {
-        no: 2,
-        projectName: "Good God",
-        releaseDate: "01/01/2024",
-        releaseType: "Album",
-        artistName: "Joseph Solomon",
-        revenue: "1000",
-    },
-    {
-        no: 3,
-        projectName: "Good God",
-        releaseDate: "01/01/2024",
-        releaseType: "Single",
-        artistName: "Joseph Solomon",
-        revenue: "1000",
-    },
-    {
-        no: 4,
-        projectName: "Good God",
-        releaseDate: "01/01/2024",
-        releaseType: "Album",
-        artistName: "Joseph Solomon",
-        revenue: "1000",
-    },
-    {
-        no: 5,
-        projectName: "Good God",
-        releaseDate: "01/01/2024",
-        releaseType: "Single",
-        artistName: "Joseph Solomon",
-        revenue: "1000",
-    },
-    {
-        no: 6,
-        projectName: "Good God",
-        releaseDate: "01/01/2024",
-        releaseType: "Album",
-        artistName: "Joseph Solomon",
-        revenue: "1000",
-    },
-    {
-        no: 7,
-        projectName: "Good God",
-        releaseDate: "01/01/2024",
-        releaseType: "Single",
-        artistName: "Joseph Solomon",
-        revenue: "1000",
-    },
-];
+// const bestPerformingProjects = [
+//     {
+//         no: 1,
+//         projectName: "Good God",
+//         releaseDate: "01/01/2024",
+//         releaseType: "Single",
+//         artistName: "Joseph Solomon",
+//         revenue: "1000",
+//     },
+//     {
+//         no: 2,
+//         projectName: "Good God",
+//         releaseDate: "01/01/2024",
+//         releaseType: "Album",
+//         artistName: "Joseph Solomon",
+//         revenue: "1000",
+//     },
+//     {
+//         no: 3,
+//         projectName: "Good God",
+//         releaseDate: "01/01/2024",
+//         releaseType: "Single",
+//         artistName: "Joseph Solomon",
+//         revenue: "1000",
+//     },
+//     {
+//         no: 4,
+//         projectName: "Good God",
+//         releaseDate: "01/01/2024",
+//         releaseType: "Album",
+//         artistName: "Joseph Solomon",
+//         revenue: "1000",
+//     },
+//     {
+//         no: 5,
+//         projectName: "Good God",
+//         releaseDate: "01/01/2024",
+//         releaseType: "Single",
+//         artistName: "Joseph Solomon",
+//         revenue: "1000",
+//     },
+//     {
+//         no: 6,
+//         projectName: "Good God",
+//         releaseDate: "01/01/2024",
+//         releaseType: "Album",
+//         artistName: "Joseph Solomon",
+//         revenue: "1000",
+//     },
+//     {
+//         no: 7,
+//         projectName: "Good God",
+//         releaseDate: "01/01/2024",
+//         releaseType: "Single",
+//         artistName: "Joseph Solomon",
+//         revenue: "1000",
+//     },
+// ];
   
+let count = 1;
+
 const Dashboard = () => {
     const [openAdminUserModal, setOpenAdminUserModal] = useState(false);
     const [openAddNewAdminModal, setOpenAddNewAdminModal] = useState(false);
@@ -102,9 +105,19 @@ const Dashboard = () => {
         allAdmins
     } = useAddNewAdmin();
 
+    const {
+        // apiResponse, setApiResponse,
+        dashboardTotalAnalysis,
+        bestPerformingProjects,
+        getDashboardTotalAnalysis,
+        getBestPerformingProjects,
+    } = useDashboardHook();
+
     useEffect(() => {
-        getAllAdmins()
-    }, []);
+        getAllAdmins();
+        getDashboardTotalAnalysis();
+        getBestPerformingProjects();
+    }, [count]);
     
 
     return (
@@ -140,94 +153,157 @@ const Dashboard = () => {
 
             <Box mt={5}>
                 <Grid container spacing={"20px"} >
-                    <Grid item xs={12} sm={6} md={4}>
-                        <Box>
-                            <TopCard1Component 
-                                title='Total artist'
-                                bottomLeftJSX={
-                                    <Typography
-                                        sx={{
-                                            color: kolors.dark,
-                                            fontSize: "19px",
-                                            fontWeight: "500",
-                                            // lineHeight: "11.101px",
-                                            letterSpacing: "-0.463px",
-                                        }}
-                                    >200</Typography>
-                                }
+                    {
+                        dashboardTotalAnalysis && 
+                        <>
+                            <Grid item xs={12} sm={6} md={4}>
+                                <Box>
+                                    <TopCard1Component 
+                                        title='Total Users'
+                                        bottomLeftJSX={
+                                            <Typography
+                                                sx={{
+                                                    color: kolors.dark,
+                                                    fontSize: "19px",
+                                                    fontWeight: "500",
+                                                    // lineHeight: "11.101px",
+                                                    letterSpacing: "-0.463px",
+                                                }}
+                                            >{formatedNumber(Number(dashboardTotalAnalysis.users.totalUsers))}</Typography>
+                                        }
 
-                                bottomRightJSX={
-                                    <Box>
-                                        <Typography
-                                            sx={{
-                                                color: "#7B7979",
-                                                fontSize: "18px",
-                                                fontWeight: "500",
-                                                // lineHeight: "11.101px",
-                                                letterSpacing: "-0.463px"
-                                            }}
-                                        >200</Typography>
-                    
-                                        <Typography
-                                            sx={{
-                                                color: "#7B7979",
-                                                fontSize: "12px",
-                                                fontWeight: "300",
-                                                // lineHeight: "10.711px",
-                                                letterSpacing: "-0.463px"
-                                            }}
-                                        >New artist</Typography>
-                                    </Box>
-                                }
-                            />
-                        </Box>
-                    </Grid>
+                                        bottomRightJSX={
+                                            <Stack direction="row" alignItems="center" spacing="15px">
+                                                <Box>
+                                                    <Typography
+                                                        sx={{
+                                                            color: kolors.dark, // "#7B7979",
+                                                            fontSize: "18px",
+                                                            fontWeight: "500",
+                                                            lineHeight: "12px",
+                                                            letterSpacing: "-0.463px",
+                                                            m: 0, p: 0,
+                                                            // bgcolor: "red"
+                                                        }}
+                                                    >{formatedNumber(Number(dashboardTotalAnalysis.users.totalArtist))}</Typography>
+                                
+                                                    <Typography variant='subtitle2'
+                                                        sx={{
+                                                            color: "#7B7979",
+                                                            fontSize: "11px",
+                                                            fontWeight: "400",
+                                                            lineHeight: "11px",
+                                                            letterSpacing: "-0.463px",
+                                                            m: 0, p: 0,
+                                                            // bgcolor: "green"
+                                                        }}
+                                                    >Artists</Typography>
+                                                </Box>
 
-                    <Grid item xs={12} sm={6} md={4}>
-                        <Box>
-                            <TopCard1Component 
-                                title='Revenue Analytics'
-                                bottomLeftJSX={
-                                    <Chip label="200" size='small' color="success" />
-                                }
+                                                <Box>
+                                                    <Typography
+                                                        sx={{
+                                                            color: kolors.dark, // "#7B7979",
+                                                            fontSize: "18px",
+                                                            fontWeight: "500",
+                                                            lineHeight: "12px",
+                                                            letterSpacing: "-0.463px",
+                                                            m: 0, p: 0,
+                                                        }}
+                                                    >{formatedNumber(Number(dashboardTotalAnalysis.users.totalRl))}</Typography>
+                                
+                                                    <Typography variant='subtitle2'
+                                                        sx={{
+                                                            color: "#7B7979",
+                                                            fontSize: "11px",
+                                                            fontWeight: "400",
+                                                            lineHeight: "11px",
+                                                            letterSpacing: "-0.463px",
+                                                            m: 0, p: 0,
+                                                        }}
+                                                    >Record Label</Typography>
+                                                </Box>
+                                            </Stack>
+                                        }
+                                    />
+                                </Box>
+                            </Grid>
 
-                                bottomRightJSX={
-                                    <Typography
-                                        sx={{
-                                            color: kolors.dark,
-                                            fontSize: "19px",
-                                            fontWeight: "500",
-                                            // lineHeight: "11.101px",
-                                            letterSpacing: "-0.463px",
-                                        }}
-                                    >{ currencyDisplay(Number("2000000")) }</Typography>
-                                }
-                            />
-                        </Box>
-                    </Grid>
-                    
-                    <Grid item xs={12} sm={6} md={4}>
-                        <Box>
-                            <TopCard1Component 
-                                title='Total songs uploaded'
-                                bottomLeftJSX={
-                                    <Chip label="200" size='small' color="success" />
-                                }
+                            <Grid item xs={12} sm={6} md={4}>
+                                <Box>
+                                    <TopCard1Component 
+                                        title='Total Revenue Analytics'
+                                        bottomLeftJSX={
+                                            <Box>
+                                                <Chip 
+                                                    label={currencyDisplay(Number(dashboardTotalAnalysis.revenue.totalUsersBalance))} 
+                                                    size='small' color="success"
+                                                />
 
-                                bottomRightJSX={
-                                    <Typography
-                                        sx={{
-                                            color: kolors.dark,
-                                            fontSize: "19px",
-                                            fontWeight: "500",
-                                            // lineHeight: "11.101px",
-                                            letterSpacing: "-0.463px",
-                                        }}
-                                    >{ formatedNumber(Number("2000")) }</Typography>
-                                }
-                            />
-                        </Box>
-                    </Grid>
+                                                <Typography variant='subtitle2'
+                                                    sx={{
+                                                        fontSize: "11px",
+                                                        color: "#7B7979",
+                                                        fontWeight: '400',
+                                                        m: 0, p: 0,
+                                                    }}
+                                                >Available Users Balance</Typography>
+                                            </Box>
+                                        }
+
+                                        bottomRightJSX={
+                                            <Typography
+                                                sx={{
+                                                    color: kolors.dark,
+                                                    fontSize: "19px",
+                                                    fontWeight: "500",
+                                                    // lineHeight: "11.101px",
+                                                    letterSpacing: "-0.463px",
+                                                }}
+                                            >{ currencyDisplay(Number(dashboardTotalAnalysis.revenue.totalTransactionAmount)) }</Typography>
+                                        }
+                                    />
+                                </Box>
+                            </Grid>
+                            
+                            <Grid item xs={12} sm={6} md={4}>
+                                <Box>
+                                    <TopCard1Component 
+                                        title='Total Songs Uploaded'
+                                        bottomLeftJSX={
+                                            <Box>
+                                                <Chip 
+                                                    label={formatedNumber(Number(dashboardTotalAnalysis.projects.totalLiveReleases))}
+                                                    size='small' color="success" 
+                                                />
+
+                                                <Typography variant='subtitle2'
+                                                    sx={{
+                                                        fontSize: "11px",
+                                                        color: "#7B7979",
+                                                        fontWeight: '400',
+                                                        m: 0, p: 0,
+                                                    }}
+                                                >Live Releases</Typography>
+                                            </Box>
+                                        }
+
+                                        bottomRightJSX={
+                                            <Typography
+                                                sx={{
+                                                    color: kolors.dark,
+                                                    fontSize: "19px",
+                                                    fontWeight: "500",
+                                                    // lineHeight: "11.101px",
+                                                    letterSpacing: "-0.463px",
+                                                }}
+                                            >{ formatedNumber(Number(dashboardTotalAnalysis.projects.totalReleases)) }</Typography>
+                                        }
+                                    />
+                                </Box>
+                            </Grid>
+                        </>
+                    }
 
 
                     {/* <Grid item xs={12} sm={6} md={4}>
@@ -370,23 +446,27 @@ const Dashboard = () => {
                                                 </TableHead>
 
                                                 <TableBody>
-                                                    {bestPerformingProjects.map((row) => (
-                                                        <TableRow
-                                                            key={row.no}
-                                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                        >
-                                                            <TableCell component="th" scope="row">
-                                                                {row.no}
-                                                            </TableCell>
-                                                            <TableCell>{row.projectName}</TableCell>
-                                                            <TableCell>{row.releaseDate}</TableCell>
-                                                            <TableCell>{row.releaseType}</TableCell>
-                                                            <TableCell>{row.artistName}</TableCell>
-                                                            <TableCell sx={{ color: "#0AA623" }}>
-                                                                { currencyDisplay(Number(row.revenue)) }
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    ))}
+                                                    {
+                                                        bestPerformingProjects ?
+                                                            bestPerformingProjects.map((row, index) => (
+                                                                <TableRow key={row._id}
+                                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                                >
+                                                                    <TableCell component="th" scope="row"
+                                                                    >{ index + 1 }.</TableCell>
+                                                                    {/* >{ (limitNo * (currentPageNo - 1)) + (index + 1) }.</TableCell> */}
+                                                                    
+                                                                    <TableCell>{row.title}</TableCell>
+                                                                    <TableCell>{row.releaseDate}</TableCell>
+                                                                    <TableCell>{row.releaseType}</TableCell>
+                                                                    <TableCell>{row.mainArtist.spotifyProfile.name}</TableCell>
+                                                                    <TableCell sx={{ color: "#0AA623" }}>
+                                                                        { currencyDisplay(Number(row.totalRevenue)) }
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            ))
+                                                        : <></>
+                                                    }
                                                 </TableBody>
                                             </Table>
                                         </TableContainer>

@@ -1,3 +1,8 @@
+import { analyticsInterface } from "./analytics.interface";
+import { payoutDetailsInterface } from "./payout.interface";
+import { releaseInterface } from "./release.interface";
+import { userInterface } from "./users.interface";
+
 export type transactionInterface = {
     _id: string;
     
@@ -33,4 +38,42 @@ export type transactionInterface = {
 
     createdAt: string;
     updatedAt: string;
+}
+
+
+interface temptUserInterface {
+    userType: "artist" | "record label";
+    balance: number;
+    email: string;
+    firstName: string;
+    lastName: string;
+    artistName?: string;
+    recordLabelName?: string;
+}
+
+export type revenueTransactionInterface = transactionInterface & temptUserInterface;
+
+
+export interface topTotalTransactionAnalysisInterface {
+    totalUsers: {
+        totalUsers: number;
+        totalArtist: number;
+        totalRl: number;
+    };
+    totalBalance: number;
+    totalUsersBalance: number;
+    totalPaidoutAmount: number;
+}
+
+
+
+
+export interface transactionRevenueDetailsInterface {
+    transaction: transactionInterface,
+    user: userInterface,
+
+    release: releaseInterface,
+    analytics: analyticsInterface,
+    
+    payout: payoutDetailsInterface,
 }
