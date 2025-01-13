@@ -187,7 +187,7 @@ export function useGetReleases() {
     }, []);
 
     const handleSubmitLiveStatus = useCallback(async (
-        status: string, release_id: string, linkTreeUrl = "", 
+        status: string, release_id: string, linkTreeUrl = "", upcEanCode = "",
         modalFn: any = () => {}
     ) => {
         setApiResponse({
@@ -210,7 +210,7 @@ export function useGetReleases() {
 
         try {
             const response = (await axios.post(`${apiEndpoint}/admin/releases/update-status`, 
-                { status, linkTreeUrl, release_id }, {
+                { status, linkTreeUrl, upcEanCode, release_id }, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }

@@ -91,7 +91,13 @@ export const LocationDataModal: React.FC<_Props> = ({
 
     const { 
         handleSubmit, register, setValue, reset, formState: { errors, isValid, isSubmitting } 
-    } = useForm({ resolver: yupResolver(formSchema), mode: 'onBlur', reValidateMode: 'onChange' });
+    } = useForm({ 
+        resolver: yupResolver(formSchema), 
+        mode: 'onBlur', reValidateMode: 'onChange',
+        defaultValues: {
+            albumSold: '0'
+        }
+    });
         
     // const onSubmit = async (formData: typeof formSchema.__outputType) => {
     const onSubmit = async (formData: any) => {
@@ -456,39 +462,41 @@ export const LocationDataModal: React.FC<_Props> = ({
                                         { errors.country && <Box sx={{fontSize: 13, color: "red", textAlign: "left"}}>{ errors.country?.message }</Box> }
                                     </Box>
 
-                                    {
-                                        selectedAnalyticsDetails.release.releaseType == "album" ?
-                                            <Box sx={{ mb: 2 }}>
-                                                <Typography variant='subtitle1'
-                                                    sx={{
-                                                        color: kolors.dark,
-                                                        fontSize: "12px",
-                                                        fontWeight: "500",
-                                                        lineHeight: "11.101px",
-                                                        letterSpacing: "-0.463px",
-                                                        my: 1
-                                                    }}
-                                                >No. of Album's sold</Typography>
 
-                                                <TextField 
-                                                    variant="outlined" 
-                                                    fullWidth 
-                                                    placeholder=''
-                                                    // autoFocus
-                                                    defaultValue=""
-                                                    size='small'
-                                                    type='number'
-                                                    inputMode='numeric'
-                                                    sx={{
-                                                        ...disableNumbericIconStyle
-                                                    }}
-                                                    error={ errors.albumSold ? true : false }
-                                                    { ...register('albumSold') }
-                                                />
-                                                { errors.albumSold && <Box sx={{fontSize: 13, color: "red", textAlign: "left"}}>{ errors.albumSold?.message }</Box> }
-                                            </Box>
-                                        : <></>
-                                    }
+                                    <Box 
+                                        sx={{ 
+                                            mb: 2,
+                                            display: selectedAnalyticsDetails.release.releaseType == "single" ? "none" : "initial",
+                                        }}
+                                    >
+                                        <Typography variant='subtitle1'
+                                            sx={{
+                                                color: kolors.dark,
+                                                fontSize: "12px",
+                                                fontWeight: "500",
+                                                lineHeight: "11.101px",
+                                                letterSpacing: "-0.463px",
+                                                my: 1
+                                            }}
+                                        >No. of Album's sold</Typography>
+
+                                        <TextField 
+                                            variant="outlined" 
+                                            fullWidth 
+                                            placeholder=''
+                                            // autoFocus
+                                            defaultValue="0"
+                                            size='small'
+                                            type='number'
+                                            inputMode='numeric'
+                                            sx={{
+                                                ...disableNumbericIconStyle
+                                            }}
+                                            error={ errors.albumSold ? true : false }
+                                            { ...register('albumSold') }
+                                        />
+                                        { errors.albumSold && <Box sx={{fontSize: 13, color: "red", textAlign: "left"}}>{ errors.albumSold?.message }</Box> }
+                                    </Box>
 
 
                                     <Box sx={{ mb: 2 }}>

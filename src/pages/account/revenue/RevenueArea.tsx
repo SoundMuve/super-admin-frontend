@@ -371,6 +371,15 @@ export default function RevenueArea() {
                                                                         textTransform: "capitalize"
                                                                     }}
                                                                 >{transaction.transactionType}</Typography>
+
+                                                                <Typography component="small"
+                                                                    sx={{
+                                                                        color: "#667085",
+                                                                        fontSize: "12px",
+                                                                        fontWeight: "400",
+                                                                        display: transaction.withdrawal?.paymentMethod ? "initial" : "none"
+                                                                    }}
+                                                                >({transaction.withdrawal?.paymentMethod})</Typography>
                                                             </TableCell>
 
                                                             <TableCell>

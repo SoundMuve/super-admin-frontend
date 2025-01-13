@@ -53,6 +53,7 @@ export default function ReleasesDetails() {
 
     const [openLiveModal, setOpenLiveModal] = useState(false);
     const [linktreeUrl, setLinktreeUrl] = useState('');
+    const [upcEanCode, setUpcEanCode] = useState(releaseDetails.upc_ean);
 
     useEffect(() => {
         if (!releaseDetails._id) {
@@ -540,6 +541,31 @@ export default function ReleasesDetails() {
                         />
                     </Box>
 
+                    <Box mt={2}>
+                        <Typography sx={{
+                            fontWeight: "400",
+                            fontSize: "15.38px",
+                            lineHeight: "38.44px",
+                            letterSpacing: "-0.12px",
+                            textAlign: "left"
+                        }}> UPC/EAN Code </Typography>
+
+                        <TextField 
+                            variant="outlined" 
+                            fullWidth 
+                            id='upcEanCode'
+                            type='text'
+                            inputMode='text'
+                            // defaultValue=""
+                            value={upcEanCode}
+                            sx={paymentTextFieldStyle}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                setUpcEanCode(value);
+                            }}
+                        />
+                    </Box>
+
 
                     {
                         apiResponse.display && (
@@ -561,7 +587,8 @@ export default function ReleasesDetails() {
                         <Button variant="contained" 
                             fullWidth type="button"
                             onClick={() => handleSubmitLiveStatus(
-                                selectedStatus, releaseDetails._id, linktreeUrl,
+                                selectedStatus, releaseDetails._id, 
+                                linktreeUrl, upcEanCode,
                                 setOpenLiveModal(false) 
                             )} 
                             disabled={ !linktreeUrl.length } 

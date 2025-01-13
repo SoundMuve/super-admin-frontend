@@ -176,7 +176,7 @@ export default function AnalyticsDetails() {
     const maxAnalyticsDate = () => {
         const today = new Date(); // Get today's date
         const pastDate = new Date(today); // Create a new date object based on today
-        pastDate.setMonth(today.getMonth() - 3); // Subtract 3 months from the current month
+        pastDate.setMonth(today.getMonth() - 2); // Subtract 2 months from the current month
     
         // Format the date as YYYY-MM-DD
         const year = pastDate.getFullYear();
@@ -628,7 +628,7 @@ export default function AnalyticsDetails() {
 
                                                             // value={ selectReleaseDateValue ? dayjs(selectReleaseDateValue) : null }
                                                             minDate={dayjs(minReleaseDate(selectedAnalyticsDetails.release.createdAt))}
-                                                            // maxDate={dayjs(maxAnalyticsDate())}
+                                                            maxDate={dayjs(maxAnalyticsDate())}
 
                                                             // onChange={(newValue) => {
                                                                 // const value = dayjs(newValue).format('MM/YYYY');
@@ -640,7 +640,10 @@ export default function AnalyticsDetails() {
                                                             // }}
 
                                                             onAccept={(newValue) => {
-                                                                const value = dayjs(newValue).format('MM/YYYY');
+                                                                // const value = dayjs(newValue).format('MM/YYYY');
+                                                                // const value = dayjs(newValue).format('YYYY/MM/DD');
+                                                                const value = dayjs(newValue).format('YYYY-MM') + "-01";
+                                                                console.log(value);
 
                                                                 // console.log(value);
                                                                 setAnalyticsDate(value);
@@ -683,38 +686,39 @@ export default function AnalyticsDetails() {
                                                 </LocalizationProvider>
                                             </Box>
 
-                                            {
-                                                selectedAnalyticsDetails.release.releaseType == "album" ?
-                                                    <Box sx={{ mb: 2 }}>
-                                                        <Typography variant='subtitle1'
-                                                            sx={{
-                                                                color: kolors.dark,
-                                                                fontSize: "12px",
-                                                                fontWeight: "500",
-                                                                lineHeight: "11.101px",
-                                                                letterSpacing: "-0.463px",
-                                                                my: 1
-                                                            }}
-                                                        >No. of Album's sold</Typography>
 
-                                                        <TextField 
-                                                            variant="outlined" 
-                                                            fullWidth 
-                                                            placeholder=''
-                                                            // autoFocus
-                                                            defaultValue=""
-                                                            size='small'
-                                                            sx={{
-                                                                // ...newsletterMuiTextFieldStyle
-                                                            }}
-                                                            error={ errors.albumSold ? true : false }
-                                                            { ...register('albumSold') }
-                                                        />
-                                                        { errors.albumSold && <Box sx={{fontSize: 13, color: "red", textAlign: "left"}}>{ errors.albumSold?.message }</Box> }
-                                                    </Box>
-                                                : <></>
-                                            }
+                                            <Box 
+                                                sx={{ 
+                                                    mb: 2,
+                                                    display: selectedAnalyticsDetails.release.releaseType == "single" ? "none" : "initial"
+                                                }}
+                                            >
+                                                <Typography variant='subtitle1'
+                                                    sx={{
+                                                        color: kolors.dark,
+                                                        fontSize: "12px",
+                                                        fontWeight: "500",
+                                                        lineHeight: "11.101px",
+                                                        letterSpacing: "-0.463px",
+                                                        my: 1
+                                                    }}
+                                                >No. of Album's sold</Typography>
 
+                                                <TextField 
+                                                    variant="outlined" 
+                                                    fullWidth 
+                                                    placeholder=''
+                                                    // autoFocus
+                                                    defaultValue="0"
+                                                    size='small'
+                                                    sx={{
+                                                        // ...newsletterMuiTextFieldStyle
+                                                    }}
+                                                    error={ errors.albumSold ? true : false }
+                                                    { ...register('albumSold') }
+                                                />
+                                                { errors.albumSold && <Box sx={{fontSize: 13, color: "red", textAlign: "left"}}>{ errors.albumSold?.message }</Box> }
+                                            </Box>
 
                                             <Box sx={{ mb: 2 }}>
                                                 <Typography variant='subtitle1'

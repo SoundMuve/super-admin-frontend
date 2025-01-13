@@ -30,7 +30,9 @@ export default function TransactionDetails() {
         // isSubmitting,
 
         transactionRevenueDetails,
-        getTransactionById
+        getTransactionById,
+        handleRejectedAndManualPayment,
+        handleAcceptWithdrawal
 
     } = useTransactionHook();
 
@@ -74,6 +76,21 @@ export default function TransactionDetails() {
             return (
                 <WithdrawalTransactionComponent 
                     payoutData={transactionRevenueDetails.payout}
+                    transactionData={transactionRevenueDetails.transaction}
+                    handleManualPayment={(action) => {
+                        handleRejectedAndManualPayment(
+                            transactionRevenueDetails.user._id,
+                            transactionRevenueDetails.transaction._id,
+                            action
+                        )
+                    }}
+                    handleAcceptWithdrawal={() => {
+                        handleAcceptWithdrawal(
+                            transactionRevenueDetails.user._id,
+                            transactionRevenueDetails.transaction._id,
+                            transactionRevenueDetails.payout._id
+                        )
+                    }}
                 />
             );
         } else if (transactionType == "Debit") {
@@ -137,9 +154,15 @@ export default function TransactionDetails() {
                                     }}
                                 >
                                     <b style={{color: kolors.dark}}>Amount: </b>
-                                    <span> 
+                                    <Typography component="span"
+                                        sx={{
+                                            fontWeight: "900",
+                                            fontSize: "20px",
+                                            color: "green"
+                                        }}  
+                                    > 
                                         { currencyDisplay(Number(transactionRevenueDetails.transaction.amount)) }
-                                    </span>
+                                    </Typography>
                                 </Typography>
                                 
                                 <Typography variant='body2'
@@ -157,7 +180,7 @@ export default function TransactionDetails() {
                                     </span>
                                 </Typography>
                                 
-                                <Typography variant='body2'
+                                <Typography variant='body2' component="div"
                                     sx={{
                                         color: "#7B7979",
                                         fontSize: "15px",

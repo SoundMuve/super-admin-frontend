@@ -24,12 +24,12 @@
     "url": "https://github.com/SoundMuve/super-admin-frontend/issues"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@fontsource/roboto": "^5.0.13",
     "@hookform/resolvers": "^3.6.0",
     "@mui/icons-material": "^5.15.17",
-    "@mui/material": "^5.15.14",
+    "@mui/material": "^5.16.14",
     "@mui/x-charts": "^7.7.0",
     "@mui/x-date-pickers": "^7.6.2",
     "@stripe/react-stripe-js": "^2.8.1",
@@ -42,6 +42,7 @@
     "react-hook-form": "^7.51.5",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.23.1",
+    "react-syntax-highlighter": "^15.6.1",
     "react-web-share": "^2.0.2",
     "react-window": "^1.8.10",
     "swiper": "^11.1.3",
@@ -55,6 +56,7 @@
     "@types/react-copy-to-clipboard": "^5.0.7",
     "@types/react-dom": "^18.2.22",
     "@types/react-lottie": "^1.2.10",
+    "@types/react-syntax-highlighter": "^15.5.13",
     "@types/react-window": "^1.8.8",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
@@ -67,7 +69,6 @@
     "vite": "^5.2.0"
   },
   "peerDependencies": {
-    "@mui/material": "^5.15.14",
     "react": "^17.0.0 || ^18.0.0",
     "react-dom": "^17.0.0 || ^18.0.0"
   }

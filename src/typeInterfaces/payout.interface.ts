@@ -16,6 +16,12 @@ export type payoutDetailsInterface = {
     bank_name?: string,
     beneficiary_name?: string,
 
+    bank?: {
+        id: number,
+        code: string,
+        name: string,
+    },
+    
     beneficiary_email?: string,
 
     routing_number?: string,

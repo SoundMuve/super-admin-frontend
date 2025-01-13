@@ -6,12 +6,15 @@ import { useUserStore } from "@/state/userStore";
 import { useSettingStore } from "@/state/settingStore";
 
 import { apiEndpoint } from "@/util/resources";
-import { revenueTransactionInterface, topTotalTransactionAnalysisInterface, transactionRevenueDetailsInterface } from "@/typeInterfaces/transaction.interface";
+import { 
+    revenueTransactionInterface, topTotalTransactionAnalysisInterface, 
+    transactionRevenueDetailsInterface 
+} from "@/typeInterfaces/transaction.interface";
 
 
 export function useTransactionHook() {
     const accessToken = useUserStore((state) => state.accessToken);
-    // const userData = useUserStore((state) => state.userData);
+    const userData = useUserStore((state) => state.userData);
     const _setToastNotification = useSettingStore((state) => state._setToastNotification);
 
     const [limitNo, setLimitNo] = useState(25);
@@ -94,7 +97,7 @@ export function useTransactionHook() {
             // console.log(response);
 
             if (response.status) {
-                setWithdrawalRequests(response.result);
+                setWithdrawalRequests(response.result.data);
 
                 // setCurrentPageNo(response.result.currentPage);
                 // setTotalPages(response.result.totalPages);
@@ -195,6 +198,148 @@ export function useTransactionHook() {
     }, []);
 
 
+    const handleRejectedAndManualPayment = useCallback(async (
+        user_id: string, transaction_id: string, 
+        actionType: "reject" | "manually paid",
+        adminName = userData.firstName + " " + userData.lastName
+    ) => {
+        try {
+            const response = (await axios.post(`${apiEndpoint}/admin/transactions/update-status`, 
+                { user_id, transaction_id, actionType, adminName }, 
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                }
+            )).data;
+            // console.log(response);
+
+            if (response.status) {
+                // _setSelectedUserDetails(response.result);
+
+                const newTransactionRevenueDetails: any = {
+                    ...transactionRevenueDetails,
+                    transaction: response.result.transaction,
+                    user: response.result.user
+                };
+                setTransactionRevenueDetails(newTransactionRevenueDetails);
+            }
+    
+            _setToastNotification({
+                display: true,
+                status: "info",
+                message: response.message
+            });
+        } catch (error: any) {
+            const err = error.response && error.response.data ? error.response.data : error;
+            const fixedErrorMsg = "Ooops and error occurred!";
+            console.log(err);
+            // setUsers([]);
+
+            _setToastNotification({
+                display: true,
+                status: "error",
+                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+            });
+        }
+    }, []);
+
+    const handleAcceptWithdrawal = useCallback(async (
+        user_id: string, transaction_id: string, 
+        payout_id: string,
+        adminName = userData.firstName + " " + userData.lastName,
+        transRevenueDetails = transactionRevenueDetails
+    ) => {
+        try {
+            const response = (await axios.post(`${apiEndpoint}/admin/transactions/accept-withdrawal`, 
+                { user_id, transaction_id, payout_id, adminName }, 
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                }
+            )).data;
+            // console.log(response);
+
+            if (response.status) {
+                if (transRevenueDetails) {
+                    setTransactionRevenueDetails({
+                        ...transRevenueDetails,
+                        transaction: response.result.transaction,
+                        user: response.result.user
+                    });
+                }
+
+                window.location.reload();
+            }
+    
+            _setToastNotification({
+                display: true,
+                status: "info",
+                message: response.message
+            });
+        } catch (error: any) {
+            const err = error.response && error.response.data ? error.response.data : error;
+            const fixedErrorMsg = "Ooops and error occurred!";
+            console.log(err);
+            // setUsers([]);
+
+            _setToastNotification({
+                display: true,
+                status: "error",
+                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+            });
+        }
+    }, []);
+
+    const verifyPaypalWithdrawal = useCallback(async (
+        transaction_id: string, payout_batch_id: string,
+        transRevenueDetails = transactionRevenueDetails
+    ) => {
+        try {
+            const response = (await axios.post(`${apiEndpoint}/admin/transactions/verify-paypal-payment`, 
+                { transaction_id, payout_batch_id }, 
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                }
+            )).data;
+            // console.log(response);
+
+            if (response.status) {
+                if (transRevenueDetails) {
+                    setTransactionRevenueDetails({
+                        ...transRevenueDetails,
+                        transaction: response.result.transaction,
+                        // user: response.result.user
+                    });
+                }
+
+                window.location.reload();
+            }
+    
+            _setToastNotification({
+                display: true,
+                status: "info",
+                message: response.message
+            });
+        } catch (error: any) {
+            const err = error.response && error.response.data ? error.response.data : error;
+            const fixedErrorMsg = "Ooops and error occurred!";
+            console.log(err);
+            // setUsers([]);
+
+            _setToastNotification({
+                display: true,
+                status: "error",
+                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+            });
+        }
+    }, []);
+
+
+
 
     return {
         apiResponse, setApiResponse,
@@ -214,5 +359,8 @@ export function useTransactionHook() {
         getWithdrawalRequest,
         getTopTotalTransactionAnalysis,
         getTransactionById,
+        handleRejectedAndManualPayment,
+        handleAcceptWithdrawal,
+        verifyPaypalWithdrawal,
     }
 }

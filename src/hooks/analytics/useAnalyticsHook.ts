@@ -30,7 +30,7 @@ export type liveReleasesInterface = {
 
 const formSchema = yup.object({
     date: yup.string().trim().required().label("Analytics Date"),
-    albumSold: yup.string().trim().label("No. of Album sold"),
+    albumSold: yup.string().required().trim().label("No. of Album sold"),
     noSold: yup.string().trim().required().label("No. of sold"),
     revenue: yup.string().trim().required().label("Revenue"),
     streamRevenue: yup.string().trim().required().label("Stream Revenue"),
@@ -60,7 +60,13 @@ export function useAnalyticsHook() {
     const _setSelectedAnalyticsDetails = useGeneralStore((state) => state._setSelectedAnalyticsDetails);
     const _setToastNotification = useSettingStore((state) => state._setToastNotification);
 
-    const analyticsForm = useForm({ resolver: yupResolver(formSchema), mode: 'onBlur', reValidateMode: 'onChange' });
+    const analyticsForm = useForm({ 
+        resolver: yupResolver(formSchema),
+        mode: 'onBlur', reValidateMode: 'onChange',
+        defaultValues: {
+            albumSold: '0'
+        }
+    });
     
     const [apiResponse, setApiResponse] = useState({
         display: false,
@@ -244,6 +250,11 @@ export function useAnalyticsHook() {
             status: true,
             message: ""
         });
+
+        console.log(formData);
+
+        return;
+        
 
         if (!formData.location.length) {
             const errMsg = "Please set location analytics for top countries.";
