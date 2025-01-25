@@ -12,8 +12,7 @@ import Container from '@mui/material/Container';
 
 const AccountLayout = () => {
     const isLoggedIn = useUserStore((state) => state.isLoggedIn);
-    
-    if (!isLoggedIn) return <Navigate replace to={"/auth/login"} />;
+    // if (!isLoggedIn) return <Navigate replace to={"/auth/login"} />;
 
     const [value, setValue] = useState(1);
 
@@ -104,7 +103,12 @@ const AccountLayout = () => {
                 />
                 
                 <Box>
-                    <Outlet />
+                    { 
+                        isLoggedIn ? 
+                        <Outlet />
+                        : 
+                        <Navigate replace to={"/auth/login"} />
+                    }
                 </Box>
             </Container>
         </Stack>

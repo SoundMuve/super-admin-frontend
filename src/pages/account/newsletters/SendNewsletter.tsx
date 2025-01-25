@@ -252,7 +252,6 @@ export default function SendNewsletter() {
                         
                     </form>
                 </Box>
-
             </Box>
 
             <PreviewModal 

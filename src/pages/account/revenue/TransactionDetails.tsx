@@ -16,6 +16,7 @@ import { useTransactionHook } from '@/hooks/transactions/useTransactionHook';
 import { displayCreatedAtDate } from '@/util/dateTime';
 import { transactionRevenueDetailsInterface } from '@/typeInterfaces/transaction.interface';
 import { WithdrawalTransactionComponent } from '@/components/account/transactions/WithdrawalTransaction';
+import { PaymentTransactionComponent } from '@/components/account/transactions/PaymentTransaction';
 
 
 
@@ -91,6 +92,12 @@ export default function TransactionDetails() {
                             transactionRevenueDetails.payout._id
                         )
                     }}
+                />
+            );
+        } else if (transactionType == "Payment") {
+            return (
+                <PaymentTransactionComponent 
+                    transaction={transactionRevenueDetails.transaction}
                 />
             );
         } else if (transactionType == "Debit") {

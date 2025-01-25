@@ -225,45 +225,6 @@ export default function AccountHeaderComponent({
                 flexDirection: "column",
             }}
         >
-            {/* <Stack direction="row" alignItems="center" spacing="10px">
-                <Avatar
-                    alt={`${userData.firstName} ${userData.lastName}`}
-                    // src={userData.profile_image || ""}
-                    sx={{ 
-                        boxShadow: "0px 4px 8px -1px rgba(0, 0, 0, 0.1)",
-                        bgcolor: stringToColor(`${userData.firstName.trim()} ${userData.lastName.trim()}`),
-                    }}
-                    children={<Typography sx={{
-                        fontSize: "15px",
-                        fontWeight: "bold"
-                    }}>{stringAvatar(`${userData.firstName.trim()} ${userData.lastName.trim()}`)}</Typography>}
-                />
-
-                <Box width={"90px"}>
-                    <Typography noWrap variant="h1" component="h2"
-                        sx={{
-                            fontWeight: "700",
-                            fontSize: "14px",
-                            lineHeight: "12px",
-                            letterSpacing: "-0.13px",
-                            color: "#FBFBFB",
-                            overflow: "hidden",
-                        }}
-                    >{ userData.firstName.trim() }</Typography>
-
-                    <Typography noWrap
-                        sx={{
-                            fontWeight: "500",
-                            fontSize: "12px",
-                            lineHeight: "8px",
-                            letterSpacing: "-0.13px",
-                            color: "#797979",
-                            mt: 0.5
-                        }}
-                    >Artist</Typography>
-                </Box>
-            </Stack> */}
-
             <Stack direction="row" alignItems='center' spacing="10px"
                 onClick={() => _logOutUser() }
                 sx={{

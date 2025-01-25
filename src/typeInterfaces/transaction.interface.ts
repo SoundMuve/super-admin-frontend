@@ -1,4 +1,5 @@
 import { analyticsInterface } from "./analytics.interface";
+import { cartItemInterface } from "./cartInterface";
 import { payoutDetailsInterface } from "./payout.interface";
 import { releaseInterface } from "./release.interface";
 import { userInterface } from "./users.interface";
@@ -9,7 +10,7 @@ export type transactionInterface = {
     user_id: string;
     user_email: string;
 
-    transactionType: "Withdrawal" | "Credit" | "Debit";
+    transactionType: "Withdrawal" | "Credit" | "Debit" | "Payment";
 
     description: string;
     amount: number;
@@ -34,6 +35,15 @@ export type transactionInterface = {
         beneficiaryEmail: string;
     };
 
+    payment?: {
+        cartItems: cartItemInterface[],
+        paidAmount: number,
+        totalAmount: number,
+        paymentIntent: string;
+        paymentIntentClientSecret: string;
+        paymentStatus: string;
+        currency: string;
+    },
 
     metaData?: {
         status: string,

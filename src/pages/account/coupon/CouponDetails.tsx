@@ -468,14 +468,22 @@ export default function CouponDetails() {
 
 
                                                 <TextField
-                                                    sx={releaseTextFieldStyle}
+                                                    sx={{
+                                                        ...releaseTextFieldStyle,
+                                                        width: "40%"
+                                                    }}
                                                     label="Discount Percentage"
-                                                    inputMode='text'
+                                                    inputMode='numeric'
+                                                    type='number'
                                                     size='small'
                                                     value={discountPercentage}
                                                     onChange={(e) => {
-                                                        const value = e.target.value;
-                                                        setDiscountPercentage(value);
+                                                        let value = Number(e.target.value);
+
+                                                        if (value > 100) value = 100;
+                                                        if (value < 0) value = 0;
+                                              
+                                                        setDiscountPercentage(`${value}`);
                                                     }}
                                                 />
 
