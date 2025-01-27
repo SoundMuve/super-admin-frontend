@@ -251,10 +251,7 @@ export function useAnalyticsHook() {
             message: ""
         });
 
-        console.log(formData);
-
-        return;
-        
+        // console.log(formData);
 
         if (!formData.location.length) {
             const errMsg = "Please set location analytics for top countries.";
