@@ -627,8 +627,8 @@ export default function AnalyticsDetails() {
                                                             views={['month', 'year']}
 
                                                             // value={ selectReleaseDateValue ? dayjs(selectReleaseDateValue) : null }
-                                                            minDate={dayjs(minReleaseDate(selectedAnalyticsDetails.release.createdAt))}
-                                                            maxDate={dayjs(maxAnalyticsDate())}
+                                                            // minDate={dayjs(minReleaseDate(selectedAnalyticsDetails.release.createdAt))}
+                                                            // maxDate={dayjs(maxAnalyticsDate())}
 
                                                             // onChange={(newValue) => {
                                                                 // const value = dayjs(newValue).format('MM/YYYY');
@@ -643,7 +643,7 @@ export default function AnalyticsDetails() {
                                                                 // const value = dayjs(newValue).format('MM/YYYY');
                                                                 // const value = dayjs(newValue).format('YYYY/MM/DD');
                                                                 const value = dayjs(newValue).format('YYYY-MM') + "-01";
-                                                                console.log(value);
+                                                                // console.log(value);
 
                                                                 // console.log(value);
                                                                 setAnalyticsDate(value);
