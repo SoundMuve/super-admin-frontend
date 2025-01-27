@@ -34,7 +34,7 @@ import kolors from '@/constants/kolors';
 import { useGeneralStore } from '@/state/generalStore';
 import sampleArtWork from '@/assets/images/sampleArtWork.png';
 import { useReleaseStore } from '@/state/releaseStore';
-import { minReleaseDate } from '@/util/dateTime';
+// import { minReleaseDate } from '@/util/dateTime';
 import SongViewComponent from '@/components/account/analytics/SongViewComponent';
 import { LocationDataModal } from '@/components/account/analytics/LocationData';
 import { restCountries } from '@/util/countries';
@@ -173,18 +173,18 @@ export default function AnalyticsDetails() {
         });
     }
 
-    const maxAnalyticsDate = () => {
-        const today = new Date(); // Get today's date
-        const pastDate = new Date(today); // Create a new date object based on today
-        pastDate.setMonth(today.getMonth() - 2); // Subtract 2 months from the current month
+    // const maxAnalyticsDate = () => {
+    //     const today = new Date(); // Get today's date
+    //     const pastDate = new Date(today); // Create a new date object based on today
+    //     pastDate.setMonth(today.getMonth() - 2); // Subtract 2 months from the current month
     
-        // Format the date as YYYY-MM-DD
-        const year = pastDate.getFullYear();
-        const month = String(pastDate.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-        const day = String(pastDate.getDate()).padStart(2, '0');
+    //     // Format the date as YYYY-MM-DD
+    //     const year = pastDate.getFullYear();
+    //     const month = String(pastDate.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    //     const day = String(pastDate.getDate()).padStart(2, '0');
     
-        return `${year}-${month}-${day}`;
-    }
+    //     return `${year}-${month}-${day}`;
+    // }
 
 
     const getSelectedCountryByName = (countryName: string) => {
