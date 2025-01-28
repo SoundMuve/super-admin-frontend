@@ -7,18 +7,12 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Alert from '@mui/material/Alert';
 import Chip from '@mui/material/Chip';
-import Button from '@mui/material/Button';
-
+import EditIcon from '@mui/icons-material/Edit';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DownloadIcon from '@mui/icons-material/Download';
-// import EmptyListComponent from '@/components/EmptyList';
-import ModalWrapper from '@/components/ModalWrapper';
 import LoadingDataComponent from '@/components/LoadingData';
 import SongPreviewComponent from '@/components/SongPreview';
-// import artWorkSample from "@/assets/images/artWorkSample.png";
 import sampleArtWork from "@/assets/images/sampleArtWork.png"
 import colors from '@/constants/kolors';
 import { useGetReleases } from '@/hooks/releases/useGetReleases';
@@ -27,10 +21,12 @@ import {
 } from '@/typeInterfaces/release.interface';
 import { useReleaseStore } from '@/state/releaseStore';
 import { 
-    numberOfLinesTypographyStyle, paymentTextFieldStyle, submitBtnStyle 
+    numberOfLinesTypographyStyle
 } from '@/util/mui';
 import { getQueryParams, getStatusColor } from '@/util/resources';
 import { copyToClipboard, downloadFile } from '@/util/copyNshare';
+import UpdateStatusModalComponent from '@/components/account/uploads/UpdateStatusModal';
+import UpdateUPC_EAN_ISRC_ModalComponent from '@/components/account/uploads/UpdateUPC_EAN_ISRC_Modal';
 
 
 let selectedStatus: any = '';
@@ -39,7 +35,7 @@ export default function ReleasesDetails() {
     const navigate = useNavigate();
 
     const {
-        apiResponse, // setApiResponse,
+        // apiResponse, // setApiResponse,
 
         isSubmitting,
         getReleaseById,
@@ -52,8 +48,7 @@ export default function ReleasesDetails() {
     const _setSongDetails = useReleaseStore((state) => state._setSongDetails);
 
     const [openLiveModal, setOpenLiveModal] = useState(false);
-    const [linktreeUrl, setLinktreeUrl] = useState('');
-    const [upcEanCode, setUpcEanCode] = useState(releaseDetails.upc_ean);
+    const [openEditISRCModal, setOpenEditISRCModal] = useState(false);
 
     useEffect(() => {
         if (!releaseDetails._id) {
@@ -468,7 +463,22 @@ export default function ReleasesDetails() {
                                     </Box>
 
                                     <ReleaseSongDataComponent title='Explicit Lyrics' value={ songDetails.explicitLyrics } />
-                                    <ReleaseSongDataComponent title='ISRC Number' value={ songDetails.isrcNumber } />
+
+                                    <Box sx={{ position: "relative" }}>
+                                        <ReleaseSongDataComponent title='ISRC Number' value={ songDetails.isrcNumber } />
+
+                                        <Box sx={{ position: "absolute", right: 2, bottom: 1 }}>
+                                            <IconButton size='small' 
+                                                title="Click to edit" 
+                                                onClick={() => setOpenEditISRCModal(true)}
+                                                sx={{ bgcolor: colors.bg }}
+                                            >
+                                                <EditIcon sx={{ fontSize: "18px" }} />
+                                            </IconButton>
+                                        </Box>
+
+                                    </Box>
+
                                     <ReleaseSongDataComponent title='TikTok Clip Start Time' 
                                         value={ songDetails.tikTokClipStartTime?.minutes + ":" + songDetails.tikTokClipStartTime?.seconds } 
                                     />
@@ -488,118 +498,19 @@ export default function ReleasesDetails() {
                 </Box>
             }
 
-            <ModalWrapper 
-                closeModal={() => setOpenLiveModal(false) } 
-                openModal={openLiveModal} 
-            >
-                <Box>
-                    <Stack direction="row" spacing="20px" alignItems="center" mb={2}>
-                        <Typography sx={{
-                            fontWeight: "400",
-                            fontSize: "15.38px",
-                            lineHeight: "38.44px",
-                            letterSpacing: "-0.12px",
-                            textAlign: "left"
-                        }}> Status: </Typography>
+            <UpdateStatusModalComponent 
+                openUpdateLiveStatusModal={openLiveModal}
+                closeUpdateLiveStatusModal={() => setOpenLiveModal(false) }
+                releaseDetails={releaseDetails}
+                selectedStatus={selectedStatus}
+            />
 
-                        <Box 
-                            sx={{
-                                p: 1,
-                                borderRadius: 1,
-                                // borderRadius: "6px",
-                                color: getStatusColor(selectedStatus || releaseDetails.status, 'text'),
-                                bgcolor: getStatusColor(selectedStatus || releaseDetails.status, "bg"),
-                            }}
-                        >
-                            <Typography variant='body1'
-                            >{ selectedStatus }</Typography>
-                        </Box>
-                    </Stack>
-
-                    <Box>
-                        <Typography sx={{
-                            fontWeight: "400",
-                            fontSize: "15.38px",
-                            lineHeight: "38.44px",
-                            letterSpacing: "-0.12px",
-                            textAlign: "left"
-                        }}> Linktree Url </Typography>
-
-                        <TextField 
-                            variant="outlined" 
-                            fullWidth 
-                            id='linktreeUrl'
-                            type='text'
-                            inputMode='text'
-                            // defaultValue=""
-                            value={linktreeUrl}
-                            sx={paymentTextFieldStyle}
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setLinktreeUrl(value);
-                            }}
-                        />
-                    </Box>
-
-                    <Box mt={2}>
-                        <Typography sx={{
-                            fontWeight: "400",
-                            fontSize: "15.38px",
-                            lineHeight: "38.44px",
-                            letterSpacing: "-0.12px",
-                            textAlign: "left"
-                        }}> UPC/EAN Code </Typography>
-
-                        <TextField 
-                            variant="outlined" 
-                            fullWidth 
-                            id='upcEanCode'
-                            type='text'
-                            inputMode='text'
-                            // defaultValue=""
-                            value={upcEanCode}
-                            sx={paymentTextFieldStyle}
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setUpcEanCode(value);
-                            }}
-                        />
-                    </Box>
-
-
-                    {
-                        apiResponse.display && (
-                            <Stack sx={{ width: '100%', my: 2 }}>
-                                <Alert severity={apiResponse.status ? "success" : "error"}>{apiResponse.message}</Alert>
-                            </Stack>
-                        )
-                    }
-                    
-                    <Box 
-                        sx={{ 
-                            my: 5,
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
-                            alignItems: "center"
-                        }}
-                    >
-                        <Button variant="contained" 
-                            fullWidth type="button"
-                            onClick={() => handleSubmitLiveStatus(
-                                selectedStatus, releaseDetails._id, 
-                                linktreeUrl, upcEanCode,
-                                setOpenLiveModal(false) 
-                            )} 
-                            disabled={ !linktreeUrl.length } 
-                            sx={{
-                                ...submitBtnStyle,
-                            }}
-                        > Submit </Button>
-                    </Box>
-
-                </Box>
-            </ModalWrapper>
+            <UpdateUPC_EAN_ISRC_ModalComponent 
+                openUPC_EAN_ISRC_Modal={openEditISRCModal}
+                closeUPC_EAN_ISRC_Modal={() => setOpenEditISRCModal(false) }
+                releaseDetails={releaseDetails}
+                songDetails={songDetails}
+            />
         </Box>
     )
 }
