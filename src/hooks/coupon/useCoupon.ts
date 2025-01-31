@@ -8,6 +8,12 @@ import { useCouponStore } from "@/state/couponStore";
 
 export function useCoupon() {
     const accessToken = useUserStore((state) => state.accessToken);
+    const _setToastNotification = useSettingStore((state) => state._setToastNotification);
+    const [apiResponse, setApiResponse] = useState({
+        display: false,
+        status: true,
+        message: ""
+    });
 
     const [limitNo, setLimitNo] = useState(25);
     const [currentPageNo, setCurrentPageNo] = useState(1);
@@ -18,13 +24,6 @@ export function useCoupon() {
     const [couponApplications, setCouponApplications] = useState<couponInterface[]>([]);
     const _setCouponData = useCouponStore((state) => state._setCouponData);
     const _setCouponDetails = useCouponStore((state) => state._setCouponDetails);
-
-    const _setToastNotification = useSettingStore((state) => state._setToastNotification);
-    // const [apiResponse, setApiResponse] = useState({
-    //     display: false,
-    //     status: true,
-    //     message: ""
-    // });
 
 
     const getCouponApplications = useCallback(async (pageNo: number, limitNo: number) => {
@@ -143,6 +142,12 @@ export function useCoupon() {
                 message: response.message || "successful!"
             });
 
+            setApiResponse({
+                display: true,
+                status: true,
+                message: response.message,
+            });
+            
         } catch (error: any) {
             const err = error.response.data || error;
             const fixedErrorMsg = "Ooops and error occurred!";
@@ -152,6 +157,12 @@ export function useCoupon() {
             _setToastNotification({
                 display: true,
                 status: "error",
+                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+            });
+
+            setApiResponse({
+                display: true,
+                status: false,
                 message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
             });
         }
@@ -175,6 +186,12 @@ export function useCoupon() {
                 message: response.message || "successful!"
             });
 
+            setApiResponse({
+                display: true,
+                status: true,
+                message: response.message,
+            });
+
         } catch (error: any) {
             const err = error.response.data || error;
             const fixedErrorMsg = "Ooops and error occurred!";
@@ -186,12 +203,18 @@ export function useCoupon() {
                 status: "error",
                 message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
             });
+
+            setApiResponse({
+                display: true,
+                status: false,
+                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+            });
         }
     }, []);
 
 
     return {
-        // apiResponse, setApiResponse,
+        apiResponse, setApiResponse,
         limitNo, setLimitNo,
         currentPageNo, totalRecords,
         totalPages,

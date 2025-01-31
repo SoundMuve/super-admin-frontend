@@ -123,6 +123,37 @@ export function chatTimeFormat(dateString: string) {
 }
   
 
+export function displayDateMonthYear(date: string) {
+    const options: any = { year: 'numeric', month: 'short' };
+    return new Date(date).toLocaleDateString('en-US', options);
+}
+
+export function displayDateRange(date: string) {
+    const options: any = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(date).toLocaleDateString('en-US', options);
+}
+
+export function getDateRangeBydays(days: number) {
+    const today = new Date();
+    const endDate = new Date(today);
+    endDate.setDate(today.getDate() - days);
+
+    const formatDate = (date: Date) => {
+        // const options: any = { month: 'short', day: 'numeric' };
+        // return date.toLocaleDateString('en-US', options);
+
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+  
+    return {
+        startDate: formatDate(endDate),
+        endDate: formatDate(today),
+    }
+}
+
 export function displayTime(time: number) {
     let seconds: number | string = Math.floor(time % 60);
     let foo = time - seconds;

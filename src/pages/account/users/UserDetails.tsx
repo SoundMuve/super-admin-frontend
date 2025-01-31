@@ -207,10 +207,15 @@ export default function UserDetails() {
                                         my={2} // justifyContent="space-between"
                                     >
                                         <Box
+                                            onClick={() => {
+                                                const user_id = selectedUserDetails._id || _id || '';
+                                                navigate(`/admin/users/${user_id}/analytics`)
+                                            }}
                                             sx={{
                                                 p: "10px",
                                                 borderRadius: "6px",
-                                                background: kolors.primary
+                                                background: kolors.primary,
+                                                cursor: "pointer",
                                             }}
                                         >
                                             <Typography

@@ -17,6 +17,7 @@ import { useCoupon } from '@/hooks/coupon/useCoupon';
 import { useCouponStore } from '@/state/couponStore';
 import { useNavigate } from 'react-router-dom';
 import LoadingDataComponent from '@/components/LoadingData';
+import Alert from '@mui/material/Alert';
 
 
 export default function CouponDetails() {
@@ -29,8 +30,8 @@ export default function CouponDetails() {
     const [payableAmount, setPayableAmount] = useState<number>(couponDiscountDetails.payableAmount || 0);
     
     const {
+        apiResponse,
         isSubmitting,
-
         // couponApplications, 
         // getCouponApplications,
         getCouponById,
@@ -424,122 +425,94 @@ export default function CouponDetails() {
                                         </b>
                                     </Typography>
 
+                                    <Box>
+                                        {
+                                            apiResponse.display && (
+                                                <Stack sx={{ width: '100%', my: 2 }}>
+                                                    <Alert severity={apiResponse.status ? "success" : "error"}>{apiResponse.message}</Alert>
+                                                </Stack>
+                                            )
+                                        }
 
-                                    {
-                                        couponDiscountDetails.status == "Used" ? <></>
-                                        :
-                                        <Stack direction="row" alignItems="center" spacing="20px" justifyContent="center"
-                                            sx={{ mb: "10px", mt: "20px" }}
-                                        >
-                                            <Box sx={{ flexGrow: 1 }}>
-                                                {/* <Autocomplete
-                                                    fullWidth
-                                                    options={Array.from({ length: 101 }, (_, i) => i)}
-                                                    autoHighlight
-                                                    getOptionLabel={(option) => `${option}`}
-                                                    // readOnly={couponDiscountDetails.status == "Used"}
-
-                                                    size='small'
-                                                    value={discountPercentage}
-
-                                                    onChange={(_e, value) => {
-                                                        if (value) setDiscountPercentage(value);
-                                                    }} // prints the selected value
-
-                                                    renderOption={(props: any, option) => {
-                                                        const { key, ...optionProps } = props;
-                                                        return (
-                                                            <Box
-                                                                component="li"
-                                                                {...optionProps}
-                                                                key={option}
-                                                            > { option }</Box>
-                                                        );
-                                                    }}
-                                                    renderInput={(params) => (
+                                        {
+                                            couponDiscountDetails.status == "Pending" ?
+                                                <Stack direction="row" alignItems="center" spacing="20px" justifyContent="center"
+                                                    sx={{ mb: "10px", mt: "20px" }}
+                                                >
+                                                    <Box sx={{ flexGrow: 1 }}>
                                                         <TextField
-                                                            {...params}
-                                                            sx={releaseTextFieldStyle}
+                                                            sx={{
+                                                                ...releaseTextFieldStyle,
+                                                                width: "40%"
+                                                            }}
                                                             label="Discount Percentage"
                                                             inputMode='numeric'
+                                                            type='number'
+                                                            size='small'
+                                                            value={discountPercentage}
+                                                            onChange={(e) => {
+                                                                let value = Number(e.target.value);
+
+                                                                if (value > 100) value = 100;
+                                                                if (value < 0) value = 0;
+                                                    
+                                                                setDiscountPercentage(`${value}`);
+                                                            }}
                                                         />
-                                                    )}
-                                                /> */}
+                                                    </Box>
 
+                                                    <Stack direction="row" alignItems="center" spacing="10px" justifyContent="center">
+                                                        <Box onClick={() => { handleApprove() }} sx={{
+                                                            // p: "10px 29px 10px 29px",
+                                                            p: "5px 15px",
+                                                            borderRadius: "8px",
+                                                            border: `1px solid ${kolors.primary}`,
+                                                            color: kolors.milk,
+                                                            bgcolor: kolors.primary,
+                                                            cursor: "pointer",
+                                                            ":hover": {
+                                                                boxShadow: `1px 3px 18px 0px ${kolors.primary}`,
+                                                                background: "linear-gradient(180deg, #D68100 0%, #FFB01F 49%, #D68100 100%)",
+                                                                color: kolors.milk,
+                                                            }
 
-                                                <TextField
-                                                    sx={{
-                                                        ...releaseTextFieldStyle,
-                                                        width: "40%"
-                                                    }}
-                                                    label="Discount Percentage"
-                                                    inputMode='numeric'
-                                                    type='number'
-                                                    size='small'
-                                                    value={discountPercentage}
-                                                    onChange={(e) => {
-                                                        let value = Number(e.target.value);
+                                                        }}>
+                                                            <Typography variant='body1' sx={{
+                                                                fontWeight: '900',
+                                                                fontSize: "18px",
+                                                                // lineHeight: "40px",
+                                                                letterSpacing: "-0.13px",
+                                                                textAlign: 'center',
+                                                            }}> Approve </Typography>
+                                                        </Box>
 
-                                                        if (value > 100) value = 100;
-                                                        if (value < 0) value = 0;
-                                              
-                                                        setDiscountPercentage(`${value}`);
-                                                    }}
-                                                />
+                                                        <Box onClick={() => { rejectDiscount(couponDiscountDetails._id) }} sx={{
+                                                            // p: "10px 29px 10px 29px",
+                                                            p: "5px 15px",
+                                                            borderRadius: "8px",
+                                                            border: `1px solid ${kolors.primary}`,
+                                                            color: kolors.dark,
+                                                            cursor: "pointer",
+                                                            ":hover": {
+                                                                boxShadow: `1px 3px 18px 0px ${kolors.primary}`,
+                                                                background: "linear-gradient(180deg, #D68100 0%, #FFB01F 49%, #D68100 100%)",
+                                                                color: kolors.milk,
+                                                            }
 
-                                            </Box>
-
-                                            <Stack direction="row" alignItems="center" spacing="10px" justifyContent="center">
-                                                <Box onClick={() => { handleApprove() }} sx={{
-                                                    // p: "10px 29px 10px 29px",
-                                                    p: "5px 15px",
-                                                    borderRadius: "8px",
-                                                    border: `1px solid ${kolors.primary}`,
-                                                    color: kolors.milk,
-                                                    bgcolor: kolors.primary,
-                                                    cursor: "pointer",
-                                                    ":hover": {
-                                                        boxShadow: `1px 3px 18px 0px ${kolors.primary}`,
-                                                        background: "linear-gradient(180deg, #D68100 0%, #FFB01F 49%, #D68100 100%)",
-                                                        color: kolors.milk,
-                                                    }
-
-                                                }}>
-                                                    <Typography variant='body1' sx={{
-                                                        fontWeight: '900',
-                                                        fontSize: "18px",
-                                                        // lineHeight: "40px",
-                                                        letterSpacing: "-0.13px",
-                                                        textAlign: 'center',
-                                                    }}> Approve </Typography>
-                                                </Box>
-
-                                                <Box onClick={() => { rejectDiscount(couponDiscountDetails._id) }} sx={{
-                                                    // p: "10px 29px 10px 29px",
-                                                    p: "5px 15px",
-                                                    borderRadius: "8px",
-                                                    border: `1px solid ${kolors.primary}`,
-                                                    color: kolors.dark,
-                                                    cursor: "pointer",
-                                                    ":hover": {
-                                                        boxShadow: `1px 3px 18px 0px ${kolors.primary}`,
-                                                        background: "linear-gradient(180deg, #D68100 0%, #FFB01F 49%, #D68100 100%)",
-                                                        color: kolors.milk,
-                                                    }
-
-                                                }}>
-                                                    <Typography variant='body1' sx={{
-                                                        fontWeight: '900',
-                                                        fontSize: "18px",
-                                                        // lineHeight: "40px",
-                                                        letterSpacing: "-0.13px",
-                                                        textAlign: 'center',
-                                                    }}> Reject </Typography>
-                                                </Box>
-                                            </Stack>
-                                        </Stack>
-                                    }
-
+                                                        }}>
+                                                            <Typography variant='body1' sx={{
+                                                                fontWeight: '900',
+                                                                fontSize: "18px",
+                                                                // lineHeight: "40px",
+                                                                letterSpacing: "-0.13px",
+                                                                textAlign: 'center',
+                                                            }}> Reject </Typography>
+                                                        </Box>
+                                                    </Stack>
+                                                </Stack>
+                                            :  <></>
+                                        }
+                                    </Box>
                                 </Box>
                             </Grid>
                         </Grid>

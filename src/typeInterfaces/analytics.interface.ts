@@ -39,3 +39,37 @@ export type totalAnalyticsInterface = {
     noSold: number;
     albumSold: number;
 }
+
+
+export type salesReportTotalEarningsAnalyticsInterface = {
+    totalAlbums: number;
+    totalSingles: number;
+    albumSold: number;
+    noSold: number;
+    revenue: number;
+    streamRevenue: number;
+    streamPlay: number;
+}
+
+export type totalEarningsAnalyticsInterface = {
+    albumSold: number;
+    noSold: number;
+    revenue: number;
+    streamRevenue: number;
+    streamPlay: number;
+}
+
+export type albumAndSinglesAnalyticsInterface = {
+    release_id: string,
+    totalAlbumSold: number,
+    totalNoSold: number,
+    totalRevenue: number,
+    totalStreamRevenue: number,
+    totalStreamPlay: number,
+    title: string,
+    releaseType: string,
+    mainArtist: string,
+    releaseDate: string,
+    labelName: string,
+    coverArt: string,
+}

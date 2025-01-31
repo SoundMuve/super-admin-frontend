@@ -28,6 +28,7 @@ import Analytics from "./pages/account/analytics/Analytics";
 import AnalyticsDetails from "./pages/account/analytics/AnalyticsDetails";
 import RevenueArea from "./pages/account/revenue/RevenueArea";
 import TransactionDetails from "./pages/account/revenue/TransactionDetails";
+import UserAnalytics from "./pages/account/users/UserAnalytics";
 
 
 export const router = createBrowserRouter([
@@ -116,6 +117,11 @@ export const router = createBrowserRouter([
                   // path: "details",
                   path: ":_id",
                   element: <UserDetails />
+                },
+                {
+                  // path: "details",
+                  path: ":_id/analytics",
+                  element: <UserAnalytics />
                 },
               ]
             },
