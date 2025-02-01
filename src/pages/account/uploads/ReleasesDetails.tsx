@@ -14,7 +14,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import LoadingDataComponent from '@/components/LoadingData';
 import SongPreviewComponent from '@/components/SongPreview';
 import sampleArtWork from "@/assets/images/sampleArtWork.png"
-import colors from '@/constants/kolors';
+import kolors from '@/constants/kolors';
 import { useGetReleases } from '@/hooks/releases/useGetReleases';
 import { 
     artistInterface, songArtists_CreativesInterface 
@@ -27,6 +27,7 @@ import { getQueryParams, getStatusColor } from '@/util/resources';
 import { copyToClipboard, downloadFile } from '@/util/copyNshare';
 import UpdateStatusModalComponent from '@/components/account/uploads/UpdateStatusModal';
 import UpdateUPC_EAN_ISRC_ModalComponent from '@/components/account/uploads/UpdateUPC_EAN_ISRC_Modal';
+import UpdateLiveLinksModalComponent from '@/components/account/uploads/UpdateLiveLinksModal';
 
 
 let selectedStatus: any = '';
@@ -49,6 +50,7 @@ export default function ReleasesDetails() {
 
     const [openLiveModal, setOpenLiveModal] = useState(false);
     const [openEditISRCModal, setOpenEditISRCModal] = useState(false);
+    const [openLiveLinksModal, setOpenLiveLinksModal] = useState(false);
 
     useEffect(() => {
         if (!releaseDetails._id) {
@@ -74,7 +76,7 @@ export default function ReleasesDetails() {
                             <Typography variant='h2'
                                 title="Click to copy" onClick={() => copyToClipboard(releaseDetails.title)}
                                 sx={{
-                                    color: colors.dark,
+                                    color: kolors.dark,
                                     fontSize: {xs: "20px", md: "40px"},
                                     fontWeight: "500",
                                     lineHeight: "40px",
@@ -108,7 +110,7 @@ export default function ReleasesDetails() {
                                     bgcolor: getStatusColor(releaseDetails.status, "bg"),
                                     border: "none",
                                     '.MuiOutlinedInput-notchedOutline': {
-                                        // borderColor: colors.primary,
+                                        // borderColor: kolors.primary,
                                         border: "none",
                                     },
                                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
@@ -120,7 +122,7 @@ export default function ReleasesDetails() {
                                         border: "none",
                                     },
                                     '.MuiSvgIcon-root ': {
-                                        fill: colors.milk,
+                                        fill: kolors.milk,
                                     }
                                 }}
 
@@ -128,13 +130,15 @@ export default function ReleasesDetails() {
                                     const value: any = event.target.value;
                                     selectedStatus = value;
                                     // console.log(value);
+                                    handleSubmitLiveStatus(value, releaseDetails._id)
 
-                                    if (value == "Live") {
-                                        // open a modal asking for the link tree link
-                                        setOpenLiveModal(true);
-                                    } else {
-                                        handleSubmitLiveStatus(value, releaseDetails._id)
-                                    }
+
+                                    // if (value == "Live") {
+                                    //     // open a modal asking for the link tree link
+                                    //     setOpenLiveModal(true);
+                                    // } else {
+                                    //     handleSubmitLiveStatus(value, releaseDetails._id)
+                                    // }
                                 }}
                             >
                                 <MenuItem value="Status" disabled>
@@ -175,18 +179,18 @@ export default function ReleasesDetails() {
                                     sx={{
                                         width: "28px",
                                         height: "28px",
-                                        bgcolor: colors.bg, // "#D9D9D980",
+                                        bgcolor: kolors.bg, // "#D9D9D980",
                                         position: "absolute",
                                         right: 7,
                                         top: 7,
                                         borderRadius: "5px",
-                                        border: `1.5px solid ${colors.secondary}`
+                                        border: `1.5px solid ${kolors.secondary}`
                                     }}
                                 >
                                     <IconButton size='small' title='Click to download'
                                         onClick={() => downloadFile(releaseDetails.coverArt || sampleArtWork, `${releaseDetails.title} - ${releaseDetails.mainArtist.spotifyProfile.name}`)}
                                     >
-                                        <DownloadIcon sx={{ color: colors.dark, fontSize: "18px" }} />
+                                        <DownloadIcon sx={{ color: kolors.dark, fontSize: "18px" }} />
                                     </IconButton>
                                 </Box>
 
@@ -198,7 +202,7 @@ export default function ReleasesDetails() {
                                         maxWidth: "170px",
                                         borderRadius: '12px',
                                         // height: "100%",
-                                        backgroundColor: colors.bg,
+                                        backgroundColor: kolors.bg,
                                         objectFit: "contain"
                                     }}
                                 />
@@ -206,12 +210,21 @@ export default function ReleasesDetails() {
                         </Box>
 
                         <Box>
-                            <Box mb={2}>
+                            <Box>
                                 <Typography sx={{ color: "#7B7979" }}
                                     title="Click to copy" onClick={() => copyToClipboard(releaseDetails._id)}
                                 >
-                                    <b style={{color: colors.dark }}>Id: </b>
+                                    <b style={{color: kolors.dark }}>Id: </b>
                                     { releaseDetails._id }
+                                </Typography>
+                            </Box>
+
+                            <Box mb={1.5}>
+                                <Typography sx={{ color: "#7B7979" }}
+                                    title="Click to copy" onClick={() => copyToClipboard(releaseDetails.musicLinks?.url || '')}
+                                >
+                                    {/* <b style={{color: kolors.dark }}>Live Links: </b> */}
+                                    { releaseDetails.musicLinks?.url || '' }
                                 </Typography>
                             </Box>
 
@@ -234,7 +247,7 @@ export default function ReleasesDetails() {
                                         }}
                                     >(Spotify profile)</Typography> </Typography>
 
-                                    <Box my={2}>
+                                    <Box my={1}>
                                         <MainArtistComponent value={releaseDetails.mainArtist.spotifyProfile} />
                                     </Box>
                                 </Box>
@@ -262,7 +275,7 @@ export default function ReleasesDetails() {
                                             bgcolor: "#F3F2F2",
                                             borderRadius: "5px",
                                             p: "10px",
-                                            my: 2,
+                                            my: 1,
                                             maxWidth: "200px"
                                         }}
                                     >
@@ -287,49 +300,46 @@ export default function ReleasesDetails() {
                                     </Stack>
                                 </Box>
 
-                                { releaseDetails.liveUrl ? (
-                                    <Box>
-                                        <Typography variant='body1'
-                                            sx={{
-                                                fontWeight: "700",
-                                                fontSize: "16.36px",
-                                                lineHeight: "13.09px",
-                                                letterSpacing: "-0.09px",
-                                                // mb: "5px"
-                                            }}
-                                        >Live Links </Typography>
+                                <Box>
+                                    <Typography variant='body1'
+                                        sx={{
+                                            fontWeight: "700",
+                                            fontSize: "16.36px",
+                                            lineHeight: "13.09px",
+                                            letterSpacing: "-0.09px",
+                                            // mb: "5px"
+                                        }}
+                                    >Live Links </Typography>
 
-                                        <Stack direction="row" alignItems="center"
+                                    <Stack direction="row" alignItems="center"
+                                        sx={{
+                                            bgcolor: "#F3F2F2",
+                                            borderRadius: "5px",
+                                            p: "10px", pr: "5px",
+                                            my: 2,
+                                            maxWidth: "200px"
+                                        }}
+                                    >
+                                        <Typography variant='body2'
+                                            title="Click to copy" 
+                                            onClick={() => copyToClipboard(releaseDetails.musicLinks?.url || '')}
                                             sx={{
-                                                bgcolor: "#F3F2F2",
-                                                borderRadius: "5px",
-                                                p: "10px",
-                                                my: 2,
-                                                maxWidth: "200px"
-                                            }}
+                                                ...numberOfLinesTypographyStyle(1),
+                                                color: "#000",
+                                                fontSize: "16px",
+                                                fontWeight: "400",
+                                                // lineHeight: "15.711px",
+                                                letterSpacing: "-0.463px",
+                                            }}  
+                                        >{ releaseDetails.musicLinks?.url || '' }</Typography>
+
+                                        <IconButton size='small' sx={{ bgcolor: kolors.bg }}
+                                            onClick={() => setOpenLiveLinksModal(true)}
                                         >
-                                            <Typography variant='body2'
-                                                title="Click to copy" 
-                                                onClick={() => copyToClipboard(releaseDetails.liveUrl || '')}
-                                                sx={{
-                                                    ...numberOfLinesTypographyStyle(1),
-                                                    color: "#000",
-                                                    fontSize: "16px",
-                                                    fontWeight: "400",
-                                                    // lineHeight: "15.711px",
-                                                    letterSpacing: "-0.463px",
-                                                }}  
-                                            >{ releaseDetails.liveUrl }</Typography>
-
-                                            <IconButton size='small' 
-                                                onClick={() => copyToClipboard(releaseDetails.liveUrl || '')}
-                                            >
-                                                <ContentCopyIcon sx={{ fontSize: "14px" }} />
-                                            </IconButton>
-                                        </Stack>
-                                    </Box>
-                                ) : <></>}
-
+                                            <EditIcon sx={{ fontSize: "14px" }} />
+                                        </IconButton>
+                                    </Stack>
+                                </Box>
                             </Stack>
                         </Box>
                     </Stack>
@@ -362,7 +372,7 @@ export default function ReleasesDetails() {
                     <Box my={3}>
                         <Typography variant='h2'
                             sx={{
-                                color: colors.secondary,
+                                color: kolors.secondary,
                                 fontSize: "16px",
                                 fontWeight: "500",
                                 lineHeight: "10.645px",
@@ -396,7 +406,7 @@ export default function ReleasesDetails() {
                         </Stack>
                     </Box>
 
-                    <Box p={2} borderRadius="8px" bgcolor={colors.bodyBg}>
+                    <Box p={2} borderRadius="8px" bgcolor={kolors.bodyBg}>
                         <Stack direction="row" gap={3} flexWrap="wrap">
                             <Box>
                                 {
@@ -447,7 +457,7 @@ export default function ReleasesDetails() {
                                     <Box bgcolor="#fff" borderRadius="8.65px" p={1} mb={3}>
                                         <Typography variant='body1'
                                             sx={{
-                                                color: colors.primary,
+                                                color: kolors.primary,
                                                 fontSize: "16px",
                                                 fontWeight: "600",
                                                 // lineHeight: "12.645px",
@@ -471,7 +481,7 @@ export default function ReleasesDetails() {
                                             <IconButton size='small' 
                                                 title="Click to edit" 
                                                 onClick={() => setOpenEditISRCModal(true)}
-                                                sx={{ bgcolor: colors.bg }}
+                                                sx={{ bgcolor: kolors.bg }}
                                             >
                                                 <EditIcon sx={{ fontSize: "18px" }} />
                                             </IconButton>
@@ -497,6 +507,12 @@ export default function ReleasesDetails() {
                     </Box>
                 </Box>
             }
+
+            <UpdateLiveLinksModalComponent 
+                openUpdateLiveLinksModal={openLiveLinksModal}
+                closeUpdateLiveLinksModal={() => setOpenLiveLinksModal(false) }
+                releaseDetails={releaseDetails}
+            />
 
             <UpdateStatusModalComponent 
                 openUpdateLiveStatusModal={openLiveModal}
@@ -536,8 +552,8 @@ const ReleaseData1Component: React.FC<_Props> = ({ title, value }) => {
 
             <Box 
                 sx={{
-                    bgcolor: colors.primary,
-                    color: colors.dark,
+                    bgcolor: kolors.primary,
+                    color: kolors.dark,
                     textAlign: "center",
                     mt: "12px",
                     borderRadius: "5px",
@@ -548,7 +564,7 @@ const ReleaseData1Component: React.FC<_Props> = ({ title, value }) => {
                     title="Click to copy" onClick={() => copyToClipboard(value)}
 
                     sx={{
-                        color: colors.milk,
+                        color: kolors.milk,
                         fontSize: "13px",
                         fontWeight: "500",
                         lineHeight: "10.645px"
@@ -566,7 +582,7 @@ const ReleaseData2Component: React.FC<_Props> = ({ title, value }) => {
             <Stack direction="column" width="fit-content">
                 <Typography variant='body1'
                     sx={{
-                        color: colors.dark,
+                        color: kolors.dark,
                         fontSize: "16px",
                         fontWeight: "600",
                         lineHeight: "13.645px",
@@ -576,8 +592,8 @@ const ReleaseData2Component: React.FC<_Props> = ({ title, value }) => {
 
                 <Box 
                     sx={{
-                        bgcolor: colors.bodyBg,
-                        color: colors.dark,
+                        bgcolor: kolors.bodyBg,
+                        color: kolors.dark,
                         textAlign: "center",
                         mt: "12px",
                         borderRadius: "5px",
@@ -586,7 +602,7 @@ const ReleaseData2Component: React.FC<_Props> = ({ title, value }) => {
                 >
                     <Typography title="Click to copy" onClick={() => copyToClipboard(value)}
                         sx={{
-                            color: colors.dark,
+                            color: kolors.dark,
                             fontSize: "13px",
                             fontWeight: "400",
                             lineHeight: "10.645px",
@@ -608,7 +624,7 @@ const ReleaseData3Component = (
             <Stack direction="column" width="fit-content">
                 <Typography variant='body1'
                     sx={{
-                        color: colors.dark,
+                        color: kolors.dark,
                         fontSize: "16px",
                         fontWeight: "600",
                         lineHeight: "13.645px",
@@ -618,8 +634,8 @@ const ReleaseData3Component = (
 
                 <Box 
                     sx={{
-                        bgcolor: colors.bodyBg,
-                        color: colors.dark,
+                        bgcolor: kolors.bodyBg,
+                        color: kolors.dark,
                         textAlign: "center",
                         mt: "12px",
                         borderRadius: "5px",
@@ -635,7 +651,7 @@ const ReleaseData3Component = (
                                     title="Click to copy" 
                                     onClick={() => copyToClipboard(value.toString())}
                                     sx={{
-                                        color: colors.dark,
+                                        color: kolors.dark,
                                         fontSize: "13px",
                                         fontWeight: "400",
                                         lineHeight: "10.645px"
@@ -668,7 +684,7 @@ const ReleaseSongDataComponent: React.FC<_Props> = ({ title, value }) => {
                 <Box px={{ md: "10px" }}>
                     <Typography variant='body1'
                         sx={{
-                            color: colors.dark,
+                            color: kolors.dark,
                             fontSize: "16px",
                             fontWeight: "600",
                             // lineHeight: "12.645px",
@@ -682,7 +698,7 @@ const ReleaseSongDataComponent: React.FC<_Props> = ({ title, value }) => {
                 <Box 
                     sx={{
                         bgcolor: "#fff",
-                        color: colors.dark,
+                        color: kolors.dark,
                         // textAlign: "center",
                         // mt: "12px",
                         borderRadius: "5px",
@@ -693,7 +709,7 @@ const ReleaseSongDataComponent: React.FC<_Props> = ({ title, value }) => {
                     <Typography 
                         title="Click to copy" onClick={() => copyToClipboard(value)}
                         sx={{
-                            color: colors.dark,
+                            color: kolors.dark,
                             fontSize: "13px",
                             fontWeight: "400",
                             lineHeight: "10.645px"
@@ -715,7 +731,7 @@ const ReleaseSongAudioComponent = (
                 <Box px={"10px"}>
                     <Typography variant='body1'
                         sx={{
-                            color: colors.dark,
+                            color: kolors.dark,
                             fontSize: "16px",
                             fontWeight: "600",
                             // lineHeight: "12.645px",
@@ -746,7 +762,7 @@ const ReleaseSongWritersComponent = (
         <Box 
             sx={{
                 bgcolor: "#fff",
-                color: colors.dark,
+                color: kolors.dark,
                 // textAlign: "center",
                 // mt: "12px",
                 borderRadius: "5px",
@@ -757,7 +773,7 @@ const ReleaseSongWritersComponent = (
             <Typography 
                 title="Click to copy" onClick={() => copyToClipboard(valueItem)}
                 sx={{
-                    color: colors.dark,
+                    color: kolors.dark,
                     fontSize: "13px",
                     fontWeight: "400",
                     lineHeight: "10.645px"
@@ -772,7 +788,7 @@ const ReleaseSongWritersComponent = (
                 <Box px={"10px"}>
                     <Typography variant='body1'
                         sx={{
-                            color: colors.dark,
+                            color: kolors.dark,
                             fontSize: "16px",
                             fontWeight: "600",
                             // lineHeight: "12.645px",
@@ -802,7 +818,7 @@ const ReleaseSongCreativesComponent = (
         <Box 
             sx={{
                 bgcolor: "#fff",
-                color: colors.dark,
+                color: kolors.dark,
                 // textAlign: "center",
                 // mt: "12px",
                 borderRadius: "5px",
@@ -812,12 +828,12 @@ const ReleaseSongCreativesComponent = (
         >
             <Typography 
                 sx={{
-                    color: colors.dark,
+                    color: kolors.dark,
                     fontSize: "13px",
                     fontWeight: "400",
                     lineHeight: "10.645px"
                 }}
-            ><span style={{ color: colors.primary }}
+            ><span style={{ color: kolors.primary }}
                 title="Click to copy" onClick={() => copyToClipboard(role)}
             >{ role }</span> - <span
                 title="Click to copy" onClick={() => copyToClipboard(roleValue)}
@@ -831,7 +847,7 @@ const ReleaseSongCreativesComponent = (
                 <Box px={"10px"}>
                     <Typography variant='body1'
                         sx={{
-                            color: colors.dark,
+                            color: kolors.dark,
                             fontSize: "16px",
                             fontWeight: "600",
                             // lineHeight: "12.645px",
@@ -849,7 +865,7 @@ const ReleaseSongCreativesComponent = (
                                 <Box key={index} bgcolor={"#fff"} p={1} borderRadius={2} mb={1}>
                                     <Typography variant='body2'
                                         title="Click to copy" onClick={() => copyToClipboard(item.role)}
-                                        sx={{ mb: 1, color: colors.primary }}
+                                        sx={{ mb: 1, color: kolors.primary }}
                                     >{ item.role }</Typography>
 
                                     <MainArtistComponent value={item.artist} />
@@ -879,8 +895,8 @@ const MainArtistComponent = (
                 // border: "0.07px solid #FFFFFF",
 
                 // bgcolor: "#6449868F",
-                bgcolor: colors.secondary,
-                color: colors.dark,
+                bgcolor: kolors.secondary,
+                color: kolors.dark,
                 py: {xs: "6.02px",md: "6.5px"},
                 px: "7.2px",
                 maxWidth: "350px",
@@ -903,7 +919,7 @@ const MainArtistComponent = (
             >
                 <img 
                     src={ value.profilePicture || sampleArtWork } alt="cover art work"
-                    style={{ width: "100%", backgroundColor: colors.bg, objectFit: "contain" }}
+                    style={{ width: "100%", backgroundColor: kolors.bg, objectFit: "contain" }}
                 />
             </Box>
 
@@ -956,8 +972,8 @@ const SongViewComponent = (
         <Box 
             sx={{
                 borderRadius: "8.65px",
-                bgcolor: song_id == active_id ? colors.primary : "#fff", // colors.secondary,
-                color: song_id == active_id ? colors.milk : colors.dark,
+                bgcolor: song_id == active_id ? kolors.primary : "#fff", // kolors.secondary,
+                color: song_id == active_id ? kolors.milk : kolors.dark,
                 py: {xs: "6.02px",md: "6.5px"},
                 px: "7px",
                 width: "100%",
@@ -980,7 +996,7 @@ const SongViewComponent = (
                         maxWidth: "100px",
                         // height: "70px",
                         borderRadius: "5px",
-                        backgroundColor: colors.bg,
+                        backgroundColor: kolors.bg,
                         objectFit: "contain" 
                     }}
                 />
@@ -1015,7 +1031,7 @@ const SongViewComponent = (
                 >
                     <DownloadIcon sx={{ 
                         fontSize: "18px",  
-                        color: song_id == active_id ? colors.tertiary : colors.dark,
+                        color: song_id == active_id ? kolors.tertiary : kolors.dark,
                     }} />
                 </IconButton>
             </Box>
@@ -1032,7 +1048,7 @@ const LyricsComponent: React.FC<_Props> = ({ title, value }) => {
                 <Box px={"10px"}>
                     <Typography variant='body1'
                         sx={{
-                            color: colors.dark,
+                            color: kolors.dark,
                             fontSize: "16px",
                             fontWeight: "600",
                             // lineHeight: "12.645px",
@@ -1048,7 +1064,7 @@ const LyricsComponent: React.FC<_Props> = ({ title, value }) => {
                         <Box sx={{ float: "right", display: value ? "initial" : "none" }}>
                             <IconButton size='small' 
                                 title="Click to copy" onClick={() => copyToClipboard(value)}
-                                sx={{ bgcolor: colors.bg }}
+                                sx={{ bgcolor: kolors.bg }}
                             >
                                 <ContentCopyIcon sx={{ fontSize: "16px" }} />
                             </IconButton>

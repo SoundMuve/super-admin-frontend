@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import colors from '@/constants/kolors';
+import kolors from '@/constants/kolors';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -9,7 +9,6 @@ import CloseIcon from '@mui/icons-material/Close';
 interface _Props {
     openModal: boolean,
     closeModal: () => void;
-
     children: React.ReactNode,
 }
 
@@ -35,21 +34,20 @@ const ModalWrapper: React.FC<_Props> = ({
             >
                 <Box 
                     sx={{
-                        bgcolor: colors.bg,
+                        bgcolor: kolors.bg,
                         width: "100%",
                         maxWidth: {xs: "92%", sm: "496px"},
                         // maxHeight: "605px",
                         maxHeight: "95%",
                         borderRadius: "12px",
                         p: "25px",
-                        color: colors.dark,
+                        color: kolors.dark,
                         overflow: "scroll"
                     }}
                 >
-
                     <Box sx={{textAlign: "right"}}>
                         <IconButton onClick={() => closeModal() }>
-                            <CloseIcon sx={{color: colors.primary, fontSize: "20px"}} />
+                            <CloseIcon sx={{color: kolors.primary, fontSize: "20px"}} />
                         </IconButton>
                     </Box>
 

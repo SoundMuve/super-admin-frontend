@@ -89,6 +89,11 @@ export type releaseInterface = {
     // status: "Live" | "Pending" | "Incomplete" | "Complete" | "Failed",
     status: "Incomplete" | "Unpaid" | "Processing" |  "Complete" | "Live" | "Failed",
     liveUrl?: string,
+    musicLinks?: {
+        code: string;
+        url: string;
+        dspLinks: {name: string; url: string;}[]
+    },
     payment_id?: string,
 
     createdAt: string;

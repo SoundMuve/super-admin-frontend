@@ -249,6 +249,62 @@ export function useGetReleases() {
         }
     }, []);
 
+    const handleSubmitMusicLinks = useCallback(async (
+        dspLinks: {name: string; url: string; }[], 
+        release_id: string, musicCode = "",  
+        modalFn: any = () => {}
+    ) => {
+        setIsSubmitting(true);
+
+        try {
+            const response = (await axios.post(`${apiEndpoint}/admin/releases/update-musicLinks`, 
+                { dspLinks, musicCode, release_id }, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })).data;
+            // console.log(response);
+
+            if (response.status) {
+                _setReleaseDetails(response.result);
+                modalFn()
+            }
+    
+            _setToastNotification({
+                display: true,
+                status: "info",
+                message: response.message
+            });
+
+            setApiResponse({
+                display: true,
+                status: true,
+                message: response.message
+            });
+
+            setIsSubmitting(false);
+        } catch (error: any) {
+            const err = error.response.data || error;
+            const fixedErrorMsg = "Ooops and error occurred!";
+            console.log(err);
+            // setReleases([]);
+
+            setApiResponse({
+                display: true,
+                status: false,
+                message: err.errors && err.errors.errors.length ? err.errors.errors[0].msg : err.message || fixedErrorMsg
+            });
+
+            _setToastNotification({
+                display: true,
+                status: "error",
+                message: err.errors && err.errors.errors.length ? err.errors.errors[0].msg : err.message || fixedErrorMsg
+            });
+
+            setIsSubmitting(false);
+        }
+    }, []);
+
     const handleUpdateUPC_EAN_ISRC = useCallback(async (
         release_id: string, song_id: string, 
         upcEanCode: string, isrcNumber: string,
@@ -316,6 +372,7 @@ export function useGetReleases() {
         getReleaseById,
         searchReleases,
         handleSubmitLiveStatus,
+        handleSubmitMusicLinks,
         handleUpdateUPC_EAN_ISRC,
     }
 }
