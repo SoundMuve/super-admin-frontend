@@ -288,20 +288,20 @@ export function useGetReleases() {
             const fixedErrorMsg = "Ooops and error occurred!";
             console.log(err);
             // setReleases([]);
+            setIsSubmitting(false);
 
             setApiResponse({
                 display: true,
                 status: false,
-                message: err.errors && err.errors.errors.length ? err.errors.errors[0].msg : err.message || fixedErrorMsg
+                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
             });
 
             _setToastNotification({
                 display: true,
                 status: "error",
-                message: err.errors && err.errors.errors.length ? err.errors.errors[0].msg : err.message || fixedErrorMsg
+                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
             });
 
-            setIsSubmitting(false);
         }
     }, []);
 
