@@ -5,8 +5,7 @@ import colors from '@/constants/kolors';
 
 
 interface _Props {
-    // status: "Live" | "Pending" | "Incomplete" | "Complete" | "Failed" | string
-    status: "Incomplete" | "Unpaid" | "Processing" |  "Complete" | "Live" | "Failed" | string
+    status: "Incomplete" | "Unpaid" | "Processing" |  "Pre-Saved" | "Live" | "Failed" | string
 };
 
 const ReleaseStatusComponent: React.FC<_Props> = ({status = "Pending"}) => {
@@ -132,7 +131,7 @@ const ReleaseStatusComponent: React.FC<_Props> = ({status = "Pending"}) => {
         </Box>
     );
 
-    if (status.toLowerCase() == 'complete') {
+    if (status.toLowerCase() == 'pre-saved') {
         return complete;
     } else if (status.toLowerCase() == 'failed') {
         return failed;

@@ -76,6 +76,7 @@ export type releaseInterface = {
     },
 
     upc_ean: string, // optional
+    preSave: boolean,
 
     stores: string[],
     socialPlatforms: string[],
@@ -87,7 +88,7 @@ export type releaseInterface = {
     coverArt: string,
 
     // status: "Live" | "Pending" | "Incomplete" | "Complete" | "Failed",
-    status: "Incomplete" | "Unpaid" | "Processing" |  "Complete" | "Live" | "Failed",
+    status: "Incomplete" | "Unpaid" | "Processing" |  "Pre-Saved" | "Live" | "Failed",
     liveUrl?: string,
     musicLinks?: {
         code: string;

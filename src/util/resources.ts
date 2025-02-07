@@ -14,7 +14,7 @@ export function validateEmail(email: string) {
 
 
 export const getStatusColor = (
-  status: "Incomplete" | "Unpaid" | "Processing" |  "Complete" | "Live" | "Failed", 
+  status: "Incomplete" | "Unpaid" | "Processing" |  "Pre-Saved" | "Live" | "Failed", 
   colorType: "bg" | "text"
 ) => {
   if (colorType == "bg") {
@@ -24,7 +24,7 @@ export const getStatusColor = (
           return "#825600";
       } else if (status == "Processing") {
           return kolors.primary;
-      } else if (status == "Complete") {
+      } else if (status == "Pre-Saved") {
           return "#33500B";
       } else if (status == "Incomplete") {
           return "#825600";
@@ -42,7 +42,7 @@ export const getStatusColor = (
           return "#D3AA5A";
       } else if (status == "Processing") {
           return kolors.milk;
-      } else if (status == "Complete") {
+      } else if (status == "Pre-Saved") {
           return "#B4D28A";
       } else if (status == "Incomplete") {
           return "#D2A95A";

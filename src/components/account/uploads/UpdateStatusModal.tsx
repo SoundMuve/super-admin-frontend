@@ -17,7 +17,7 @@ interface _Props {
     openUpdateLiveStatusModal: boolean;
     closeUpdateLiveStatusModal: (state: boolean) => void;
     releaseDetails: releaseInterface;
-    selectedStatus: "Incomplete" | "Unpaid" | "Processing" |  "Complete" | "Live" | "Failed"
+    selectedStatus: "Incomplete" | "Unpaid" | "Processing" |  "Pre-Saved" | "Live" | "Failed"
 };
 
 const UpdateStatusModalComponent: React.FC<_Props> = ({

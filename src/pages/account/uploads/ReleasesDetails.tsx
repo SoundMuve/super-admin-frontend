@@ -11,6 +11,8 @@ import Chip from '@mui/material/Chip';
 import EditIcon from '@mui/icons-material/Edit';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DownloadIcon from '@mui/icons-material/Download';
+import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
+
 import LoadingDataComponent from '@/components/LoadingData';
 import SongPreviewComponent from '@/components/SongPreview';
 import sampleArtWork from "@/assets/images/sampleArtWork.png"
@@ -20,9 +22,7 @@ import {
     artistInterface, songArtists_CreativesInterface 
 } from '@/typeInterfaces/release.interface';
 import { useReleaseStore } from '@/state/releaseStore';
-import { 
-    numberOfLinesTypographyStyle
-} from '@/util/mui';
+import { numberOfLinesTypographyStyle } from '@/util/mui';
 import { getQueryParams, getStatusColor } from '@/util/resources';
 import { copyToClipboard, downloadFile } from '@/util/copyNshare';
 import UpdateStatusModalComponent from '@/components/account/uploads/UpdateStatusModal';
@@ -73,18 +73,50 @@ export default function ReleasesDetails() {
                 <Box p={2} my={2} borderRadius="8px" bgcolor="#fff">
                     <Stack direction="row" alignItems="center" justifyContent="space-between">
                         <Box>
-                            <Typography variant='h2'
-                                title="Click to copy" onClick={() => copyToClipboard(releaseDetails.title)}
-                                sx={{
-                                    color: kolors.dark,
-                                    fontSize: {xs: "20px", md: "40px"},
-                                    fontWeight: "500",
-                                    lineHeight: "40px",
-                                    letterSpacing: "-0.444px",
-                                    // cursor: "context-menu"
-                                }}      
-                            >{ releaseDetails.title }</Typography>
-                            {/* >{ releaseDetails.title } - { releaseDetails.mainArtist.spotifyProfile.name }</Typography> */}
+                            <Stack direction="row" flexWrap="wrap" gap="25px" 
+                                justifyContent="space-between" alignItems="center"
+                            >
+                                <Typography variant='h2'
+                                    title="Click to copy" onClick={() => copyToClipboard(releaseDetails.title)}
+                                    sx={{
+                                        color: kolors.dark,
+                                        fontSize: {xs: "20px", md: "40px"},
+                                        fontWeight: "500",
+                                        lineHeight: "40px",
+                                        letterSpacing: "-0.444px",
+                                        // cursor: "context-menu"
+                                    }}      
+                                >{ releaseDetails.title }</Typography>
+
+                                {
+                                    releaseDetails.preSave ? 
+                                        <Box
+                                            sx={{
+                                                background: "#FFFFFF",
+                                                borderRadius: "4px",
+                                                padding: "5px 10px",
+                                                border: `1px solid ${kolors.dark}`,
+                                                boxSizing: "border-box",
+                                                textAlign: "center"
+                                            }}  
+                                        >
+                                            <Stack direction="row" spacing="5px" alignItems="center">
+                                                <Typography
+                                                    sx={{
+                                                        fontWeight: "600",
+                                                        fontSize: "16px",
+                                                        // lineHeight: "11px",
+                                                        // letter-spacing: -0.443526px;
+                                                        color: kolors.dark,
+                                                    }}
+                                                >Pre-Save</Typography>
+
+                                                <BookmarkAddedIcon sx={{ fontSize: "18px", color: kolors.primary }} />
+                                            </Stack>
+                                        </Box>
+                                    : <></>
+                                }
+                            </Stack>
                         </Box>
 
                         <Box>
@@ -130,15 +162,15 @@ export default function ReleasesDetails() {
                                     const value: any = event.target.value;
                                     selectedStatus = value;
                                     // console.log(value);
-                                    handleSubmitLiveStatus(value, releaseDetails._id)
+                                    // handleSubmitLiveStatus(value, releaseDetails._id);
 
 
-                                    // if (value == "Live") {
-                                    //     // open a modal asking for the link tree link
-                                    //     setOpenLiveModal(true);
-                                    // } else {
-                                    //     handleSubmitLiveStatus(value, releaseDetails._id)
-                                    // }
+                                    if (value == "Live" || value == "Pre-Saved") {
+                                        // open a modal asking for the link tree link
+                                        setOpenLiveLinksModal(true);
+                                    } else {
+                                        handleSubmitLiveStatus(value, releaseDetails._id)
+                                    }
                                 }}
                             >
                                 <MenuItem value="Status" disabled>
@@ -153,8 +185,10 @@ export default function ReleasesDetails() {
                                 <MenuItem value="Processing">
                                     Processing
                                 </MenuItem>
-                                <MenuItem value="Complete" disabled>
-                                    Complete
+                                <MenuItem value="Pre-Saved"
+                                    disabled={!releaseDetails.preSave}
+                                >
+                                    Pre-Saved
                                 </MenuItem>
                                 <MenuItem value="Live">
                                     Live
@@ -510,8 +544,12 @@ export default function ReleasesDetails() {
 
             <UpdateLiveLinksModalComponent 
                 openUpdateLiveLinksModal={openLiveLinksModal}
-                closeUpdateLiveLinksModal={() => setOpenLiveLinksModal(false) }
+                closeUpdateLiveLinksModal={() => { 
+                    selectedStatus = '';
+                    setOpenLiveLinksModal(false);
+                }}
                 releaseDetails={releaseDetails}
+                newStatus={selectedStatus}
             />
 
             <UpdateStatusModalComponent 

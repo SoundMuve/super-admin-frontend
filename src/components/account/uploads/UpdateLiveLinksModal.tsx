@@ -6,6 +6,14 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
+import Grid from '@mui/material/Grid';
+import Modal from '@mui/material/Modal';
+import Avatar from '@mui/material/Avatar';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 // import colors from '@/constants/kolors';
 // import ModalWrapper from '@/components/ModalWrapper';
 import { useGetReleases } from '@/hooks/releases/useGetReleases';
@@ -22,21 +30,17 @@ import audioMack from "@/assets/images/dsp/audioMack.png";
 import napster from "@/assets/images/dsp/napster.png";
 import tidal from "@/assets/images/dsp/tidal.png";
 import youtube from "@/assets/images/dsp/youtube.png";
-import youtubeMusic from "@/assets/images/dsp/youtubeMusic.png";
-import Modal from '@mui/material/Modal';
 import kolors from '@/constants/kolors';
-import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import Avatar from '@mui/material/Avatar';
-import CloseIcon from '@mui/icons-material/Close';
+import { getStatusColor } from '@/util/resources';
 import { copyToClipboard } from '@/util/copyNshare';
+import youtubeMusic from "@/assets/images/dsp/youtubeMusic.png";
 
 
 interface _Props {
     openUpdateLiveLinksModal: boolean;
     closeUpdateLiveLinksModal: (state: boolean) => void;
     releaseDetails: releaseInterface;
+    newStatus?: "Incomplete" | "Unpaid" | "Processing" |  "Pre-Saved" | "Live" | "Failed"
 };
 
 
@@ -123,18 +127,12 @@ interface linksInterface {
 
 const UpdateLiveLinksModalComponent: React.FC<_Props> = ({
     openUpdateLiveLinksModal, closeUpdateLiveLinksModal,
-    releaseDetails
+    releaseDetails, newStatus
 }) => {
     const [linksData, setLinksData] = useState<linksInterface[]>([]);
     const [activeData, setActivenData] = useState<linksInterface>();
+    const [selectedStatus, setSelectedStatus] = useState(newStatus ? newStatus : releaseDetails.status);
 
-
-    // const defaultSelectedDspData = {
-    //     id: 0,
-    //     name: '',
-    //     imageLogo: '',
-    //     bgColor: '',
-    // };
     const [liveLink, setLiveLink] = useState('');
     const [selectedMusicDsp, setSelectedMusicDsp] = useState<typeof musicDsps[0] | null>(null);
 
@@ -151,6 +149,8 @@ const UpdateLiveLinksModalComponent: React.FC<_Props> = ({
                 status: false,
                 message: ''
             })
+
+            setSelectedStatus(newStatus ? newStatus : releaseDetails.status);
         }
     }, [openUpdateLiveLinksModal])
     
@@ -269,7 +269,7 @@ const UpdateLiveLinksModalComponent: React.FC<_Props> = ({
                         width: "100%",
                         maxWidth: {xs: "92%", sm: "85%", md: "80%"},
                         // maxHeight: "605px",
-                        maxHeight: "90%",
+                        maxHeight: "95%",
                         borderRadius: "12px",
                         // p: "25px",
                         color: kolors.dark,
@@ -312,7 +312,7 @@ const UpdateLiveLinksModalComponent: React.FC<_Props> = ({
 
                     <Box id='payout-modal-description'
                         sx={{
-                            maxHeight: "80%",
+                            maxHeight: "85%",
                             overflow: "scroll",
                             borderRadius: 1,
                             px: 1.5,
@@ -327,12 +327,82 @@ const UpdateLiveLinksModalComponent: React.FC<_Props> = ({
                             )
                         }
 
+                        <Stack direction="row" spacing="20px" alignItems="center" mb={2}>
+                            <Typography variant='body1'
+                                sx={{
+                                    color: "#B3B3B3",
+                                    fontSize: "16px",
+                                    fontWeight: "400",
+                                    lineHeight: "10.645px",
+                                    letterSpacing: "-0.444px",
+                                }}  
+                            >Status</Typography>
+
+                            <Select
+                                id="releaseStatus"
+                                value={selectedStatus}
+                                size='small'
+                                sx={{
+                                    color: getStatusColor(selectedStatus, 'text'),
+                                    bgcolor: getStatusColor(selectedStatus, "bg"),
+                                    borderRadius: "6px",
+                                    border: "none",
+                                    '.MuiOutlinedInput-notchedOutline': {
+                                        // borderColor: kolors.primary,
+                                        border: "none",
+                                    },
+                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                        // borderColor: 'rgba(228, 219, 233, 0.25)',
+                                        border: "none",
+                                    },
+                                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                                        // borderColor: 'var(--TextField-brandBorderHoverColor)',
+                                        border: "none",
+                                    },
+                                    '.MuiSvgIcon-root ': {
+                                        fill: kolors.milk,
+                                    }
+                                }}
+
+                                onChange={(event) => {
+                                    const value: any = event.target.value;
+                                    setSelectedStatus(value);
+                                }}
+                            >
+                                <MenuItem value="Status" disabled>
+                                    Status
+                                </MenuItem>
+                                <MenuItem value="Incomplete" disabled>
+                                    Incomplete
+                                </MenuItem>
+                                <MenuItem value="Unpaid" disabled>
+                                    Unpaid
+                                </MenuItem>
+                                <MenuItem value="Processing" disabled>
+                                    Processing
+                                </MenuItem>
+                                <MenuItem 
+                                    value="Pre-Saved"
+                                    disabled={!releaseDetails.preSave}
+                                >
+                                    Pre-Saved
+                                </MenuItem>
+                                <MenuItem value="Live">
+                                    Live
+                                </MenuItem>
+                                <MenuItem value="Failed" disabled>
+                                    Failed
+                                </MenuItem>
+                            </Select>
+                        </Stack>
+                        
+
                         <Grid container spacing="15px">
                             <Grid item xs={12} sm={5} md={5} xl={4}>
                                 <Box 
                                     sx={{
                                         // position: "relative",
-                                        height: "70dvh",
+                                        height: "75dvh",
                                         overflow: "auto",
                                         position: "sticky",
                                         bottom: 1,
