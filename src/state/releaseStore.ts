@@ -41,6 +41,7 @@ export const defaultReleaseData: releaseInterface = {
     status: "Incomplete",
     _id: "",
     songs: [],
+    preSave: false,
     createdAt: "",
     updatedAt: ""
 };
