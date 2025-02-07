@@ -227,15 +227,23 @@ const UpdateLiveLinksModalComponent: React.FC<_Props> = ({
         });
 
         if (linksData.length) {
-            handleSubmitMusicLinks(
-                linksData, releaseDetails._id, 
-                `${releaseDetails.musicLinks?.code || ''}`,
-                () => {
-                    setTimeout(() => {
-                        closeUpdateLiveLinksModal(false)
-                    }, 3000);
-                }
-            )
+            if (selectedStatus == "Pre-Saved" || selectedStatus == "Live") {
+                handleSubmitMusicLinks(
+                    linksData, selectedStatus, releaseDetails._id,
+                    `${releaseDetails.musicLinks?.code || ''}`,
+                    () => {
+                        setTimeout(() => {
+                            closeUpdateLiveLinksModal(false)
+                        }, 3000);
+                    }
+                )
+            } else {
+                setApiResponse({
+                    display: true,
+                    status: false,
+                    message: "Music links can only be set on Live or Pre-Saved releases, please select an active status."
+                });
+            }
         } else {
             setApiResponse({
                 display: true,

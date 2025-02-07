@@ -251,6 +251,7 @@ export function useGetReleases() {
 
     const handleSubmitMusicLinks = useCallback(async (
         dspLinks: {name: string; url: string; }[], 
+        release_status: string,
         release_id: string, musicCode = "",  
         modalFn: any = () => {}
     ) => {
@@ -258,7 +259,7 @@ export function useGetReleases() {
 
         try {
             const response = (await axios.post(`${apiEndpoint}/admin/releases/update-musicLinks`, 
-                { dspLinks, musicCode, release_id }, {
+                { dspLinks, release_status, musicCode, release_id }, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }
