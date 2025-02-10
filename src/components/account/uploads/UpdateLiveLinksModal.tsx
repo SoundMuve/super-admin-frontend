@@ -391,7 +391,7 @@ const UpdateLiveLinksModalComponent: React.FC<_Props> = ({
                                 </MenuItem>
                                 <MenuItem 
                                     value="Pre-Saved"
-                                    disabled={!releaseDetails.preSave}
+                                    // disabled={!releaseDetails.preSave}
                                 >
                                     Pre-Saved
                                 </MenuItem>
