@@ -63,6 +63,34 @@ export default function ReleasesDetails() {
             }
         }
     }, [isSubmitting]);
+
+    const AdvancedDistributionView = (
+        <Box>
+            <Typography variant='h2'
+                sx={{
+                    color: kolors.secondary,
+                    fontSize: "16px",
+                    fontWeight: "500",
+                    lineHeight: "10.645px",
+                    letterSpacing: "-0.444px",
+                    my: 2
+                }}      
+            >Advanced Distribution</Typography>
+
+            <Stack direction="row" flexWrap="wrap" gap={3}>
+                <ReleaseData2Component title='Label Name' value={releaseDetails.labelName} />
+                <ReleaseData2Component title='Recording Location' value={ releaseDetails.recordingLocation } />
+                <ReleaseData2Component title='UPC/EAN Code' value={ releaseDetails.upc_ean } />
+                <ReleaseData2Component title='Sold Worldwide' value={ releaseDetails.soldCountries.worldwide } />
+                {/* <ReleaseData2Component title='Sold Countries' value={ releaseDetails.soldCountries.countries.toString() } /> */}
+                <ReleaseData3Component title='Sold Countries' value={ releaseDetails.soldCountries.countries } />
+                {/* <ReleaseData2Component title='Stores' value={ releaseDetails.stores.includes("All") ? "All" : releaseDetails.stores.toString() } /> */}
+                <ReleaseData3Component title='Stores' value={ releaseDetails.stores } />
+                {/* <ReleaseData2Component title='Social Platforms' value={ releaseDetails.socialPlatforms.includes("All") ? "All" : releaseDetails.socialPlatforms.toString() } /> */}
+                <ReleaseData3Component title='Social Platforms' value={ releaseDetails.socialPlatforms } />
+            </Stack>
+        </Box>
+    );
     
 
     return (
@@ -89,7 +117,7 @@ export default function ReleasesDetails() {
                                 >{ releaseDetails.title }</Typography>
 
                                 {
-                                    releaseDetails.preSave ? 
+                                    releaseDetails.preOrder?.status ? 
                                         <Box
                                             sx={{
                                                 background: "#FFFFFF",
@@ -186,7 +214,7 @@ export default function ReleasesDetails() {
                                     Processing
                                 </MenuItem>
                                 <MenuItem value="Pre-Saved"
-                                    disabled={!releaseDetails.preSave}
+                                    // disabled={!releaseDetails.preSave}
                                 >
                                     Pre-Saved
                                 </MenuItem>
@@ -404,40 +432,37 @@ export default function ReleasesDetails() {
 
 
                     <Box my={3}>
-                        <Typography variant='h2'
-                            sx={{
-                                color: kolors.secondary,
-                                fontSize: "16px",
-                                fontWeight: "500",
-                                lineHeight: "10.645px",
-                                letterSpacing: "-0.444px",
-                                my: 2
-                            }}      
-                        >Advanced Distribution</Typography>
 
-                        <Box
-                            sx={{
-                                display: "grid",
-                                gridTemplateColumns: "repeat(4, 1fr)",
-                                gridColumnGap: "10px",
-                                gridRowGap: "10px",
-                            }}      
-                        >
+                        {
+                            releaseDetails.preOrder?.status ? 
+                                <Grid container spacing={"5px"} mb={3}>
+                                    <Grid item xs={12} sm={7} md={8} lg={9}>
+                                        { AdvancedDistributionView }
+                                    </Grid>
 
-                        </Box>
+                                    <Grid item xs={12} sm={5} md={4} lg={3}>
+                                        <Typography variant='h2'
+                                            sx={{
+                                                color: kolors.secondary,
+                                                fontSize: "16px",
+                                                fontWeight: "500",
+                                                lineHeight: "10.645px",
+                                                letterSpacing: "-0.444px",
+                                                my: 2
+                                            }}      
+                                        >Pre-order details</Typography>
 
-                        <Stack direction="row" flexWrap="wrap" gap={3}>
-                            <ReleaseData2Component title='Label Name' value={releaseDetails.labelName} />
-                            <ReleaseData2Component title='Recording Location' value={ releaseDetails.recordingLocation } />
-                            <ReleaseData2Component title='UPC/EAN Code' value={ releaseDetails.upc_ean } />
-                            <ReleaseData2Component title='Sold Worldwide' value={ releaseDetails.soldCountries.worldwide } />
-                            {/* <ReleaseData2Component title='Sold Countries' value={ releaseDetails.soldCountries.countries.toString() } /> */}
-                            <ReleaseData3Component title='Sold Countries' value={ releaseDetails.soldCountries.countries } />
-                            {/* <ReleaseData2Component title='Stores' value={ releaseDetails.stores.includes("All") ? "All" : releaseDetails.stores.toString() } /> */}
-                            <ReleaseData3Component title='Stores' value={ releaseDetails.stores } />
-                            {/* <ReleaseData2Component title='Social Platforms' value={ releaseDetails.socialPlatforms.includes("All") ? "All" : releaseDetails.socialPlatforms.toString() } /> */}
-                            <ReleaseData3Component title='Social Platforms' value={ releaseDetails.socialPlatforms } />
-                        </Stack>
+                                        <Box>
+                                            <ReleaseData4Component title='Channel' value={ releaseDetails.preOrder?.preOrderChannel || '' } />
+                                            <ReleaseData4Component title='Date' value={ releaseDetails.preOrder?.preOrderStartDate || '' } />
+                                            <ReleaseData4Component title='Track preview' value={ releaseDetails.preOrder?.preOrderTrackPreview.songTitle || '' } />
+                                            {/* <ReleaseData4Component title='iTunes options' value={ releaseDetails.preOrder?.preOrderPrice } /> */}
+                                        </Box>
+                                    </Grid>
+                                </Grid>
+                            : AdvancedDistributionView
+                        }
+
                     </Box>
 
                     <Box p={2} borderRadius="8px" bgcolor={kolors.bodyBg}>
@@ -618,6 +643,48 @@ const ReleaseData2Component: React.FC<_Props> = ({ title, value }) => {
     return (
         <Box sx={{ flex: "1 0 21%" }}>
             <Stack direction="column" width="fit-content">
+                <Typography variant='body1'
+                    sx={{
+                        color: kolors.dark,
+                        fontSize: "16px",
+                        fontWeight: "600",
+                        lineHeight: "13.645px",
+                        letterSpacing: "-0.444px"
+                    }}
+                >{ title }</Typography>
+
+                <Box 
+                    sx={{
+                        bgcolor: kolors.bodyBg,
+                        color: kolors.dark,
+                        textAlign: "center",
+                        mt: "12px",
+                        borderRadius: "5px",
+                        padding: "10px"
+                    }}
+                >
+                    <Typography title="Click to copy" onClick={() => copyToClipboard(value)}
+                        sx={{
+                            color: kolors.dark,
+                            fontSize: "13px",
+                            fontWeight: "400",
+                            lineHeight: "10.645px",
+                            // cursor: "context-menu"
+                        }}
+                    >{ value }</Typography>
+                </Box>
+            </Stack>
+        </Box>
+    );
+}
+
+const ReleaseData4Component: React.FC<_Props> = ({ title, value }) => {
+    
+    return (
+        <Box my={1}>
+            <Stack direction="row" spacing="20px" width="fit-content"
+                alignItems="center" 
+            >
                 <Typography variant='body1'
                     sx={{
                         color: kolors.dark,
