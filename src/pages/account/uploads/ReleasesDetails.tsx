@@ -466,8 +466,8 @@ export default function ReleasesDetails() {
                     </Box>
 
                     <Box p={2} borderRadius="8px" bgcolor={kolors.bodyBg}>
-                        <Stack direction="row" gap={3} flexWrap="wrap">
-                            <Box>
+                        <Stack direction="row" gap={2} flexWrap="wrap">
+                            <Box sx={{ width: "250px" }}>
                                 {
                                     releaseDetails.songs.map((item, index) => (
                                         <Box key={index} mb={2}
@@ -493,7 +493,8 @@ export default function ReleasesDetails() {
                                 sx={{
                                     borderRadius: "8.65px",
                                     border: "1px solid #C8C8C8",
-                                    flexGrow: 1,
+                                    width: {xs: "100%", md: "calc(100% - 300px)"},
+                                    // flexGrow: 1,
                                     p: 2
                                 }}      
                             >
@@ -1081,9 +1082,9 @@ const SongViewComponent = (
                 color: song_id == active_id ? kolors.milk : kolors.dark,
                 py: {xs: "6.02px",md: "6.5px"},
                 px: "7px",
-                width: "100%",
-                minWidth: "200px",
-                maxWidth: "300px",
+                // width: "100%",
+                // minWidth: "200px",
+                // maxWidth: "300px",
 
                 display: "flex",
                 flexDirection: "row",
@@ -1164,7 +1165,7 @@ const LyricsComponent: React.FC<_Props> = ({ title, value }) => {
             </Grid>
 
             <Grid item xs={12} alignSelf="flex-start" >
-                <Box>
+                <Box textOverflow="ellipsis" overflow="hidden">
                     <Box bgcolor="#fff" p={1} borderRadius={2} minHeight="100px">
                         <Box sx={{ float: "right", display: value ? "initial" : "none" }}>
                             <IconButton size='small' 
@@ -1175,7 +1176,7 @@ const LyricsComponent: React.FC<_Props> = ({ title, value }) => {
                             </IconButton>
                         </Box>
                         
-                        {/* <Typography variant='body2'
+                        {/* <Typography component='pre'
                             sx={{
                                 textAlign: "justify",
                             }}
@@ -1184,6 +1185,7 @@ const LyricsComponent: React.FC<_Props> = ({ title, value }) => {
                         <pre
                             style={{
                                 textAlign: "justify",
+                                textOverflow: "ellipsis",
                             }}
                         >{ value }</pre>
                     </Box>
