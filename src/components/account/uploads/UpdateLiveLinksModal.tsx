@@ -30,10 +30,12 @@ import audioMack from "@/assets/images/dsp/audioMack.png";
 import napster from "@/assets/images/dsp/napster.png";
 import tidal from "@/assets/images/dsp/tidal.png";
 import youtube from "@/assets/images/dsp/youtube.png";
+import deezer from "@/assets/branded/images/dsp/deezer.png";
+import tiktok from "@/assets/branded/images/dsp/tiktok.png";
+import youtubeMusic from "@/assets/images/dsp/youtubeMusic.png";
 import kolors from '@/constants/kolors';
 import { getStatusColor } from '@/util/resources';
 import { copyToClipboard } from '@/util/copyNshare';
-import youtubeMusic from "@/assets/images/dsp/youtubeMusic.png";
 
 
 interface _Props {
@@ -110,6 +112,22 @@ const musicDsps = [
         name: "Soundcloud",
         imageLogo: soundCloud,
         bgColor: "linear-gradient(185.75deg, #FF9C28 46.56%, #E80000 132.64%)",
+    },
+    {
+        id: 12,
+        name: "Tiktok",
+        imageLogo: tiktok,
+        bgColor: "linear-gradient(185.75deg, #EE1D52 46.56%, #69C9D0 132.64%)",
+        textColor: "#fff",
+        btnText: "Download",
+    },
+    {
+        id: 13,
+        name: "DEEZER",
+        imageLogo: deezer,
+        bgColor: "#B646FF",
+        textColor: "#fff",
+        btnText: "Download",
     },
     // {
     //     id: 12,
