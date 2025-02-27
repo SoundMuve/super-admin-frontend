@@ -10,7 +10,7 @@ import { copyToClipboard } from '@/util/copyNshare';
 import { numberOfLinesTypographyStyle, releaseTextFieldStyle } from '@/util/mui';
 
 import temptCoverPhotoImg from '@/assets/images/sampleArtWork.png';
-import { currencyDisplay, getQueryParams, getTotalCartAmount, handleGetTotalAmount } from '@/util/resources';
+import { currencyDisplay, getQueryParams, getTotalCartAmount, getTotalCartPriceAmount, handleGetTotalAmount } from '@/util/resources';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import { useCoupon } from '@/hooks/coupon/useCoupon';
@@ -42,8 +42,9 @@ export default function CouponDetails() {
 
     useEffect(() => {
         const totalAmount = getTotalCartAmount(couponDiscountDetails.cartItems);
+        const totalPriceAmount = getTotalCartPriceAmount(couponDiscountDetails.cartItems);
 
-        const discounted_Amount = (totalAmount * Number(discountPercentage || 0) ) / 100;
+        const discounted_Amount = (totalPriceAmount * Number(discountPercentage || 0) ) / 100;
         const balanceAmount = totalAmount - discounted_Amount;
 
         setDiscountedAmount(discounted_Amount);
@@ -391,6 +392,18 @@ export default function CouponDetails() {
                                     <Typography>
                                         Total Amount: <b>
                                             { handleGetTotalAmount(couponDiscountDetails.cartItems) }
+                                        </b>
+                                    </Typography>
+
+                                    <Typography>
+                                        Total Price: <b>
+                                            { handleGetTotalAmount(couponDiscountDetails.cartItems, "price") }
+                                        </b>
+                                    </Typography>
+
+                                    <Typography>
+                                        Total pre-order amount: <b>
+                                            { handleGetTotalAmount(couponDiscountDetails.cartItems, "pre-order") }
                                         </b>
                                     </Typography>
 

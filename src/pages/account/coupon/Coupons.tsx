@@ -189,6 +189,7 @@ const CouponsTableRow = ({couponData}: {couponData: couponInterface}) => {
                                         <TableCell>Artist Name</TableCell>
                                         <TableCell>Release Type</TableCell>
                                         <TableCell>Title</TableCell>
+                                        <TableCell>Pre-Order</TableCell>
                                         <TableCell align="right">Amount</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -203,6 +204,8 @@ const CouponsTableRow = ({couponData}: {couponData: couponInterface}) => {
                                             <TableCell>{cartItem.artistName}</TableCell>
                                             <TableCell>{cartItem.releaseType}</TableCell>
                                             <TableCell>{cartItem.title}</TableCell>
+
+                                            <TableCell>{currencyDisplay(Number(cartItem.preSaveAmount || 0))}</TableCell>
 
                                             <TableCell align="right">
                                                 { currencyDisplay(Number(cartItem.price)) }

@@ -8,7 +8,8 @@ export interface cartItemInterface {
     price: number,
     releaseType: string,
     title: string,
-
+    preSaveAmount: number,
+    
     createdAt?: string;
     updatedAt?: string;
 }

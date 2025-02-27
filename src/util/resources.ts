@@ -346,18 +346,47 @@ export const getQueryParams = (query: string) => {
 
 export const getTotalCartAmount = (cartItems: cartItemInterface[]) => {
   const totalPrice = cartItems.reduce((accumulator, currentObject) => {
+    const releaseTotalPrice = currentObject.price + (currentObject.preSaveAmount || 0);
+
+    return accumulator + releaseTotalPrice;
+    // return accumulator + currentObject.price;
+  }, 0);
+
+  return totalPrice;
+}
+
+export const getTotalCartPreOrderAmount = (cartItems: cartItemInterface[]) => {
+  const totalPrice = cartItems.reduce((accumulator, currentObject) => {
+      return accumulator + (currentObject.preSaveAmount || 0);
+  }, 0);
+
+  return totalPrice;
+}
+
+export const getTotalCartPriceAmount = (cartItems: cartItemInterface[]) => {
+  const totalPrice = cartItems.reduce((accumulator, currentObject) => {
       return accumulator + currentObject.price;
   }, 0);
 
   return totalPrice;
 }
 
-export const handleGetTotalAmount = (cartItems: cartItemInterface[]) => {
+export const handleGetTotalAmount = (
+  cartItems: cartItemInterface[],
+  totalType: "price" | "pre-order" | "sum-total" = "sum-total"
+) => {
   // const totalPrice = cartItems.reduce((accumulator, currentObject) => {
   //     return accumulator + currentObject.price;
   // }, 0);
+
+  if (totalType == "sum-total") {
+    return currencyDisplay(getTotalCartAmount(cartItems));
+  } else if (totalType == "pre-order") { 
+    return currencyDisplay(getTotalCartPreOrderAmount(cartItems));
+  } else if (totalType == "price") { 
+    return currencyDisplay(getTotalCartPriceAmount(cartItems));
+  }
   
-  return currencyDisplay(getTotalCartAmount(cartItems));
 }
 
 
