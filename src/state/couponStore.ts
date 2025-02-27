@@ -25,6 +25,7 @@ const defaultCartItemData: cartItemInterface = {
     artistName: "",
     coverArt: "",
     price: 0,
+    preSaveAmount: 0,
     releaseType: "",
     title: "",
 }
