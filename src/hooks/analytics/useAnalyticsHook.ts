@@ -1,12 +1,10 @@
 import { useCallback, useState } from "react";
 
-import axios from "axios";
 import * as yup from "yup";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { useUserStore } from "@/state/userStore";
-import { apiEndpoint } from "@/util/resources";
 
 import { useSettingStore } from "@/state/settingStore";
 import { useGeneralStore } from "@/state/generalStore";
@@ -16,6 +14,7 @@ import {
     analyticsInterface, locationAnalyticsInterface, totalAnalyticsInterface,
 } from "@/typeInterfaces/analytics.interface";
 import { useReleaseStore } from "@/state/releaseStore";
+import apiClient, { apiErrorResponse } from "@/util/apiClient";
 
 
 
@@ -40,7 +39,7 @@ const formSchema = yup.object({
 
 
 export function useAnalyticsHook() {
-    const accessToken = useUserStore((state) => state.accessToken);
+    // const accessToken = useUserStore((state) => state.accessToken);
     const userData = useUserStore((state) => state.userData);
 
     const [limitNo, setLimitNo] = useState(25);
@@ -79,10 +78,7 @@ export function useAnalyticsHook() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/analytics/live-releases`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/analytics/live-releases`, {
                 params: {
                     page: pageNo,
                     limit: limitNo,
@@ -108,16 +104,7 @@ export function useAnalyticsHook() {
             });
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-            // setUsers([]);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setIsSubmitting(false);
         }
@@ -127,10 +114,7 @@ export function useAnalyticsHook() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/analytics/release-analytics`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/analytics/release-analytics`, {
                 params: { release_id, song_id }
             })).data;
             // console.log(response);
@@ -147,15 +131,7 @@ export function useAnalyticsHook() {
     
             setIsSubmitting(false);
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setIsSubmitting(false);
         }
@@ -166,10 +142,7 @@ export function useAnalyticsHook() {
         setDatedAnalyticsData(undefined);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/analytics/dated-release-analytics`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/analytics/dated-release-analytics`, {
                 params: { release_id, song_id, analytics_date }
             })).data;
             // console.log(response);
@@ -186,15 +159,7 @@ export function useAnalyticsHook() {
     
             // setIsSubmitting(false);
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            // const fixedErrorMsg = "Ooops and error occurred!";
-            console.log(err);
-
-            // _setToastNotification({
-            //     display: true,
-            //     status: "error",
-            //     message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            // });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
             // setIsSubmitting(false);
         }
@@ -205,10 +170,7 @@ export function useAnalyticsHook() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/analytics/search`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/analytics/search`, {
                 params: {
                     search: searchWord,
                     page: pageNo,
@@ -228,16 +190,7 @@ export function useAnalyticsHook() {
             }
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            console.log(err);
-            // setUsers([]);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setIsSubmitting(false);
         }
@@ -274,7 +227,7 @@ export function useAnalyticsHook() {
         }
 
         try {
-            const response = (await axios.post(`${apiEndpoint}/admin/analytics/setAnalytics`, 
+            const response = (await apiClient.post(`/admin/analytics/setAnalytics`, 
                 { 
                     ...formData,
                     release_id: selectedAnalyticsDetails.release._id,
@@ -285,11 +238,8 @@ export function useAnalyticsHook() {
                     admin_fullname: userData.firstName + " " + userData.lastName,
                     user_email: selectedAnalyticsDetails.user.email,
                     user_id: selectedAnalyticsDetails.user._id,
-                }, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
                 }
-            })).data;
+            )).data;
             // console.log(response);
 
             if (response.status) {
@@ -309,20 +259,12 @@ export function useAnalyticsHook() {
             });
 
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            const messageRes = apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setApiResponse({
                 display: true,
                 status: false,
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+                message: messageRes
             });
         }
     }

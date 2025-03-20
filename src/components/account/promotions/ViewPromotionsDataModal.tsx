@@ -25,10 +25,11 @@ interface _Props {
     openPromotionsModal: boolean,
     closePromotionsModal: (state: boolean) => void,
     promotion: promotionInterface,
+    successFunc: () => void,
 }
 
 export const ViewPromotionsDataModal: React.FC<_Props> = ({
-    openPromotionsModal, closePromotionsModal, promotion
+    openPromotionsModal, closePromotionsModal, promotion, successFunc
 }) => {
     const [confrimationDialog, setConfrimationDialog] = useState(false);
     const [statusState, setStatusState] = useState(promotion.status);
@@ -177,7 +178,7 @@ export const ViewPromotionsDataModal: React.FC<_Props> = ({
                                         // console.log(checked);
                                         setStatusState(checked);
 
-                                        updatePromotion(promotion._id, "status", checked);
+                                        updatePromotion(promotion._id, "status", checked, () => successFunc());
                                     }}
                                     inputProps={{ 'aria-label': 'controlled' }}
                                 />
@@ -238,7 +239,7 @@ export const ViewPromotionsDataModal: React.FC<_Props> = ({
 
                         <Button autoFocus onClick={() => {
                             setConfrimationDialog(false);
-                            updatePromotion(promotion._id, "delete", true);
+                            updatePromotion(promotion._id, "delete", true, () => successFunc());
                             // closePromotionsModal(true);
                         }}>Yes</Button>
                     </DialogActions>

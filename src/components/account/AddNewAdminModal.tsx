@@ -275,7 +275,9 @@ const NewAdminPreviewComponent: React.FC<newAdminPreview_Props> = ({
     };
 
     const [confirmCheckBox, setConfirmCheckBox] = useState(false);
-    
+
+    // const userRoles = ['user', 'admin', 'super admin', 'moderator', 'editor', 'support'];
+    const userRoles = ['user', 'admin', 'editor'];
     
     return (
         <Box>
@@ -469,12 +471,20 @@ const NewAdminPreviewComponent: React.FC<newAdminPreview_Props> = ({
                         <MenuItem value="role" disabled>
                             Select user role
                         </MenuItem>
-                        <MenuItem value="user">
+
+                        {
+                            userRoles.map((roles, index) => (
+                                <MenuItem key={index} value={roles}
+                                    sx={{ textTransform: "capitalize" }}
+                                >{roles}</MenuItem>
+                            ))
+                        }
+                        {/* <MenuItem value="user">
                             User
                         </MenuItem>
                         <MenuItem value="admin">
                             Admin
-                        </MenuItem>
+                        </MenuItem> */}
                     </Select>
 
 

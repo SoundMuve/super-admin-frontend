@@ -29,6 +29,9 @@ import AnalyticsDetails from "./pages/account/analytics/AnalyticsDetails";
 import RevenueArea from "./pages/account/revenue/RevenueArea";
 import TransactionDetails from "./pages/account/revenue/TransactionDetails";
 import UserAnalytics from "./pages/account/users/UserAnalytics";
+import BlogPosts from "./pages/account/blog/BlogPosts";
+import PostsDetails from "./pages/account/blog/PostsDetails";
+import NewPost from "./pages/account/blog/NewPost";
 
 
 export const router = createBrowserRouter([
@@ -74,6 +77,31 @@ export const router = createBrowserRouter([
             {
               path: "",
               element: <Dashboard />
+            },
+            {
+              path: "blog",
+              // element: <Dashboard />
+              children: [
+                {
+                  path: "",
+                  element: <BlogPosts />
+                },
+                {
+                  // path: "details",
+                  path: ":post_id",
+                  element: <PostsDetails />
+                },
+                {
+                  // path: "details",
+                  path: "new",
+                  element: <NewPost />
+                },
+                {
+                  // path: "details",
+                  path: "edit/:post_id",
+                  element: <NewPost />
+                },
+              ]
             },
             {
               path: "revenue",

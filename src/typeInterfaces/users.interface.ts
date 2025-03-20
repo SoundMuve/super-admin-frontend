@@ -18,7 +18,7 @@ export type locationInterface = {
 
 export type userInterface = {
     _id: string;
-    role: 'user' | 'admin',
+    role: 'user' | 'admin' | 'super admin' | 'moderator' | 'editor' | 'support',
     userType: 'artist' | 'record label',
     balance: number,
     email: string;

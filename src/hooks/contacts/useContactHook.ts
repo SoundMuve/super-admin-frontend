@@ -1,13 +1,12 @@
-import axios from "axios";
 import { useCallback, useState } from "react";
 import { useUserStore } from "@/state/userStore";
-import { apiEndpoint } from "@/util/resources";
 import { useSettingStore } from "@/state/settingStore";
 import { contactUsInterface } from "@/typeInterfaces/contactInterface";
 import { useGeneralStore } from "@/state/generalStore";
+import apiClient, { apiErrorResponse } from "@/util/apiClient";
 
 export function useContactHook() {
-    const accessToken = useUserStore((state) => state.accessToken);
+    // const accessToken = useUserStore((state) => state.accessToken);
     const userData = useUserStore((state) => state.userData);
 
     const [limitNo, setLimitNo] = useState(25);
@@ -31,10 +30,7 @@ export function useContactHook() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/contact`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/contact`, {
                 params: {
                     page: pageNo,
                     limit: limitNo,
@@ -59,15 +55,7 @@ export function useContactHook() {
             });
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setIsSubmitting(false);
         }
@@ -77,10 +65,7 @@ export function useContactHook() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/contact/contact-by-id`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/contact/contact-by-id`, {
                 params: { contact_id }
             })).data;
             // console.log(response);
@@ -97,15 +82,7 @@ export function useContactHook() {
     
             setIsSubmitting(false);
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setIsSubmitting(false);
         }
@@ -120,15 +97,12 @@ export function useContactHook() {
         });
 
         try {
-            const response = (await axios.put(`${apiEndpoint}/admin/contact/reply`, 
+            const response = (await apiClient.put(`/admin/contact/reply`, 
                 { 
                     contact_id, replyMsg,
                     user_name: userData.firstName + " " + userData.lastName, 
-                }, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
                 }
-            })).data;
+            )).data;
             // console.log(response);
 
             _setToastNotification({
@@ -144,20 +118,12 @@ export function useContactHook() {
             }
             return false;
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            const messageRes = apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setApiResponse({
                 display: true,
                 status: false,
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+                message: messageRes
             });
 
             return false;

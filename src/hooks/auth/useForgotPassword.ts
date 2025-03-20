@@ -1,14 +1,13 @@
 import { useState } from "react";
 
-import axios from "axios";
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
 
 // import { useUserStore } from "@/state/userStore";
-import { apiEndpoint } from "@/util/resources";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import { useSettingStore } from "@/state/settingStore";
+import apiClient, { apiErrorResponse } from "@/util/apiClient";
 
 
 const formSchema = yup.object({
@@ -41,7 +40,7 @@ export function useForgotPasswordAuth() {
         });
 
         try {
-            const response = (await axios.post(`${apiEndpoint}/auth/sendPasswordResetEmail`, formData )).data;
+            const response = (await apiClient.post(`/auth/sendPasswordResetEmail`, formData )).data;
             // console.log(response);
             
             setApiResponse({
@@ -66,13 +65,12 @@ export function useForgotPasswordAuth() {
             });
 
         } catch (error: any) {
-            const err = error.response.data || error;
-            const fixedErrorMsg = "Oooops, failed to send email otp. please try again.";
+            const messageRes = apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setApiResponse({
                 display: true,
                 status: false,
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+                message: messageRes
             });
         }
     }

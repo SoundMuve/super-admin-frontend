@@ -165,6 +165,7 @@ export default function Promotions() {
                     closePromotionsModal={() => setViewPromotionModal(false)}
                     openPromotionsModal={viewPromotionModal}
                     promotion={selectedPromotion}
+                    successFunc={() => getAllActivePromotions()}
                 />
             }
 

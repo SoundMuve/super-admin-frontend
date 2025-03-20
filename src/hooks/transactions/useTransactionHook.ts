@@ -1,19 +1,17 @@
 import { useCallback, useState } from "react";
 
-import axios from "axios";
-
 import { useUserStore } from "@/state/userStore";
 import { useSettingStore } from "@/state/settingStore";
 
-import { apiEndpoint } from "@/util/resources";
 import { 
     revenueTransactionInterface, topTotalTransactionAnalysisInterface, 
     transactionRevenueDetailsInterface 
 } from "@/typeInterfaces/transaction.interface";
+import apiClient, { apiErrorResponse } from "@/util/apiClient";
 
 
 export function useTransactionHook() {
-    const accessToken = useUserStore((state) => state.accessToken);
+    // const accessToken = useUserStore((state) => state.accessToken);
     const userData = useUserStore((state) => state.userData);
     const _setToastNotification = useSettingStore((state) => state._setToastNotification);
 
@@ -39,10 +37,7 @@ export function useTransactionHook() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/transactions`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/transactions`, {
                 params: {
                     page: pageNo,
                     limit: limitNo,
@@ -68,16 +63,7 @@ export function useTransactionHook() {
             });
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-            // setUsers([]);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setIsSubmitting(false);
         }
@@ -85,15 +71,7 @@ export function useTransactionHook() {
 
     const getWithdrawalRequest = useCallback(async () => {
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/transactions/withdrawal-request`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
-                // params: {
-                //     page: pageNo,
-                //     limit: limitNo,
-                // }
-            })).data;
+            const response = (await apiClient.get(`/admin/transactions/withdrawal-request`)).data;
             // console.log(response);
 
             if (response.status) {
@@ -111,30 +89,13 @@ export function useTransactionHook() {
             });
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-            // setUsers([]);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
         }
     }, []);
 
     const getTopTotalTransactionAnalysis = useCallback(async () => {
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/transactions/total-transaction-analysis`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
-                // params: {
-                //     page: pageNo,
-                //     limit: limitNo,
-                // }
-            })).data;
+            const response = (await apiClient.get(`/admin/transactions/total-transaction-analysis`)).data;
             // console.log(response);
 
             if (response.status) {
@@ -148,25 +109,13 @@ export function useTransactionHook() {
             });
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-            // setUsers([]);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
         }
     }, []);
 
     const getTransactionById = useCallback(async (transaction_id: string) => {
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/transactions/transaction-by-id`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/transactions/transaction-by-id`, {
                 params: {
                     transaction_id,
                 }
@@ -184,16 +133,7 @@ export function useTransactionHook() {
             });
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-            // setUsers([]);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
         }
     }, []);
 
@@ -204,13 +144,8 @@ export function useTransactionHook() {
         adminName = userData.firstName + " " + userData.lastName
     ) => {
         try {
-            const response = (await axios.post(`${apiEndpoint}/admin/transactions/update-status`, 
+            const response = (await apiClient.post(`/admin/transactions/update-status`, 
                 { user_id, transaction_id, actionType, adminName }, 
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`
-                    }
-                }
             )).data;
             // console.log(response);
 
@@ -231,16 +166,7 @@ export function useTransactionHook() {
                 message: response.message
             });
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            console.log(err);
-            // setUsers([]);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
         }
     }, []);
 
@@ -251,13 +177,8 @@ export function useTransactionHook() {
         transRevenueDetails = transactionRevenueDetails
     ) => {
         try {
-            const response = (await axios.post(`${apiEndpoint}/admin/transactions/accept-withdrawal`, 
+            const response = (await apiClient.post(`/admin/transactions/accept-withdrawal`, 
                 { user_id, transaction_id, payout_id, adminName }, 
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`
-                    }
-                }
             )).data;
             // console.log(response);
 
@@ -279,16 +200,7 @@ export function useTransactionHook() {
                 message: response.message
             });
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            console.log(err);
-            // setUsers([]);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
         }
     }, []);
 
@@ -297,13 +209,8 @@ export function useTransactionHook() {
         transRevenueDetails = transactionRevenueDetails
     ) => {
         try {
-            const response = (await axios.post(`${apiEndpoint}/admin/transactions/verify-paypal-payment`, 
+            const response = (await apiClient.post(`/admin/transactions/verify-paypal-payment`, 
                 { transaction_id, payout_batch_id }, 
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`
-                    }
-                }
             )).data;
             // console.log(response);
 
@@ -325,16 +232,7 @@ export function useTransactionHook() {
                 message: response.message
             });
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            console.log(err);
-            // setUsers([]);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
         }
     }, []);
 

@@ -1,17 +1,16 @@
 import { useCallback, useState } from "react";
 
-import axios from "axios";
 import * as yup from "yup";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { apiEndpoint } from "@/util/resources";
 import { useUserStore } from "@/state/userStore";
 import { useSettingStore } from "@/state/settingStore";
 import { useGeneralStore } from "@/state/generalStore";
 import { 
     newsLetterInterface, newsLetterSubscribersInterface 
 } from "@/typeInterfaces/contactInterface";
+import apiClient, { apiErrorResponse } from "@/util/apiClient";
 
 
 const formSchema = yup.object({
@@ -20,7 +19,7 @@ const formSchema = yup.object({
 });
 
 export function useNewsletterHook() {
-    const accessToken = useUserStore((state) => state.accessToken);
+    // const accessToken = useUserStore((state) => state.accessToken);
     const userData = useUserStore((state) => state.userData);
 
     const [limitNo, setLimitNo] = useState(25);
@@ -49,10 +48,7 @@ export function useNewsletterHook() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/newsletter/subscribers`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/newsletter/subscribers`, {
                 params: {
                     page: pageNo,
                     limit: limitNo,
@@ -76,15 +72,7 @@ export function useNewsletterHook() {
             });
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setIsSubmitting(false);
         }
@@ -94,10 +82,7 @@ export function useNewsletterHook() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/newsletter`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/newsletter`, {
                 params: {
                     page: pageNo,
                     limit: limitNo,
@@ -121,15 +106,7 @@ export function useNewsletterHook() {
             });
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setIsSubmitting(false);
         }
@@ -139,10 +116,7 @@ export function useNewsletterHook() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/newsletter/newsletter-by-id`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/newsletter/newsletter-by-id`, {
                 params: { newsletter_id }
             })).data;
             // console.log(response);
@@ -159,15 +133,7 @@ export function useNewsletterHook() {
     
             setIsSubmitting(false);
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setIsSubmitting(false);
         }
@@ -182,19 +148,13 @@ export function useNewsletterHook() {
             message: ""
         });
 
-        // console.log(formData);
-        
-
         try {
-            const response = (await axios.post(`${apiEndpoint}/admin/newsletter/sendNewsletter`, 
+            const response = (await apiClient.post(`/admin/newsletter/sendNewsletter`, 
                 { 
                     ...formData,
                     user_name: userData.firstName + " " + userData.lastName, 
-                }, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
                 }
-            })).data;
+            )).data;
             // console.log(response);
 
             _setToastNotification({
@@ -213,20 +173,12 @@ export function useNewsletterHook() {
 
             return false;
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            const messageRes = apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setApiResponse({
                 display: true,
                 status: false,
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+                message: messageRes
             });
 
             return false;

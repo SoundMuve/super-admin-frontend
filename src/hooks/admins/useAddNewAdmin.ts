@@ -1,17 +1,16 @@
 import { useCallback, useState } from "react";
 
-import axios from "axios";
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { useUserStore } from "@/state/userStore";
-import { apiEndpoint, passwordRegex } from "@/util/resources";
+import { passwordRegex } from "@/util/resources";
 // import { useSettingStore } from "@/state/settingStore";
 import { userInterface } from "@/typeInterfaces/users.interface";
 import { defaultUserLocation } from "@/util/location";
 import { useSettingStore } from "@/state/settingStore";
 import { activityLogInterface } from "@/typeInterfaces/activityLogInterface";
+import apiClient, { apiErrorResponse } from "@/util/apiClient";
 
 
 const emailFormSchema = yup.object({
@@ -46,7 +45,7 @@ const newAdminPreviewSchema = yup.object({
 
 
 export function useAddNewAdmin() {
-    const accessToken = useUserStore((state) => state.accessToken);
+    // const accessToken = useUserStore((state) => state.accessToken);
 
     const _setToastNotification = useSettingStore((state) => state._setToastNotification);
     const [apiResponse, setApiResponse] = useState({
@@ -96,10 +95,7 @@ export function useAddNewAdmin() {
         });
     
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/get-user-by-email`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/get-user-by-email`, {
                 params: { email: formData.email }
             })).data;
             // console.log(response);
@@ -153,15 +149,12 @@ export function useAddNewAdmin() {
             });
     
         } catch (error: any) {
-            console.log(error);
+            const messageRes = apiErrorResponse(error, "Oooops, something went wrong", true);
             
-            const err = error.response ? error.response.data : error;
-            const fixedErrorMsg = "Oooops, failed to send email otp. please try again.";
-    
             setApiResponse({
                 display: true,
                 status: false,
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+                message: messageRes
             });
         }
     }, []);
@@ -188,12 +181,7 @@ export function useAddNewAdmin() {
                 tnc: true,
             };
             
-            const response = (await axios.post(`${apiEndpoint}/admin/add-new-admin`, 
-                data2db, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            })).data;
+            const response = (await apiClient.post(`/admin/add-new-admin`, data2db )).data;
             // console.log(response);
             
             if (response.status) {
@@ -210,14 +198,12 @@ export function useAddNewAdmin() {
                 message: response.message,
             });
         } catch (error: any) {
-            // console.log(error);
-            const err = error.response.data || error;
-            const fixedErrorMsg = "Oooops, registration failed. please try again.";
-    
+            const messageRes = apiErrorResponse(error, "Oooops, something went wrong", true);
+
             setApiResponse({
                 display: true,
                 status: false,
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+                message: messageRes
             });
         }
 
@@ -225,28 +211,14 @@ export function useAddNewAdmin() {
 
     const getAllAdmins = useCallback(async () => {
         try {
-
-            const response = (await axios.get(`${apiEndpoint}/admin/get-all-admin`, 
-                {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            })).data;
+            const response = (await apiClient.get(`/admin/get-all-admin`)).data;
             // console.log(response);
             
             if (response.status) {
                 setAllAdmins(response.result)
             }
         } catch (error: any) {
-            // console.log(error);
-            const err = error.response.data || error;
-            const fixedErrorMsg = "Oooops, registration failed. please try again.";
-    
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
         }
 
     }, []);
@@ -254,12 +226,9 @@ export function useAddNewAdmin() {
     const blockOrRemoveAdmin = useCallback(async (action: 'block' | 'remove', user_id: string) => {
         try {
 
-            const response = (await axios.patch(`${apiEndpoint}/admin/block-remove-admin`, 
-                { user_id, action }, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            })).data;
+            const response = (await apiClient.patch(`/admin/block-remove-admin`, 
+                { user_id, action }, 
+            )).data;
             // console.log(response);
 
             getAllAdmins();
@@ -271,15 +240,7 @@ export function useAddNewAdmin() {
             });
 
         } catch (error: any) {
-            // console.log(error);
-            const err = error.response.data || error;
-            const fixedErrorMsg = "Oooops, registration failed. please try again.";
-    
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
         }
 
     }, []);
@@ -287,10 +248,7 @@ export function useAddNewAdmin() {
     
     const getActivityLog = useCallback(async (user_id: string, pageNo: number, limitNo: number) => {
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/activity-log`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/activity-log`, {
                 params: {
                     user_id,
                     page: pageNo,
@@ -318,15 +276,7 @@ export function useAddNewAdmin() {
             });
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
         }
     }, []);
 

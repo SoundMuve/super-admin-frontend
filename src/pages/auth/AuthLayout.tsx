@@ -1,16 +1,11 @@
 import { Outlet, Navigate } from 'react-router-dom';
 import { useUserStore } from '@/state/userStore';
-// import { useCheckAuth } from '@/hooks/useCheckAuth';
 // import LoadingComponent from '@/components/Loading';
-// import { useEffect } from 'react';
+
 
 const AuthLayout = () => {
     const isLoggedIn = useUserStore((state) => state.isLoggedIn);
     // const { isLoading } = useCheckAuth();
-
-    if (isLoggedIn) {
-        return <Navigate replace  to={"/admin/"} />;
-    } 
 
     // useEffect(() => {
     //     // setIsLoading(false);
@@ -20,11 +15,10 @@ const AuthLayout = () => {
 
     return (
         <main>
-            {/* { 
-                isLoading ? <LoadingComponent /> : <Outlet />
-            } */}
-
-            <Outlet />
+            {
+                isLoggedIn ? <Navigate replace  to={"/admin/"} /> 
+                : <Outlet />
+            }
         </main>
     );
 };

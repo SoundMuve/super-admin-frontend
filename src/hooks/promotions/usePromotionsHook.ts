@@ -1,14 +1,13 @@
 import { useCallback, useState } from "react";
 
-import axios from "axios";
 import * as yup from "yup";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { useUserStore } from "@/state/userStore";
-import { apiEndpoint } from "@/util/resources";
 import { useSettingStore } from "@/state/settingStore";
 import { promotionInterface } from "@/typeInterfaces/promotions.interface";
+import apiClient, { apiErrorResponse } from "@/util/apiClient";
 
 
 const formSchema = yup.object({
@@ -18,7 +17,6 @@ const formSchema = yup.object({
 });
 
 export function usePromotionsHook() {
-    const accessToken = useUserStore((state) => state.accessToken);
     const userData = useUserStore((state) => state.userData);
 
     const [limitNo, setLimitNo] = useState(25);
@@ -49,15 +47,7 @@ export function usePromotionsHook() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/promotions/active`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
-                // params: {
-                //     page: pageNo,
-                //     limit: limitNo,
-                // }
-            })).data;
+            const response = (await apiClient.get(`/admin/promotions/active`)).data;
 
             if (response.status) {
                 setActivePromotions(response.result);
@@ -76,15 +66,7 @@ export function usePromotionsHook() {
             });
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setIsSubmitting(false);
         }
@@ -94,10 +76,7 @@ export function usePromotionsHook() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/promotions`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/promotions`, {
                 params: {
                     page: pageNo,
                     limit: limitNo,
@@ -121,40 +100,28 @@ export function usePromotionsHook() {
             });
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setIsSubmitting(false);
         }
     }, []);
 
-    const updatePromotion = useCallback(async (_id: string, action: "status" | "delete", actionValue: boolean) => {
+    const updatePromotion = useCallback(async (
+        _id: string, action: "status" | "delete", actionValue: boolean,
+        successFunc = (_resData: any) => {}
+    ) => {
         setIsUploadSuccessful(false);
 
         try {
-            const response = (await axios.post(`${apiEndpoint}/admin/promotions/update`, 
+            const response = (await apiClient.post(`/admin/promotions/update`, 
                 { 
                     promotional_id: _id, action, actionValue 
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`
-                    },
-                    // params: {
-                    //     page: pageNo,
-                    //     limit: limitNo,
-                    // }
                 }
             )).data;
 
             if (response.status) {
                 setSelectedPromotion(response.result);
+                successFunc(response.result);
                 setIsUploadSuccessful(true);
             }
     
@@ -165,15 +132,7 @@ export function usePromotionsHook() {
             });
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
         }
     }, []);
 
@@ -186,15 +145,12 @@ export function usePromotionsHook() {
         });
 
         try {
-            const response = (await axios.post(`${apiEndpoint}/admin/promotions/upload`, 
+            const response = (await apiClient.post(`/admin/promotions/upload`, 
                 { 
                     ...formData,
                     user_name: userData.firstName + " " + userData.lastName, 
-                }, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
                 }
-            })).data;
+            )).data;
             // console.log(response);
 
             _setToastNotification({
@@ -212,20 +168,12 @@ export function usePromotionsHook() {
             }
 
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            const messageRes = apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setApiResponse({
                 display: true,
                 status: false,
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+                message: messageRes
             });
 
             setIsUploadSuccessful(false);

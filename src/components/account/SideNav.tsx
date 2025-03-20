@@ -12,6 +12,7 @@ import colors from '@/constants/kolors';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from "@/assets/images/icon.png";
 import Stack from '@mui/material/Stack';
+import { useUserStore } from '@/state/userStore';
 
 
 interface _Props {
@@ -19,6 +20,7 @@ interface _Props {
         title: string;
         status: boolean;
         baseLink: string;
+        roles: string[];
     }[],
     value: number, 
     setValue: (data: number) => void
@@ -28,6 +30,7 @@ const SideNav: React.FC<_Props> = ({
     menuItems, value, setValue
 }) => {
     const navigate = useNavigate();
+    const userData = useUserStore((state) => state.userData);
 
 
     return (
@@ -70,6 +73,7 @@ const SideNav: React.FC<_Props> = ({
 
             <List>
                 { menuItems.map((item, index) => (
+                    item.roles.includes(userData.role) &&
                     <ListItem key={index} disablePadding
                         sx={{
                             borderLeft: index + 1 == value ? `7px solid ${colors.primary}` : "",

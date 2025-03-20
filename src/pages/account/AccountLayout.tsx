@@ -14,67 +14,86 @@ const AccountLayout = () => {
     const isLoggedIn = useUserStore((state) => state.isLoggedIn);
     // if (!isLoggedIn) return <Navigate replace to={"/auth/login"} />;
 
-    const [value, setValue] = useState(1);
+    const [value, setValue] = useState(0);
 
     const { pathname } = useLocation();
 
     useEffect(() => {
-        if (pathname.includes("admin/revenue")) setValue(2);
-        if (pathname.includes("admin/analytics")) setValue(3);
-        if (pathname.includes("admin/users")) setValue(4);
-        if (pathname.includes("admin/promotions")) setValue(5);
-        if (pathname.includes("admin/uploads")) setValue(6);
-        if (pathname.includes("admin/coupon")) setValue(7);
-        if (pathname.includes("admin/contacts")) setValue(8);
+        if (pathname.includes("admin/revenue")) setValue(1);
+        if (pathname.includes("admin/analytics")) setValue(2);
+        if (pathname.includes("admin/users")) setValue(3);
+        if (pathname.includes("admin/promotions")) setValue(4);
+        if (pathname.includes("admin/uploads")) setValue(5);
+        if (pathname.includes("admin/coupon")) setValue(6);
+        if (pathname.includes("admin/contacts")) setValue(7);
+        if (pathname.includes("admin/blog")) setValue(8);
         if (pathname.includes("admin/newsletter")) setValue(9);
     }, [pathname]);
 
+    // const userRoles = ['user', 'admin', 'super admin', 'moderator', 'editor', 'support'];
 
     const menuItems = [
         {
             title: 'Dashboard',
             status: value == 1 ? true : false,
-            baseLink: "/admin/"
+            baseLink: "/admin/",
+            roles: ['admin', 'super admin']
         },
         {
             title: 'Revenue area',
             status: value == 2 ? true : false,
-            baseLink: "/admin/revenue"
+            baseLink: "/admin/revenue",
+            roles: ['admin', 'super admin']
         },
         {
             title: 'Music analytics',
             status: value == 3 ? true : false,
-            baseLink: "/admin/analytics"
+            baseLink: "/admin/analytics",
+            roles: ['admin', 'super admin']
         },
         {
             title: 'Users',
             status: value == 4 ? true : false,
-            baseLink: "/admin/users"
+            baseLink: "/admin/users",
+            roles: ['admin', 'super admin']
+
         },
         {
             title: 'Promotions',
             status: value == 5 ? true : false,
-            baseLink: "/admin/promotions"
+            baseLink: "/admin/promotions",
+            roles: ['admin', 'super admin', 'editor']
+
         },
         {
             title: 'Uploads',
             status: value == 6 ? true : false,
-            baseLink: "/admin/uploads"
+            baseLink: "/admin/uploads",
+            roles: ['admin', 'super admin']
         },
         {
             title: 'Coupons',
             status: value == 7 ? true : false,
-            baseLink: "/admin/coupons"
+            baseLink: "/admin/coupons",
+            roles: ['admin', 'super admin']
         },
         {
             title: 'Contact Messages',
             status: value == 8 ? true : false,
-            baseLink: "/admin/contacts"
+            baseLink: "/admin/contacts",
+            roles: ['admin', 'super admin', 'editor']
+        },
+        {
+            title: 'Blog',
+            status: value == 9 ? true : false,
+            baseLink: "/admin/blog",
+            roles: ['admin', 'super admin', 'editor']
         },
         {
             title: 'Newsletter',
-            status: value == 9 ? true : false,
-            baseLink: "/admin/newsletter"
+            status: value == 10 ? true : false,
+            baseLink: "/admin/newsletter",
+            roles: ['admin', 'super admin', 'editor']
         },
     ];
 

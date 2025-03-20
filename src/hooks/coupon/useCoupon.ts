@@ -1,13 +1,10 @@
-import axios from "axios";
 import { useCallback, useState } from "react";
-import { useUserStore } from "@/state/userStore";
-import { apiEndpoint } from "@/util/resources";
 import { useSettingStore } from "@/state/settingStore";
 import { couponInterface } from "@/typeInterfaces/cartInterface";
 import { useCouponStore } from "@/state/couponStore";
+import apiClient, { apiErrorResponse } from "@/util/apiClient";
 
 export function useCoupon() {
-    const accessToken = useUserStore((state) => state.accessToken);
     const _setToastNotification = useSettingStore((state) => state._setToastNotification);
     const [apiResponse, setApiResponse] = useState({
         display: false,
@@ -30,10 +27,7 @@ export function useCoupon() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/coupon`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/coupon`, {
                 params: {
                     page: pageNo,
                     limit: limitNo,
@@ -67,18 +61,7 @@ export function useCoupon() {
 
     
         } catch (error: any) {
-            console.log(error);
-            
-            const err = error.response.data || error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-            // setReleases([]);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setIsSubmitting(false);
         }
@@ -88,10 +71,7 @@ export function useCoupon() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/coupon/coupon-by-id`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/coupon/coupon-by-id`, {
                 params: { coupon_id }
             })).data;
             // console.log(response);
@@ -108,15 +88,7 @@ export function useCoupon() {
     
             setIsSubmitting(false);
         } catch (error: any) {
-            const err = error.response.data || error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setIsSubmitting(false);
         }
@@ -124,12 +96,9 @@ export function useCoupon() {
 
     const approveDiscount = useCallback(async (coupon_id: string, discountPercentage: string) => {
         try {
-            const response = (await axios.post(`${apiEndpoint}/admin/coupon/approve`, 
-                { coupon_id, discountPercentage }, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            })).data;
+            const response = (await apiClient.post(`/admin/coupon/approve`, 
+                { coupon_id, discountPercentage }        
+            )).data;
             // console.log(response);
 
             if (response.status) {
@@ -149,33 +118,21 @@ export function useCoupon() {
             });
             
         } catch (error: any) {
-            const err = error.response.data || error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-            // setReleases([]);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            const messageRes = apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setApiResponse({
                 display: true,
                 status: false,
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+                message: messageRes
             });
         }
     }, []);
 
     const rejectDiscount = useCallback(async (coupon_id: string) => {
         try {
-            const response = (await axios.post(`${apiEndpoint}/admin/coupon/reject`, 
-                { coupon_id }, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            })).data;
+            const response = (await apiClient.post(`/admin/coupon/reject`, 
+                { coupon_id }
+            )).data;
             // console.log(response);
 
             if (response.status) _setCouponDetails(response.result);
@@ -193,21 +150,12 @@ export function useCoupon() {
             });
 
         } catch (error: any) {
-            const err = error.response.data || error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-            // setReleases([]);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            const messageRes = apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setApiResponse({
                 display: true,
                 status: false,
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+                message: messageRes
             });
         }
     }, []);

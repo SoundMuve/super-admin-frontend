@@ -1,13 +1,11 @@
-import axios from "axios";
 import { useCallback, useState } from "react";
-import { useUserStore } from "@/state/userStore";
-import { apiEndpoint } from "@/util/resources";
 import { releaseInterface } from "@/typeInterfaces/release.interface";
 import { useReleaseStore } from "@/state/releaseStore";
 import { useSettingStore } from "@/state/settingStore";
+import apiClient, { apiErrorResponse } from "@/util/apiClient";
 
 export function useGetReleases() {
-    const accessToken = useUserStore((state) => state.accessToken);
+    // const accessToken = useUserStore((state) => state.accessToken);
 
     const [limitNo, setLimitNo] = useState(20);
     const [currentPageNo, setCurrentPageNo] = useState(1);
@@ -33,10 +31,7 @@ export function useGetReleases() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/releases`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/releases`, {
                 params: {
                     page: pageNo,
                     limit: limitNo,
@@ -76,15 +71,12 @@ export function useGetReleases() {
             }
     
         } catch (error: any) {
-            const err = error.response.data || error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-            // setReleases([]);
+            const messageRes = apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setApiResponse({
                 display: true,
                 status: false,
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+                message: messageRes
             });
 
             setIsSubmitting(false);
@@ -95,10 +87,7 @@ export function useGetReleases() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/releases/release-by-id`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/releases/release-by-id`, {
                 params: { id }
             })).data;
             // console.log(response);
@@ -118,15 +107,7 @@ export function useGetReleases() {
     
             setIsSubmitting(false);
         } catch (error: any) {
-            const err = error.response.data || error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setIsSubmitting(false);
         }
@@ -136,10 +117,7 @@ export function useGetReleases() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/releases/search`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/releases/search`, {
                 params: {
                     search: searchWord,
                     page: pageNo,
@@ -171,15 +149,12 @@ export function useGetReleases() {
             }
     
         } catch (error: any) {
-            const err = error.response.data || error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            console.log(err);
-            // setReleases([]);
+            const messageRes = apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setApiResponse({
                 display: true,
                 status: false,
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+                message: messageRes
             });
 
             setIsSubmitting(false);
@@ -209,12 +184,9 @@ export function useGetReleases() {
         // setIsSubmitting(true);
 
         try {
-            const response = (await axios.post(`${apiEndpoint}/admin/releases/update-status`, 
-                { status, linkTreeUrl, upcEanCode, release_id }, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            })).data;
+            const response = (await apiClient.post(`/admin/releases/update-status`, 
+                { status, linkTreeUrl, upcEanCode, release_id }, 
+            )).data;
             // console.log(response);
 
             if (response.status) {
@@ -228,21 +200,12 @@ export function useGetReleases() {
                 message: response.message
             });
         } catch (error: any) {
-            const err = error.response.data || error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            console.log(err);
-            // setReleases([]);
+            const messageRes = apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setApiResponse({
                 display: true,
                 status: false,
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+                message: messageRes
             });
 
             // setIsSubmitting(false);
@@ -258,12 +221,9 @@ export function useGetReleases() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.post(`${apiEndpoint}/admin/releases/update-musicLinks`, 
-                { dspLinks, release_status, musicCode, release_id }, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            })).data;
+            const response = (await apiClient.post(`/admin/releases/update-musicLinks`, 
+                { dspLinks, release_status, musicCode, release_id }, 
+            )).data;
             // console.log(response);
 
             if (response.status) {
@@ -285,24 +245,15 @@ export function useGetReleases() {
 
             setIsSubmitting(false);
         } catch (error: any) {
-            const err = error.response.data || error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            console.log(err);
-            // setReleases([]);
+            const messageRes = apiErrorResponse(error, "Oooops, something went wrong", true);
+            
             setIsSubmitting(false);
 
             setApiResponse({
                 display: true,
                 status: false,
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+                message: messageRes
             });
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
-
         }
     }, []);
 
@@ -312,12 +263,9 @@ export function useGetReleases() {
         modalFn: any = () => {}
     ) => {
         try {
-            const response = (await axios.post(`${apiEndpoint}/admin/releases/update-UPC_EAN_ISRC`, 
-                { song_id, release_id, upcEanCode, isrcNumber }, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            })).data;
+            const response = (await apiClient.post(`/admin/releases/update-UPC_EAN_ISRC`, 
+                { song_id, release_id, upcEanCode, isrcNumber }
+            )).data;
             // console.log(response);
 
             if (response.status) {
@@ -336,21 +284,12 @@ export function useGetReleases() {
                 message: response.message
             });
         } catch (error: any) {
-            const err = error.response.data || error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            console.log(err);
-            // setReleases([]);
+            const messageRes = apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setApiResponse({
                 display: true,
                 status: false,
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+                message: messageRes
             });
 
             // setIsSubmitting(false);

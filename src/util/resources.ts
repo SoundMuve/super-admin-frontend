@@ -146,7 +146,7 @@ export const validatePromotionalBannerImage = async (file: File): Promise<respon
       // console.log("height => ", height);
 
       // const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-      const maxSize = 1 * 1024 * 1024; // 10MB
+      const maxSize = 1 * 1024 * 1024; // 1MB
 
         // Validate dimensions and size
         if (file.size > maxSize) {

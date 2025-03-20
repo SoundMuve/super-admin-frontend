@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import axios from "axios";
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { useUserStore } from "@/state/userStore";
-import { apiEndpoint, passwordRegex } from "@/util/resources";
+import { passwordRegex } from "@/util/resources";
 import { getDecryptedLocalStorage, setEncryptedLocalStorage } from "@/util/storage";
 import { useSettingStore } from "@/state/settingStore";
 import { defaultUserLocation, getUserLocation } from "@/util/location";
 import { locationInterface } from "@/typeInterfaces/users.interface";
+import apiClient, { apiErrorResponse } from "@/util/apiClient";
 
 
 const formSchema = yup.object({
@@ -76,7 +76,7 @@ export function useLoginAuth() {
                 email: formData.email,
                 password: formData.password
             };
-            const response = (await axios.post(`${apiEndpoint}/auth/admin/login`, loginData )).data;
+            const response = (await apiClient.post(`/auth/admin/login`, loginData )).data;
 
             if (response.status) {
                 setApiResponse({
@@ -100,7 +100,7 @@ export function useLoginAuth() {
                 //     return;
                 // }
 
-                _loginUser(response.result, response.token);
+                _loginUser(response.result.user, response.result.token, response.result.refresh_token);
 
                 navigate("/admin/", {replace: true});
                 return;
@@ -112,19 +112,12 @@ export function useLoginAuth() {
                 message: response.message || "Oooops, login failed. please try again."
             });
         } catch (error: any) {
-            const err = error.response.data || error;
-            const fixedErrorMsg = "Oooops, login failed. please try again.";
+            const messageRes = apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setApiResponse({
                 display: true,
                 status: false,
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+                message: messageRes
             });
         }
     }

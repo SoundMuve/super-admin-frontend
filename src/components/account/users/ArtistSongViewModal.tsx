@@ -82,7 +82,6 @@ export const ArtistSongViewModal: React.FC<_Props> = ({
                     }}
                 >
                     <Box id='payout-modal-title'>
-                        
                         <Stack direction="row" alignItems="center" justifyContent="space-between"
                             spacing="20px"
                         >
@@ -108,7 +107,6 @@ export const ArtistSongViewModal: React.FC<_Props> = ({
                     </Box>
 
                     <Box id='payout-modal-description'>
-                                        
                         <Box mt={2}>
                             <Grid container spacing="20px">
                                 {
@@ -156,7 +154,6 @@ export const ArtistSongViewModal: React.FC<_Props> = ({
                                 />
                             </Box>
                         </Box>
-                                        
                     </Box>
                 </Box>
             </Box>

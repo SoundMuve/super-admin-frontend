@@ -8,12 +8,10 @@ import { useSettingStore } from "./state/settingStore";
 function App() {
     const _handleRestoreUser = useUserStore((state) => state._handleRestoreUser);
     const _restoreSettings = useSettingStore((state) => state._restoreSettings);
-    // const _restoreReleaseDetails = useReleaseStore((state) => state._restoreReleaseDetails);
         
     const handleRefreshNredirect = () => {
         _restoreSettings();
         _handleRestoreUser();
-        // _restoreReleaseDetails();
     }
 
     useEffect(() => {

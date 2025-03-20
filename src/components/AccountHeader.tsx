@@ -38,54 +38,11 @@ interface _Props {
         title: string;
         status: boolean;
         baseLink: string;
+        roles: string[];
     }[],
     value: number, 
     setValue: (data: number) => void
 }
-
-
-
-// const Search = styled('div')(({ theme }) => ({
-//     position: 'relative',
-//     borderRadius: "4px",
-//     backgroundColor: "#E5E5E5",
-//     '&:hover': {
-//       backgroundColor: "#E5E5E5",
-//     },
-//     marginRight: theme.spacing(2),
-//     marginLeft: 0,
-//     width: '100%',
-//     [theme.breakpoints.up('sm')]: {
-//       marginLeft: theme.spacing(3),
-//       width: 'auto',
-//     },
-// }));
-  
-// const SearchIconWrapper = styled('div')(({ theme }) => ({
-//     padding: theme.spacing(0, 2),
-//     height: '100%',
-//     position: 'absolute',
-//     pointerEvents: 'none',
-//     display: 'flex',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     color: "#000"
-// }));
-  
-// const StyledInputBase = styled(InputBase)(({ theme }) => ({
-//     color: 'inherit',
-//     '& .MuiInputBase-input': {
-//       padding: theme.spacing(1, 1, 1, 0),
-//       // vertical padding + font size from searchIcon
-//       paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-//       transition: theme.transitions.create('width'),
-//       width: '100%',
-//       color: "#000",
-//       [theme.breakpoints.up('md')]: {
-//         width: '20ch',
-//       },
-//     },
-// }));
   
 
 export default function AccountHeaderComponent({
@@ -161,6 +118,7 @@ export default function AccountHeaderComponent({
 
             <List>
                 { menuItems.map((item, index) => (
+                    item.roles.includes(userData.role) &&
                     <ListItem key={index} disablePadding
                         sx={{
                             borderLeft: index + 1 == value ? `7px solid ${colors.primary}` : "",
@@ -370,7 +328,6 @@ export default function AccountHeaderComponent({
                     {mobileDrawerContent}
                 </Drawer>
             </nav>
-
 
             { headerSpacing ? <Toolbar /> : <></> }
         </>

@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 
-import axios from "axios";
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { useUserStore } from "@/state/userStore";
-import { apiEndpoint, passwordRegex } from "@/util/resources";
+import { passwordRegex } from "@/util/resources";
 import { useNavigate } from "react-router-dom";
 import { defaultUserLocation, getUserLocation } from "@/util/location";
 import { locationInterface } from "@/typeInterfaces/users.interface";
+import apiClient, { apiErrorResponse } from "@/util/apiClient";
 
 
 const formSchema = yup.object({
@@ -80,8 +80,8 @@ export function useSignupAuth() {
                 tnc: tnc,
             };
 
-            const response = (await axios.post(
-                `${apiEndpoint}/auth/signup`,
+            const response = (await apiClient.post(
+                `/auth/signup`,
                 data2db
             )).data;
             // console.log(response);
@@ -105,14 +105,12 @@ export function useSignupAuth() {
                 message: response.message || "Oooops, registration failed. please try again."
             });
         } catch (error: any) {
-            // console.log(error);
-            const err = error.response.data || error;
-            const fixedErrorMsg = "Oooops, registration failed. please try again.";
+            const messageRes = apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setApiResponse({
                 display: true,
                 status: false,
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+                message: messageRes
             });
         }
 

@@ -1,12 +1,9 @@
 import { useCallback, useState } from "react";
 
-import axios from "axios";
-
-import { useUserStore } from "@/state/userStore";
 import { useSettingStore } from "@/state/settingStore";
 
-import { apiEndpoint } from "@/util/resources";
 import { releaseInterface } from "@/typeInterfaces/release.interface";
+import apiClient, { apiErrorResponse } from "@/util/apiClient";
 
 
 interface dashboardTotalAnalysisInterface {
@@ -28,8 +25,6 @@ interface dashboardTotalAnalysisInterface {
 type bestPerformingProjectsInterface = releaseInterface & { totalRevenue: number };
 
 export function useDashboardHook() {
-    const accessToken = useUserStore((state) => state.accessToken);
-    // const userData = useUserStore((state) => state.userData);
     const _setToastNotification = useSettingStore((state) => state._setToastNotification);
     const [apiResponse, setApiResponse] = useState({
         display: false,
@@ -50,11 +45,7 @@ export function useDashboardHook() {
 
     const getDashboardTotalAnalysis = useCallback(async () => {
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/dashboard-topTotal-analysis`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
-            })).data;
+            const response = (await apiClient.get(`/admin/dashboard-topTotal-analysis`)).data;
             // console.log(response);
 
             if (response.status) {
@@ -68,27 +59,14 @@ export function useDashboardHook() {
             });
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-            // setUsers([]);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
         }
     }, []);
 
     const getBestPerformingProjects = useCallback(async () => {
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/best-performing-projects`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
-            })).data;
-            console.log(response);
+            const response = (await apiClient.get(`/admin/best-performing-projects`)).data;
+            // console.log(response);
 
             if (response.status) {
                 setBestPerformingProjects(response.result);
@@ -101,16 +79,7 @@ export function useDashboardHook() {
             });
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-            // setUsers([]);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
         }
     }, []);
 

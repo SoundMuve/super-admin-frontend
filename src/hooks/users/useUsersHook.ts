@@ -1,18 +1,17 @@
-import axios from "axios";
 import { useCallback, useState } from "react";
-import { useUserStore } from "@/state/userStore";
-import { apiEndpoint } from "@/util/resources";
+// import { useUserStore } from "@/state/userStore";
 import { useSettingStore } from "@/state/settingStore";
 import { userInterface } from "@/typeInterfaces/users.interface";
 import { useGeneralStore } from "@/state/generalStore";
 import { releaseInterface } from "@/typeInterfaces/release.interface";
 import { recordLabelArtistInterface } from "@/typeInterfaces/recordLabelArtist.interface";
+import apiClient, { apiErrorResponse } from "@/util/apiClient";
 
 
 type topStatsInterface = userInterface & {releaseCount: number};
 
 export function useUsersHook() {
-    const accessToken = useUserStore((state) => state.accessToken);
+    // const accessToken = useUserStore((state) => state.accessToken);
 
     const [limitNo, setLimitNo] = useState(25);
     const [currentPageNo, setCurrentPageNo] = useState(1);
@@ -43,10 +42,7 @@ export function useUsersHook() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/users`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/users`, {
                 params: {
                     page: pageNo,
                     limit: limitNo,
@@ -72,21 +68,12 @@ export function useUsersHook() {
             });
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-            // setUsers([]);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
-
+            const messageRes = apiErrorResponse(error, "Oooops, something went wrong", true);
+            
             setApiResponse({
                 display: true,
                 status: false,
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
+                message: messageRes
             });
 
             setIsSubmitting(false);
@@ -97,10 +84,7 @@ export function useUsersHook() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/users/user-by-id`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/users/user-by-id`, {
                 params: { id }
             })).data;
             // console.log(response);
@@ -119,15 +103,7 @@ export function useUsersHook() {
     
             setIsSubmitting(false);
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setIsSubmitting(false);
         }
@@ -135,10 +111,7 @@ export function useUsersHook() {
 
     const getUsersTopStats = useCallback(async () => {
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/users/top-stats`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/users/top-stats`, {
                 // params: { id }
             })).data;
             // console.log(response);
@@ -154,24 +127,13 @@ export function useUsersHook() {
                 message: response.message
             });
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
         }
     }, []);
 
     const getUserReleases = useCallback(async (id: string, pageNo: number, limitNo: number) => {
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/users/releases`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/users/releases`, {
                 params: {
                     page: pageNo,
                     limit: limitNo,
@@ -195,25 +157,15 @@ export function useUsersHook() {
             });
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-            setReleases([]);
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            setReleases([]);
         }
     }, []);
 
     const getRlArtistReleases = useCallback(async (user_id: string, artist_id: string, pageNo: number, limitNo: number) => {
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/users/rl-artist-releases`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/users/rl-artist-releases`, {
                 params: {
                     page: pageNo,
                     limit: limitNo,
@@ -237,25 +189,15 @@ export function useUsersHook() {
             });
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-            setReleases([]);
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            setReleases([]);
         }
     }, []);
 
     const getRecordLabelUserArtists = useCallback(async (id: string, pageNo: number, limitNo: number) => {
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/users/rl-artist`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/users/rl-artist`, {
                 params: {
                     page: pageNo,
                     limit: limitNo,
@@ -279,16 +221,9 @@ export function useUsersHook() {
             });
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            // console.log(err);
-            setRlArtists([]);
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            setRlArtists([]);
         }
     }, []);
 
@@ -296,10 +231,7 @@ export function useUsersHook() {
         setIsSubmitting(true);
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/admin/users/search`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/admin/users/search`, {
                 params: {
                     search: searchWord,
                     page: pageNo,
@@ -319,16 +251,7 @@ export function useUsersHook() {
             }
     
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            console.log(err);
-            // setUsers([]);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setIsSubmitting(false);
         }
@@ -339,12 +262,9 @@ export function useUsersHook() {
     ) => {
 
         try {
-            const response = (await axios.post(`${apiEndpoint}/admin/users/update-status`, 
-                { currentStatus, user_id }, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            })).data;
+            const response = (await apiClient.post(`/admin/users/update-status`, 
+                { currentStatus, user_id }
+            )).data;
             // console.log(response);
 
             if (response.status) {
@@ -358,16 +278,7 @@ export function useUsersHook() {
                 message: response.message
             });
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            console.log(err);
-            // setUsers([]);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
         }
     }, []);
 

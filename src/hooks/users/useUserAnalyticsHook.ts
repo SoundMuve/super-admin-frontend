@@ -1,17 +1,18 @@
 import { useCallback, useState } from "react";
-import axios from "axios";
-import { useUserStore } from "@/state/userStore";
-import { apiEndpoint } from "@/util/resources";
+// import axios from "axios";
+// import { useUserStore } from "@/state/userStore";
+// import { apiEndpoint } from "@/util/resources";
 import { useSettingStore } from "@/state/settingStore";
 import { transactionInterface } from "@/typeInterfaces/transaction.interface";
 import kolors from "@/constants/kolors";
 import { totalEarningsAnalyticsInterface } from "@/typeInterfaces/analytics.interface";
 import { useReleaseStore } from "@/state/releaseStore";
 import { useUserAnalyticsStore } from "@/state/userAnalyticsStore";
+import apiClient, { apiErrorResponse } from "@/util/apiClient";
 
 
 export function useUserAnalyticsHook(_id: string) {
-    const accessToken = useUserStore((state) => state.accessToken);
+    // const accessToken = useUserStore((state) => state.accessToken);
     const _setToastNotification = useSettingStore((state) => state._setToastNotification);
     const [apiResponse, setApiResponse] = useState({
         display: false,
@@ -60,10 +61,7 @@ export function useUserAnalyticsHook(_id: string) {
         }
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/transactions/get-transactions/${_id}`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/transactions/get-transactions/${_id}`, {
                 params: {
                     page: pageNo, limit: limitNo,
                     startDate, endDate,
@@ -86,17 +84,7 @@ export function useUserAnalyticsHook(_id: string) {
             // });
 
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            console.log(err);
-
-            setTransactions([]);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
         }
     }, []);
 
@@ -113,10 +101,7 @@ export function useUserAnalyticsHook(_id: string) {
         }
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/analytics/get-salesreport-analytics/${_id}`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/analytics/get-salesreport-analytics/${_id}`, {
                 params: {
                     // page: pageNo, limit: limitNo,
                     startDate, endDate,
@@ -148,15 +133,7 @@ export function useUserAnalyticsHook(_id: string) {
             // });
 
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
         }
     }, []);
 
@@ -172,10 +149,7 @@ export function useUserAnalyticsHook(_id: string) {
         }
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/analytics/get-song-analytics/${_id}`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/analytics/get-song-analytics/${_id}`, {
                 params: {
                     // page: pageNo, limit: limitNo,
                     startDate, endDate,
@@ -202,15 +176,7 @@ export function useUserAnalyticsHook(_id: string) {
             // });
 
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
         }
     }, []);
 
@@ -226,10 +192,7 @@ export function useUserAnalyticsHook(_id: string) {
         }
 
         try {
-            const response = (await axios.get(`${apiEndpoint}/analytics/get-album-analytics/${_id}`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
+            const response = (await apiClient.get(`/analytics/get-album-analytics/${_id}`, {
                 params: {
                     // page: pageNo, limit: limitNo,
                     startDate, endDate,
@@ -253,15 +216,7 @@ export function useUserAnalyticsHook(_id: string) {
             // });
 
         } catch (error: any) {
-            const err = error.response && error.response.data ? error.response.data : error;
-            const fixedErrorMsg = "Ooops and error occurred!";
-            console.log(err);
-
-            _setToastNotification({
-                display: true,
-                status: "error",
-                message: err.errors && err.errors.length ? err.errors[0].msg : err.message || fixedErrorMsg
-            });
+            apiErrorResponse(error, "Oooops, something went wrong", true);
         }
     }, []);
 

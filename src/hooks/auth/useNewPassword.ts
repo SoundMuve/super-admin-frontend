@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import axios from "axios";
 import * as yup from "yup";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { useSettingStore } from "@/state/settingStore";
-import { getQueryParams, apiEndpoint, passwordRegex } from "@/util/resources";
+import { getQueryParams, passwordRegex } from "@/util/resources";
+import apiClient, { apiErrorResponse } from "@/util/apiClient";
 
 
 const formSchema = yup.object({
@@ -64,8 +64,8 @@ export function useNewPasswordAuth() {
         };
 
         try {
-            const response = (await axios.post(
-                `${apiEndpoint}/auth/setNewPassword`, 
+            const response = (await apiClient.post(
+                `/auth/setNewPassword`, 
                 data2db,
                 {
                     headers: {
@@ -88,13 +88,12 @@ export function useNewPasswordAuth() {
 
             navigate("/auth/login", {replace: true});
         } catch (error: any) {
-            const err = error.response.data || error;
-            console.log(err);
+            const messageRes = apiErrorResponse(error, "Oooops, something went wrong", true);
 
             setApiResponse({
                 display: true,
                 status: false,
-                message: err.message || "Oooops, failed to reset password. please try again."
+                message: messageRes
             });
         }
     }
