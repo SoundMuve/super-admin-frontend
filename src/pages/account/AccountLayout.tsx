@@ -14,20 +14,20 @@ const AccountLayout = () => {
     const isLoggedIn = useUserStore((state) => state.isLoggedIn);
     // if (!isLoggedIn) return <Navigate replace to={"/auth/login"} />;
 
-    const [value, setValue] = useState(0);
+    const [value, setValue] = useState(1);
 
     const { pathname } = useLocation();
 
     useEffect(() => {
-        if (pathname.includes("admin/revenue")) setValue(1);
-        if (pathname.includes("admin/analytics")) setValue(2);
-        if (pathname.includes("admin/users")) setValue(3);
-        if (pathname.includes("admin/promotions")) setValue(4);
-        if (pathname.includes("admin/uploads")) setValue(5);
-        if (pathname.includes("admin/coupon")) setValue(6);
-        if (pathname.includes("admin/contacts")) setValue(7);
-        if (pathname.includes("admin/blog")) setValue(8);
-        if (pathname.includes("admin/newsletter")) setValue(9);
+        if (pathname.includes("admin/revenue")) setValue(2);
+        if (pathname.includes("admin/analytics")) setValue(3);
+        if (pathname.includes("admin/users")) setValue(4);
+        if (pathname.includes("admin/promotions")) setValue(5);
+        if (pathname.includes("admin/uploads")) setValue(6);
+        if (pathname.includes("admin/coupon")) setValue(7);
+        if (pathname.includes("admin/contacts")) setValue(8);
+        if (pathname.includes("admin/blog")) setValue(9);
+        if (pathname.includes("admin/newsletter")) setValue(10);
     }, [pathname]);
 
     // const userRoles = ['user', 'admin', 'super admin', 'moderator', 'editor', 'support'];
