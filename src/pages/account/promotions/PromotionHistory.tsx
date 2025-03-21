@@ -222,6 +222,9 @@ export default function PromotionHistory() {
                     closePromotionsModal={() => setViewPromotionModal(false)}
                     openPromotionsModal={viewPromotionModal}
                     promotion={selectedPromotion}
+                    successFunc={() => {
+                        getAllPromotions(1, limitNo);
+                    }}
                 />
             }
         </Box>
