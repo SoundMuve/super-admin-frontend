@@ -103,7 +103,8 @@ export default function NewPost() {
         allowComments, setAllowComments,
         status, setStatus,
         scheduledAt, setScheduledAt,
-
+        saveDraft, setSaveDraft,
+        
         errors,
         isValid,
         isSubmittingForm,
@@ -111,6 +112,7 @@ export default function NewPost() {
         onSubmit,
         register,
         trashBlogPost,
+        createBlogPost,
     } = useBlogHook();
 
     useEffect(() => {
@@ -170,7 +172,7 @@ export default function NewPost() {
     }
 
     // Debounced save function
-    const debouncedSaveDraft = useCallback(debounce(processSlug, 60000), []); // 1 minute debounce
+    const debouncedSaveDraft = useCallback(debounce(processSlug, 30000), []); // 60000 => 1 minute debounce
 
     // Trigger debounced save whenever title or content changes
     useEffect(() => {
@@ -318,7 +320,17 @@ export default function NewPost() {
                                                     {
                                                         !postDetails || postDetails.status == "draft" ? 
                                                             <Button variant="outlined" type="button" size='small'
-                                                                onClick={() => setEditorPreview(true)}
+                                                                disabled={saveDraft}
+                                                                onClick={() => {
+                                                                    setSaveDraft(true);
+                                                                    setTimeout(() => {
+                                                                        createBlogPost({
+                                                                            slug: slug ? slug : formatSlug(blogPostForm.getValues("title")),
+                                                                            title: blogPostForm.getValues("title"),
+                                                                            content: reactQuillValue,
+                                                                        });
+                                                                    }, 500);
+                                                                }}
                                                                 sx={{ 
                                                                     color: kolors.dark,
                                                                     width: "fit-content",

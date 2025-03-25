@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import * as yup from "yup";
 import { useForm } from 'react-hook-form';
@@ -18,6 +19,7 @@ const formSchema = yup.object({
 });
 
 export function useBlogHook() {
+    const navigate = useNavigate();
     // const accessToken = useUserStore((state) => state.accessToken);
     // const userData = useUserStore((state) => state.userData);
     const _setToastNotification = useSettingStore((state) => state._setToastNotification);
@@ -51,6 +53,7 @@ export function useBlogHook() {
     const [metaTitle, setMetaTitle] = useState('');
     const [metaDescription, setMetaDescription] = useState('');
     const [allowComments, setAllowComments] = useState(false);
+    const [saveDraft, setSaveDraft] = useState(false);
     const [status, setStatus] = useState('draft');
     const [scheduledAt, setScheduledAt] = useState('');
 
@@ -302,16 +305,20 @@ export function useBlogHook() {
         data2db.append('metaDescription', metaDescription || '');
         data2db.append('keywords', JSON.stringify(keywords));
         data2db.append('allowComments', JSON.stringify(allowComments));
-        
-        if (scheduledAt) {
-            data2db.append('publishedAt', scheduledAt);
-            data2db.append('status', "scheduled");
-        } else {
-            data2db.append('publishedAt', dayjs().format());
-            data2db.append('status', "published");
-        }
-
         if (image) data2db.append('tempt_image', image);
+
+        if (saveDraft) {
+            data2db.append('status', "draft");
+            data2db.append('publishedAt', scheduledAt ? scheduledAt : dayjs().format());
+        } else {
+            if (scheduledAt) {
+                data2db.append('publishedAt', scheduledAt);
+                data2db.append('status', "scheduled");
+            } else {
+                data2db.append('publishedAt', dayjs().format());
+                data2db.append('status', "published");
+            }
+        }
 
 
         try {
@@ -344,6 +351,8 @@ export function useBlogHook() {
             });
 
             if (response.status) {
+                if (!post_id) navigate(`/admin/blog/edit/${response.result._id}`);
+
                 setPost_id(response.result._id);
 
                 // _setContactDetails(response.result);
@@ -366,6 +375,8 @@ export function useBlogHook() {
             });
 
             return false;
+        } finally {
+            setSaveDraft(false);
         }
     }
       
@@ -434,7 +445,7 @@ export function useBlogHook() {
         allowComments, setAllowComments,
         status, setStatus,
         scheduledAt, setScheduledAt,
-
+        saveDraft, setSaveDraft,
 
         // start of form controls
         errors: blogPostForm.formState.errors,
@@ -455,6 +466,7 @@ export function useBlogHook() {
         searchBlogPosts,
         deleteBlogPost,
         trashBlogPost,
+        createBlogPost,
 
         getBlogPostsCommet,
         editBlogPostsCommet,

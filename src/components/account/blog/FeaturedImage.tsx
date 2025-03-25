@@ -29,12 +29,16 @@ interface myProps {
     setFeaturedImage: (imageFile: File | undefined) => void;
 };
 
-const FeaturedImageComponent: React.FC<myProps> = ({
+const FeaturedImageComponent = React.memo<myProps>(({ 
     featuredImage, setFeaturedImage
 }) => {
-    const [imagePreview, setImagePreview] = React.useState(featuredImage);
+    const [imagePreview, setImagePreview] = React.useState('');
 
     const [openDescriptionTooltip, setOpenDescriptionTooltip] = React.useState(false);
+
+    React.useEffect(() => {
+        if (featuredImage) setImagePreview(featuredImage);
+    }, [featuredImage]);
     
     const handleFileUpload = async (e: any) => {
         const file = e.target.files[0]; 
@@ -262,7 +266,7 @@ const FeaturedImageComponent: React.FC<myProps> = ({
             />
         </Box>
     );
-}
+});
 
 export default FeaturedImageComponent;
 

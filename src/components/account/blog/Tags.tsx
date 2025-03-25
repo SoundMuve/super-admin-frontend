@@ -18,7 +18,7 @@ interface myProps {
     setSelectedTags: (tags: string[]) => void;
 };
 
-const TagsComponent: React.FC<myProps> = ({
+const TagsComponent = React.memo<myProps>(({ 
     selectedTags, setSelectedTags
 }) => {
     // State to hold the input value
@@ -110,7 +110,7 @@ const TagsComponent: React.FC<myProps> = ({
             </CardContent>
         </Card>            
     );
-}
+});
 
 export default TagsComponent;
 
