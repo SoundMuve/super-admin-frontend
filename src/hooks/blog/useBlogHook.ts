@@ -320,6 +320,9 @@ export function useBlogHook() {
             }
         }
 
+        // TODO::: enable save draft only when the post status is save draft, 
+        // so that more work can be saved to draft.
+
 
         try {
             let response: any;

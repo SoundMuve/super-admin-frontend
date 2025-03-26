@@ -32,6 +32,7 @@ import tidal from "@/assets/images/dsp/tidal.png";
 import youtube from "@/assets/images/dsp/youtube.png";
 import deezer from "@/assets/images/dsp/deezer.png";
 import tiktok from "@/assets/images/dsp/tiktok.png";
+import boomplay from "@/assets/images/dsp/boomplay.svg";
 import youtubeMusic from "@/assets/images/dsp/youtubeMusic.png";
 import kolors from '@/constants/kolors';
 import { getStatusColor } from '@/util/resources';
@@ -128,6 +129,14 @@ const musicDsps = [
         bgColor: "#B646FF",
         textColor: "#fff",
         btnText: "Download",
+    },
+    {
+        id: 14,
+        name: "Boomplay",
+        imageLogo: boomplay,
+        bgColor: "#B646FF",
+        textColor: "#fff",
+        btnText: "Play",
     },
     // {
     //     id: 12,
