@@ -28,12 +28,15 @@ import { copyToClipboard, downloadFile } from '@/util/copyNshare';
 import UpdateStatusModalComponent from '@/components/account/uploads/UpdateStatusModal';
 import UpdateUPC_EAN_ISRC_ModalComponent from '@/components/account/uploads/UpdateUPC_EAN_ISRC_Modal';
 import UpdateLiveLinksModalComponent from '@/components/account/uploads/UpdateLiveLinksModal';
+import { checkPermission } from '@/util/permissions';
+import { useUserStore } from '@/state/userStore';
 
 
 let selectedStatus: any = '';
 
 export default function ReleasesDetails() {
     const navigate = useNavigate();
+    const userData = useUserStore((state) => state.userData);
 
     const {
         // apiResponse, // setApiResponse,
@@ -163,6 +166,7 @@ export default function ReleasesDetails() {
                                 id="releaseStatus"
                                 // defaultValue={releaseDetails.status}
                                 value={releaseDetails.status}
+                                readOnly={!checkPermission(userData, "update", "release")}
                                 size='small'
                                 sx={{
                                     color: getStatusColor(releaseDetails.status, 'text'),
@@ -392,11 +396,12 @@ export default function ReleasesDetails() {
                                                 fontWeight: "400",
                                                 // lineHeight: "15.711px",
                                                 letterSpacing: "-0.463px",
-                                            }}  
+                                            }}
                                         >{ releaseDetails.musicLinks?.url || '' }</Typography>
 
                                         <IconButton size='small' sx={{ bgcolor: kolors.bg }}
                                             onClick={() => setOpenLiveLinksModal(true)}
+                                            disabled={!checkPermission(userData, "update", "release")}
                                         >
                                             <EditIcon sx={{ fontSize: "14px" }} />
                                         </IconButton>
@@ -541,6 +546,7 @@ export default function ReleasesDetails() {
                                             <IconButton size='small' 
                                                 title="Click to edit" 
                                                 onClick={() => setOpenEditISRCModal(true)}
+                                                disabled={!checkPermission(userData, "update", "release")}
                                                 sx={{ bgcolor: kolors.bg }}
                                             >
                                                 <EditIcon sx={{ fontSize: "18px" }} />

@@ -69,7 +69,7 @@ const AccountLayout = () => {
             title: 'Uploads',
             status: value == 6 ? true : false,
             baseLink: "/admin/uploads",
-            roles: ['admin', 'super admin']
+            roles: ['admin', 'super admin', 'editor']
         },
         {
             title: 'Coupons',
